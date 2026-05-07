@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AudioButton from '@/components/AudioButton';
 import { CheckCircle, RotateCcw } from 'lucide-react';
+import { useSettings } from '@/lib/useSettings';
 
 export default function ReviewPage() {
   const [cards, setCards] = useState([]);
@@ -12,6 +13,7 @@ export default function ReviewPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [stats, setStats] = useState({ correct: 0, total: 0 });
+  const { showEnglish } = useSettings();
 
   useEffect(() => {
     fetch('/api/review/due')
@@ -103,28 +105,50 @@ export default function ReviewPage() {
             className="rounded-xl p-10 text-center mb-5 card-review"
             style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
           >
-            <p
-              className="font-japanese text-xs uppercase tracking-widest mb-6"
-              style={{ color: 'var(--text-3)' }}
-            >
-              {current.content_type === 'vocabulary' ? '単語' : '漢字'}
-            </p>
+            {/* Card type + show_english indicator */}
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <p className="font-japanese text-xs uppercase tracking-widest" style={{ color: 'var(--text-3)' }}>
+                {current.content_type === 'vocabulary' ? '単語' : '漢字'}
+              </p>
+              {showEnglish && (
+                <span
+                  className="text-[9px] font-bold px-1.5 py-0.5 rounded tracking-wider"
+                  style={{ background: 'rgba(255,0,128,0.15)', color: 'var(--pink)', border: '1px solid rgba(255,0,128,0.3)' }}
+                >
+                  EN ON
+                </span>
+              )}
+            </div>
+
+            {/* Main Japanese character */}
             <p
               className="font-japanese font-bold mb-3"
               style={{ fontSize: '80px', lineHeight: 1, color: 'var(--text-1)' }}
             >
               {current.front}
             </p>
-            {current.reading && !flipped && (
-              <p className="font-japanese text-base" style={{ color: 'var(--text-3)' }}>
+
+            {/* Reading (hiragana) — always visible */}
+            {current.reading && (
+              <p className="font-japanese text-base mb-2" style={{ color: 'var(--text-3)' }}>
                 {current.reading}
+              </p>
+            )}
+
+            {/* English meaning — shown on front when setting is ON */}
+            {showEnglish && !flipped && (
+              <p
+                className="text-base font-medium mt-3 mb-2"
+                style={{ color: 'var(--pink)', opacity: 0.85 }}
+              >
+                {current.back}
               </p>
             )}
 
             {!flipped ? (
               <button
                 onClick={() => setFlipped(true)}
-                className="mt-8 btn-secondary"
+                className="mt-6 btn-secondary"
               >
                 答えを見る
               </button>
