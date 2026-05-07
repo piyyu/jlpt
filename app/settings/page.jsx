@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { Save, AlertTriangle } from 'lucide-react';
 
 const SETTINGS_DEF = [
-  { key: 'daily_goal', label: 'Daily Review Goal', type: 'number', min: 1, max: 200, description: 'Number of cards to review per day' },
-  { key: 'furigana', label: 'Show Furigana', type: 'toggle', description: 'Display reading above Japanese characters' },
-  { key: 'romaji', label: 'Show Romaji', type: 'toggle', description: 'Display romanized pronunciation' },
-  { key: 'audio_speed', label: 'Audio Speed', type: 'range', min: 0.5, max: 2.0, step: 0.1, description: 'Playback speed for text-to-speech' },
+  { key: 'daily_goal',    label: 'Daily Review Goal',       type: 'number', min: 1, max: 200, description: 'Number of cards to review per day' },
+  { key: 'show_english',  label: 'Show English on Cards',   type: 'toggle', description: 'Show the English meaning on the front of review cards (helpful for beginners)' },
+  { key: 'furigana',      label: 'Show Furigana',           type: 'toggle', description: 'Display reading above Japanese characters' },
+  { key: 'romaji',        label: 'Show Romaji',             type: 'toggle', description: 'Display romanized pronunciation' },
+  { key: 'audio_speed',   label: 'Audio Speed',             type: 'range',  min: 0.5, max: 2.0, step: 0.1, description: 'Playback speed for text-to-speech' },
 ];
 
 export default function SettingsPage() {
@@ -69,9 +70,16 @@ export default function SettingsPage() {
                 {def.type === 'toggle' && (
                   <button
                     onClick={() => saveSetting(def.key, settings[def.key] === 'true' ? 'false' : 'true')}
-                    className={`relative w-11 h-6 rounded-full transition-colors shrink-0 ${settings[def.key] === 'true' ? 'bg-zinc-900' : 'bg-zinc-200'}`}
+                    className="relative w-11 h-6 rounded-full transition-all shrink-0"
+                    style={{
+                      background: settings[def.key] === 'true' ? 'var(--pink)' : 'var(--bg-elevated)',
+                      border: `1px solid ${settings[def.key] === 'true' ? 'var(--pink)' : 'var(--border)'}`,
+                    }}
                   >
-                    <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform ${settings[def.key] === 'true' ? 'translate-x-5' : ''}`} />
+                    <span
+                      className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform ${settings[def.key] === 'true' ? 'translate-x-5' : ''}`}
+                      style={{ background: settings[def.key] === 'true' ? '#fff' : 'var(--text-3)' }}
+                    />
                   </button>
                 )}
 
