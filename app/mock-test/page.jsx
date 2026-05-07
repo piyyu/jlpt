@@ -1,235 +1,373 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Volume2, Timer, CheckCircle, XCircle } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Timer, CheckCircle, XCircle, RotateCcw, Zap } from 'lucide-react';
+import AudioButton from '@/components/AudioButton';
+
+const PRESETS = [
+  { label: '10問 · 5分',  questions: 10, desc: 'Quick warm-up' },
+  { label: '20問 · 10分', questions: 20, desc: 'Standard session' },
+  { label: '40問 · 20分', questions: 40, desc: 'Full drill' },
+];
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function optStyle(opt, selected, correct) {
+  if (selected === null) return {
+    background: 'var(--bg-surface)',
+    border: '1px solid var(--border)',
+    color: 'var(--text-1)',
+    cursor: 'pointer',
+  };
+  if (opt === correct) return { background: 'rgba(68,221,170,0.12)', border: '1px solid #44ddaa', color: '#44ddaa' };
+  if (opt === selected) return { background: 'rgba(255,60,80,0.1)', border: '1px solid rgba(255,60,80,0.5)', color: '#ff3c50' };
+  return { background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-3)', opacity: 0.4, cursor: 'default' };
+}
 
 export default function MockTestPage() {
-  const [phase, setPhase] = useState('intro'); // intro | test | results
-  const [sections, setSections] = useState(null);
-  const [sessionId, setSessionId] = useState(null);
-  const [sectionKey, setSectionKey] = useState('vocabulary');
-  const [sectionIndex, setSectionIndex] = useState(0);
-  const [answers, setAnswers] = useState([]);
-  const [selected, setSelected] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(55 * 60);
-  const [results, setResults] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const timerRef = useRef(null);
+  const [phase, setPhase]           = useState('intro'); // intro | test | results
+  const [preset, setPreset]         = useState(1);       // index into PRESETS
+  const [questions, setQuestions]   = useState([]);
+  const [sessionId, setSessionId]   = useState(null);
+  const [qIndex, setQIndex]         = useState(0);
+  const [answers, setAnswers]       = useState([]);      // {id, type, was_correct}
+  const [selected, setSelected]     = useState(null);
+  const [timeLeft, setTimeLeft]     = useState(0);
+  const [totalTime, setTotalTime]   = useState(0);
+  const [results, setResults]       = useState(null);
+  const [loading, setLoading]       = useState(false);
+  const timerRef                    = useRef(null);
 
-  const SECTION_ORDER = ['vocabulary', 'grammar', 'reading', 'listening'];
-
-  useEffect(() => {
-    if (phase === 'test') {
-      timerRef.current = setInterval(() => {
-        setTimeLeft((t) => {
-          if (t <= 1) { clearInterval(timerRef.current); submitTest(); return 0; }
-          return t - 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timerRef.current);
-  }, [phase]);
-
-  async function startTest() {
-    setLoading(true);
-    const res = await fetch('/api/mock-test/start', { method: 'POST' });
-    const data = await res.json();
-    setSections(data.sections);
-    setSessionId(data.session_id);
-    setAnswers([]);
-    setSectionKey('vocabulary');
-    setSectionIndex(0);
-    setSelected(null);
-    setTimeLeft(55 * 60);
-    setPhase('test');
-    setLoading(false);
-  }
-
-  const currentSectionItems = sections?.[sectionKey] || [];
-  const currentItem = currentSectionItems[sectionIndex];
-
-  function handleAnswer(opt) {
-    if (selected !== null) return;
-    setSelected(opt);
-    const correct = opt === currentItem.correct;
-    setAnswers((prev) => [...prev, {
-      type: sectionKey,
-      id: currentItem.id,
-      was_correct: correct,
-    }]);
-    setTimeout(nextQuestion, 800);
-  }
-
-  function nextQuestion() {
-    if (sectionIndex + 1 < currentSectionItems.length) {
-      setSectionIndex(sectionIndex + 1);
-      setSelected(null);
-    } else {
-      const nextIdx = SECTION_ORDER.indexOf(sectionKey) + 1;
-      if (nextIdx < SECTION_ORDER.length) {
-        setSectionKey(SECTION_ORDER[nextIdx]);
-        setSectionIndex(0);
-        setSelected(null);
-      } else {
-        submitTest();
-      }
-    }
-  }
-
-  async function submitTest() {
+  const submitTest = useCallback(async (currentAnswers) => {
     clearInterval(timerRef.current);
     const res = await fetch('/api/mock-test/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_id: sessionId, answers }),
+      body: JSON.stringify({ session_id: sessionId, answers: currentAnswers }),
     });
     const data = await res.json();
     setResults(data);
     setPhase('results');
+  }, [sessionId]);
+
+  // Start countdown
+  useEffect(() => {
+    if (phase !== 'test') return;
+    timerRef.current = setInterval(() => {
+      setTimeLeft((t) => {
+        if (t <= 1) {
+          clearInterval(timerRef.current);
+          // Auto-submit with current answers when time runs out
+          setAnswers((a) => { submitTest(a); return a; });
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, [phase, submitTest]);
+
+  async function startTest() {
+    setLoading(true);
+    const { questions: qCount } = PRESETS[preset];
+    const res = await fetch('/api/mock-test/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ questionCount: qCount }),
+    });
+    const data = await res.json();
+    setQuestions(data.questions);
+    setSessionId(data.session_id);
+    setAnswers([]);
+    setQIndex(0);
+    setSelected(null);
+    setTimeLeft(data.timeLimitSeconds);
+    setTotalTime(data.timeLimitSeconds);
+    setPhase('test');
+    setLoading(false);
   }
 
-  function formatTime(s) {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
-    return `${m}:${sec.toString().padStart(2, '0')}`;
+  const current = questions[qIndex];
+  const pct = totalTime > 0 ? timeLeft / totalTime : 0;
+  const isLowTime = timeLeft < 60;
+
+  useEffect(() => {
+    function onKey(e) {
+      if (phase !== 'test' || selected !== null || !current) return;
+      const idx = parseInt(e.key, 10) - 1;
+      if (idx >= 0 && idx <= 3 && current.options[idx]) {
+        handleAnswer(current.options[idx]);
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [phase, selected, current]);
+
+  function handleAnswer(opt) {
+    if (selected !== null || !current) return;
+    setSelected(opt);
+    const isCorrect = opt === current.correct;
+    const newAnswers = [...answers, { type: current.type, id: current.id, was_correct: isCorrect }];
+    setAnswers(newAnswers);
+    setTimeout(() => {
+      if (qIndex + 1 >= questions.length) {
+        submitTest(newAnswers);
+      } else {
+        setQIndex(qIndex + 1);
+        setSelected(null);
+      }
+    }, 900);
   }
 
-  function playAudio(text) {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'ja-JP'; utt.rate = 0.9;
-    window.speechSynthesis.speak(utt);
-  }
+  // ── Intro ──────────────────────────────────────────────────────────────────
+  if (phase === 'intro') {
+    return (
+      <div>
+        <div className="mb-8">
+          <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>模擬試験</p>
+          <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>Mock Test</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>
+            Vocabulary + Kanji · timed quiz · 30 seconds per question
+          </p>
+        </div>
 
-  return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-zinc-900 tracking-tight">Mock Test</h1>
-        <p className="text-sm text-zinc-500 mt-1">Full N5 simulation — 55 minutes</p>
+        {/* Preset selector */}
+        <div className="grid grid-cols-3 gap-4 max-w-xl mb-8">
+          {PRESETS.map((p, i) => (
+            <button
+              key={i}
+              onClick={() => setPreset(i)}
+              className="rounded-xl p-5 text-left transition-all"
+              style={{
+                background: preset === i ? 'rgba(255,0,128,0.08)' : 'var(--bg-surface)',
+                border: `1px solid ${preset === i ? 'rgba(255,0,128,0.4)' : 'var(--border)'}`,
+              }}
+            >
+              <p className="font-japanese font-bold text-base mb-1" style={{ color: preset === i ? 'var(--pink)' : 'var(--text-1)' }}>
+                {p.label}
+              </p>
+              <p className="text-xs" style={{ color: 'var(--text-3)' }}>{p.desc}</p>
+              <div className="mt-3 flex gap-1.5">
+                <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(255,0,128,0.1)', color: 'var(--pink)', border: '1px solid rgba(255,0,128,0.2)' }}>
+                  単語 {Math.floor(p.questions / 2)}
+                </span>
+                <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: 'rgba(192,132,252,0.1)', color: '#c084fc', border: '1px solid rgba(192,132,252,0.2)' }}>
+                  漢字 {p.questions - Math.floor(p.questions / 2)}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Info */}
+        <div
+          className="max-w-xl rounded-xl p-5 mb-6 text-sm space-y-2"
+          style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+        >
+          <p className="flex items-center gap-2" style={{ color: 'var(--text-2)' }}>
+            <Zap size={14} style={{ color: 'var(--pink)' }} />
+            4 multiple-choice options per question
+          </p>
+          <p className="flex items-center gap-2" style={{ color: 'var(--text-2)' }}>
+            <Timer size={14} style={{ color: 'var(--pink)' }} />
+            30 seconds per question — auto-submits when time runs out
+          </p>
+          <p className="flex items-center gap-2" style={{ color: 'var(--text-2)' }}>
+            <CheckCircle size={14} style={{ color: '#44ddaa' }} />
+            Pass score: 60%
+          </p>
+        </div>
+
+        <button
+          onClick={startTest}
+          disabled={loading}
+          className="btn-primary flex items-center gap-2"
+          style={{ fontSize: 15 }}
+        >
+          {loading ? '準備中…' : `試験開始 — ${PRESETS[preset].label}`}
+        </button>
       </div>
+    );
+  }
 
-      {phase === 'intro' && (
-        <div className="max-w-md card p-8">
-          <h2 className="text-lg font-semibold text-zinc-900 mb-3">JLPT N5 Simulation</h2>
-          <ul className="text-sm text-zinc-600 space-y-2 mb-6">
-            <li>• 10 Vocabulary questions</li>
-            <li>• 5 Grammar questions</li>
-            <li>• 5 Reading comprehension questions</li>
-            <li>• 5 Listening questions</li>
-            <li>• 55 minute time limit</li>
-            <li>• Pass score: 60%</li>
-          </ul>
-          <button onClick={startTest} disabled={loading} className="btn-primary w-full">
-            {loading ? 'Preparing…' : 'Start Test'}
+  // ── Test ───────────────────────────────────────────────────────────────────
+  if (phase === 'test' && current) {
+    const isVocab = current.type === 'vocabulary';
+    return (
+      <div>
+        {/* Timer + progress bar */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <span
+                className="text-xs px-2 py-0.5 rounded-full font-semibold"
+                style={isVocab
+                  ? { background: 'rgba(255,0,128,0.1)', color: 'var(--pink)', border: '1px solid rgba(255,0,128,0.3)' }
+                  : { background: 'rgba(192,132,252,0.1)', color: '#c084fc', border: '1px solid rgba(192,132,252,0.3)' }}
+              >
+                {isVocab ? '単語' : '漢字'}
+              </span>
+              <span className="text-xs font-mono" style={{ color: 'var(--text-3)' }}>
+                {qIndex + 1}/{questions.length}
+              </span>
+            </div>
+            <div
+              className="flex items-center gap-1.5 font-mono text-sm font-bold"
+              style={{ color: isLowTime ? '#ff3c50' : 'var(--text-2)' }}
+            >
+              <Timer size={14} style={{ color: isLowTime ? '#ff3c50' : 'var(--text-3)' }} />
+              {formatTime(timeLeft)}
+            </div>
+          </div>
+
+          {/* Progress bar — time remaining */}
+          <div className="h-1 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
+            <div
+              className="h-full rounded-full transition-all duration-1000"
+              style={{
+                width: `${pct * 100}%`,
+                background: isLowTime
+                  ? '#ff3c50'
+                  : `linear-gradient(90deg, var(--pink), #c084fc)`,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Question card */}
+        <div
+          className="rounded-xl p-8 text-center mb-4"
+          style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+        >
+          <p className="text-xs uppercase tracking-widest mb-4 font-mono" style={{ color: 'var(--text-3)' }}>
+            {current.question}
+          </p>
+          <p
+            className="font-japanese font-bold mb-3"
+            style={{ fontSize: 80, lineHeight: 1, color: 'var(--text-1)' }}
+          >
+            {current.prompt}
+          </p>
+          {current.hint && (
+            <p className="font-japanese text-base" style={{ color: 'var(--text-3)' }}>{current.hint}</p>
+          )}
+          <div className="mt-4 flex justify-center">
+            <AudioButton text={current.prompt} />
+          </div>
+        </div>
+
+        {/* Options (2×2) */}
+        <div className="grid grid-cols-2 gap-3 max-w-xl mx-auto mb-4">
+          {current.options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => handleAnswer(opt)}
+              disabled={selected !== null}
+              className="py-4 px-3 rounded-xl text-sm font-semibold text-left transition-all"
+              style={optStyle(opt, selected, current.correct)}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex justify-end max-w-xl mx-auto">
+          <button
+            onClick={() => submitTest(answers)}
+            className="text-xs btn-secondary"
+          >
+            早期提出
           </button>
         </div>
-      )}
+      </div>
+    );
+  }
 
-      {phase === 'test' && currentItem && (
-        <div className="max-w-xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex gap-2">
-              {SECTION_ORDER.map((s) => (
-                <span key={s} className={`badge capitalize ${s === sectionKey ? 'bg-zinc-900 text-white' : 'bg-zinc-100 text-zinc-400'}`}>
-                  {s}
-                </span>
-              ))}
-            </div>
-            <div className="flex items-center gap-1.5 text-sm font-mono font-medium text-zinc-700">
-              <Timer size={14} className={timeLeft < 300 ? 'text-red-500' : ''} />
-              <span className={timeLeft < 300 ? 'text-red-500' : ''}>{formatTime(timeLeft)}</span>
-            </div>
-          </div>
+  // ── Results ────────────────────────────────────────────────────────────────
+  if (phase === 'results' && results) {
+    const vocabAnswers = answers.filter((a) => a.type === 'vocabulary');
+    const kanjiAnswers = answers.filter((a) => a.type === 'kanji');
+    const vocabCorrect = vocabAnswers.filter((a) => a.was_correct).length;
+    const kanjiCorrect = kanjiAnswers.filter((a) => a.was_correct).length;
+    const totalCorrect = vocabCorrect + kanjiCorrect;
+    const total        = answers.length;
+    const pctScore     = total > 0 ? Math.round((totalCorrect / total) * 100) : 0;
+    const passed       = pctScore >= 60;
 
-          <div className="card p-6">
-            <p className="text-xs text-zinc-400 uppercase tracking-wider mb-4 capitalize">
-              {sectionKey} — {sectionIndex + 1}/{currentSectionItems.length}
-            </p>
-
-            {sectionKey === 'reading' && currentItem.passage && (
-              <div className="bg-zinc-50 border border-zinc-100 rounded-lg p-4 mb-4">
-                <p className="font-japanese text-sm leading-loose text-zinc-800">{currentItem.passage}</p>
-              </div>
-            )}
-
-            {sectionKey === 'listening' ? (
-              <div className="flex items-center gap-3 mb-4">
-                <button onClick={() => playAudio(currentItem.prompt)}
-                  className="w-10 h-10 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-zinc-50">
-                  <Volume2 size={16} />
-                </button>
-                <p className="text-sm text-zinc-600">{currentItem.question}</p>
-              </div>
-            ) : (
-              <div className="text-center mb-6">
-                <p className="font-japanese text-4xl font-medium text-zinc-900 mb-1">{currentItem.prompt}</p>
-                {currentItem.hint && <p className="text-sm font-japanese text-zinc-400">{currentItem.hint}</p>}
-                {currentItem.question && <p className="text-sm text-zinc-600 mt-2">{currentItem.question}</p>}
-              </div>
-            )}
-
-            <div className="space-y-2">
-              {currentItem.options.map((opt) => {
-                let style = 'border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50';
-                if (selected !== null) {
-                  if (opt === currentItem.correct) style = 'border border-green-300 bg-green-50 text-green-800';
-                  else if (opt === selected) style = 'border border-red-300 bg-red-50 text-red-800';
-                  else style = 'border border-zinc-100 bg-zinc-50 text-zinc-400';
-                }
-                return (
-                  <button key={opt} onClick={() => handleAnswer(opt)} disabled={selected !== null}
-                    className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all ${style}`}>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="mt-4 text-right">
-            <button onClick={submitTest} className="btn-secondary text-xs">Submit Early</button>
-          </div>
+    return (
+      <div>
+        <div className="mb-8">
+          <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>試験結果</p>
+          <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>Results</h1>
         </div>
-      )}
 
-      {phase === 'results' && results && (
-        <div className="max-w-md mx-auto">
-          <div className={`card p-8 text-center mb-6 ${results.passed ? 'border-green-200' : 'border-red-200'}`}>
-            {results.passed
-              ? <CheckCircle size={40} className="text-green-500 mx-auto mb-3" />
-              : <XCircle size={40} className="text-red-500 mx-auto mb-3" />}
-            <p className="text-3xl font-semibold text-zinc-900 mb-1">{results.breakdown.totalScore}%</p>
-            <p className={`text-sm font-medium ${results.passed ? 'text-green-600' : 'text-red-500'}`}>
-              {results.passed ? 'PASS — おめでとう！' : 'FAIL — もう少しがんばろう！'}
-            </p>
-          </div>
+        {/* Score hero */}
+        <div
+          className="rounded-2xl p-10 text-center mb-6"
+          style={{
+            background: 'var(--bg-surface)',
+            border: `1px solid ${passed ? 'rgba(68,221,170,0.3)' : 'rgba(255,60,80,0.3)'}`,
+          }}
+        >
+          {passed
+            ? <CheckCircle size={48} className="mx-auto mb-4" style={{ color: '#44ddaa' }} />
+            : <XCircle    size={48} className="mx-auto mb-4" style={{ color: '#ff3c50' }} />}
+          <p className="font-japanese font-bold mb-1" style={{ fontSize: 72, lineHeight: 1, color: 'var(--text-1)' }}>
+            {pctScore}点
+          </p>
+          <p className="text-lg font-semibold mb-1" style={{ color: passed ? '#44ddaa' : '#ff3c50' }}>
+            {passed ? 'PASS — おめでとう！' : 'FAIL — もう少しがんばろう！'}
+          </p>
+          <p className="text-sm" style={{ color: 'var(--text-3)' }}>
+            {totalCorrect} / {total} correct
+          </p>
+        </div>
 
-          <div className="card p-5">
-            <p className="text-sm font-medium text-zinc-900 mb-4">Score Breakdown</p>
-            <div className="space-y-3">
-              {[
-                { label: 'Vocabulary', score: results.breakdown.vocabScore },
-                { label: 'Grammar', score: results.breakdown.grammarScore },
-                { label: 'Reading', score: results.breakdown.readingScore },
-                { label: 'Listening', score: results.breakdown.listeningScore },
-              ].map(({ label, score }) => (
-                <div key={label} className="flex items-center gap-3">
-                  <span className="text-sm text-zinc-600 w-24 shrink-0">{label}</span>
-                  <div className="flex-1 h-2 bg-zinc-100 rounded-full overflow-hidden">
-                    <div className={`h-full rounded-full ${score >= 60 ? 'bg-green-500' : 'bg-red-400'}`}
-                      style={{ width: `${score}%` }} />
-                  </div>
-                  <span className={`text-sm font-medium w-10 text-right ${score >= 60 ? 'text-green-600' : 'text-red-500'}`}>{score}%</span>
+        {/* Breakdown */}
+        <div
+          className="rounded-xl p-6 mb-6 grid grid-cols-2 gap-6"
+          style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+        >
+          {[
+            { label: '単語 Vocabulary', jp: '単語', correct: vocabCorrect, total: vocabAnswers.length, color: '#ff0080' },
+            { label: '漢字 Kanji',      jp: '漢字', correct: kanjiCorrect, total: kanjiAnswers.length, color: '#c084fc' },
+          ].map(({ label, jp, correct, total: t, color }) => {
+            const p = t > 0 ? Math.round((correct / t) * 100) : 0;
+            return (
+              <div key={jp} className="text-center">
+                <p className="font-japanese text-2xl font-bold mb-1" style={{ color }}>{jp}</p>
+                <p className="text-3xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>{p}%</p>
+                <p className="text-xs" style={{ color: 'var(--text-3)' }}>{correct}/{t} correct</p>
+                {/* Bar */}
+                <div className="mt-2 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
+                  <div
+                    className="h-full rounded-full"
+                    style={{ width: `${p}%`, background: color, transition: 'width 0.8s ease' }}
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <button onClick={() => setPhase('intro')} className="btn-primary w-full mt-4">Try Again</button>
+                <p className="text-xs mt-1" style={{ color: p >= 60 ? '#44ddaa' : '#ff3c50' }}>
+                  {p >= 60 ? '合格' : '不合格'}
+                </p>
+              </div>
+            );
+          })}
         </div>
-      )}
-    </div>
-  );
+
+        <div className="flex gap-3 flex-wrap">
+          <button onClick={startTest} className="btn-primary flex items-center gap-2">
+            <RotateCcw size={14} /> もう一度
+          </button>
+          <button onClick={() => setPhase('intro')} className="btn-secondary">
+            設定を変更
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
 }

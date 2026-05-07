@@ -1,11 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CheckCircle, XCircle } from 'lucide-react';
 
 export default function QuizCard({ prompt, hint, options = [], correctAnswer, onAnswer, index, total }) {
   const [selected, setSelected] = useState(null);
   const answered = selected !== null;
+
+  useEffect(() => {
+    function onKey(e) {
+      if (answered || options.length === 0) return;
+      const idx = parseInt(e.key, 10) - 1;
+      if (idx >= 0 && idx <= 3 && options[idx]) {
+        handleSelect(options[idx]);
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [answered, options]);
 
   function handleSelect(option) {
     if (answered) return;

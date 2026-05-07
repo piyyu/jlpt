@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import QuizCard from '@/components/QuizCard';
 import { Trophy, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 
@@ -8,21 +9,32 @@ const TYPES = ['mixed', 'vocabulary', 'kanji', 'grammar'];
 const COUNTS = [5, 10, 15, 20];
 
 export default function QuizPage() {
+  const searchParams = useSearchParams();
+  const initialType = searchParams.get('type') || 'mixed';
+  const initialSelected = searchParams.get('selected_only') === 'true';
+
   const [phase, setPhase] = useState('setup'); // 'setup' | 'quiz' | 'results'
-  const [quizType, setQuizType] = useState('mixed');
+  const [quizType, setQuizType] = useState(initialType);
   const [count, setCount] = useState(10);
+  const [selectedOnly, setSelectedOnly] = useState(initialSelected);
   const [sessionId, setSessionId] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Sync state if URL changes
+  useEffect(() => {
+    setQuizType(searchParams.get('type') || 'mixed');
+    setSelectedOnly(searchParams.get('selected_only') === 'true');
+  }, [searchParams]);
+
   async function startQuiz() {
     setLoading(true);
     const res = await fetch('/api/quiz/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quiz_type: quizType, count }),
+      body: JSON.stringify({ quiz_type: quizType, count, selected_only: selectedOnly }),
     });
     const data = await res.json();
     setSessionId(data.session_id);
@@ -89,6 +101,19 @@ export default function QuizPage() {
                 ))}
               </div>
             </div>
+
+            {['vocabulary', 'kanji'].includes(quizType) && (
+              <label className="flex items-center gap-2 cursor-pointer mt-2">
+                <input
+                  type="checkbox"
+                  checked={selectedOnly}
+                  onChange={(e) => setSelectedOnly(e.target.checked)}
+                  className="w-4 h-4 rounded text-zinc-900 focus:ring-zinc-900"
+                />
+                <span className="text-sm text-zinc-700">Quiz Selected Items Only</span>
+              </label>
+            )}
+
             <button onClick={startQuiz} disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2">
               <Trophy size={14} />
               {loading ? 'Starting…' : 'Start Quiz'}

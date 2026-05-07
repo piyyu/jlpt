@@ -1,200 +1,466 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import AudioButton from '@/components/AudioButton';
-import { CheckCircle, RotateCcw } from 'lucide-react';
+import { CheckCircle, ArrowLeft, RotateCcw } from 'lucide-react';
 import { useSettings } from '@/lib/useSettings';
+import { toRomaji, toRomajiParts } from '@/lib/toRomaji';
 
-export default function ReviewPage() {
-  const [cards, setCards] = useState([]);
-  const [index, setIndex] = useState(0);
-  const [flipped, setFlipped] = useState(false);
-  const [done, setDone] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [stats, setStats] = useState({ correct: 0, total: 0 });
-  const { showEnglish } = useSettings();
-
-  useEffect(() => {
-    fetch('/api/review/due')
-      .then((r) => r.json())
-      .then((d) => { setCards(d.cards); setLoading(false); });
-  }, []);
-
-  const current = cards[index];
-
-  async function submitAnswer(label) {
-    if (submitting || !current) return;
-    setSubmitting(true);
-    const wasCorrect = label === 'good' || label === 'easy';
-    setStats((s) => ({ correct: s.correct + (wasCorrect ? 1 : 0), total: s.total + 1 }));
-    await fetch('/api/review/answer', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cardId: current.id, label }),
-    });
-    if (index + 1 >= cards.length) { setDone(true); }
-    else { setIndex(index + 1); setFlipped(false); }
-    setSubmitting(false);
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function fisherYates(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
+  return a;
+}
 
-  async function restart() {
-    setLoading(true);
-    const d = await fetch('/api/review/due').then((r) => r.json());
-    setCards(d.cards);
-    setIndex(0); setFlipped(false); setDone(false);
-    setStats({ correct: 0, total: 0 });
-    setLoading(false);
+function buildOptions(correct, pool) {
+  const distractors = fisherYates(pool.filter((ans) => ans !== correct)).slice(0, 3);
+  return fisherYates([correct, ...distractors]);
+}
+
+// SM-2 interval preview (client-side estimate so user sees what will happen)
+function previewInterval(label, card) {
+  const ef    = card?.ease_factor ?? 2.5;
+  const rep   = card?.repetitions ?? 0;
+  const inter = card?.interval_days ?? 1;
+  if (label === 'again') return '1 day';
+  if (label === 'hard')  return `${Math.max(1, Math.round(inter * 1.2))} days`;
+  if (label === 'good') {
+    if (rep === 0) return '1 day';
+    if (rep === 1) return '6 days';
+    return `${Math.round(inter * ef)} days`;
   }
+  if (label === 'easy') {
+    if (rep === 0) return '4 days';
+    if (rep === 1) return '9 days';
+    return `${Math.round(inter * ef * 1.3)} days`;
+  }
+  return '?';
+}
 
+// ─── Difficulty button config ─────────────────────────────────────────────────
+const RATINGS = [
+  { label: 'again', jp: 'もう一度', key: '1', color: '#ff3c50', bg: 'rgba(255,60,80,0.1)',   border: 'rgba(255,60,80,0.4)'   },
+  { label: 'hard',  jp: '難しい',   key: '2', color: '#f97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.4)' },
+  { label: 'good',  jp: 'よかった', key: '3', color: '#44ddaa', bg: 'rgba(68,221,170,0.1)', border: 'rgba(68,221,170,0.4)' },
+  { label: 'easy',  jp: '簡単',     key: '4', color: '#38bdf8', bg: 'rgba(56,189,248,0.1)', border: 'rgba(56,189,248,0.4)' },
+];
+
+// ─── Category definitions ─────────────────────────────────────────────────────
+const CATEGORIES = [
+  { type: null,         jp: '全部', label: 'All Cards',  sub: 'Vocabulary + Kanji combined', icon: '📚' },
+  { type: 'vocabulary', jp: '単語', label: 'Vocabulary', sub: 'N5 words',                   icon: '言' },
+  { type: 'kanji',      jp: '漢字', label: 'Kanji',      sub: 'N5 characters',              icon: '字' },
+];
+
+// ─── Category Picker ──────────────────────────────────────────────────────────
+function CategoryPicker({ counts, onSelect }) {
+  const total = (counts.vocabulary || 0) + (counts.kanji || 0);
   return (
     <div>
-      {/* Header */}
       <div className="mb-8">
         <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>
           スペースド・リピティション
         </p>
         <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>復習</h1>
         <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>
-          Review — {cards.length} cards due today
+          Review — choose a category to quiz yourself
         </p>
       </div>
-
-      {loading ? (
-        <div className="py-24 text-center font-japanese text-sm" style={{ color: 'var(--text-3)' }}>
-          読み込み中…
-        </div>
-      ) : done || cards.length === 0 ? (
-        <div
-          className="max-w-sm mx-auto rounded-xl p-10 text-center"
-          style={{ background: 'var(--bg-surface)', border: '1px solid rgba(255,0,128,0.2)' }}
-        >
-          <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#44ddaa' }} />
-          <p className="font-japanese text-2xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>
-            {cards.length === 0 ? '完璧！' : 'お疲れ様！'}
-          </p>
-          <p className="text-sm mb-1" style={{ color: 'var(--text-2)' }}>
-            {cards.length === 0 ? 'No cards due for review.' : `${stats.correct} / ${stats.total} correct`}
-          </p>
-          {stats.total > 0 && (
-            <p className="font-japanese text-3xl font-bold mb-6" style={{ color: 'var(--pink)' }}>
-              {Math.round((stats.correct / stats.total) * 100)}点
-            </p>
-          )}
-          <button onClick={restart} className="btn-secondary flex items-center gap-2 mx-auto">
-            <RotateCcw size={13} /> もう一度
-          </button>
-        </div>
-      ) : current ? (
-        <div className="max-w-md mx-auto">
-          {/* Progress */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-0.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${(index / cards.length) * 100}%`, background: 'var(--pink)' }}
-              />
-            </div>
-            <span className="text-xs font-mono shrink-0" style={{ color: 'var(--text-3)' }}>
-              {index}/{cards.length}
-            </span>
-          </div>
-
-          {/* Card */}
-          <div
-            className="rounded-xl p-10 text-center mb-5 card-review"
-            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
-          >
-            {/* Card type + show_english indicator */}
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <p className="font-japanese text-xs uppercase tracking-widest" style={{ color: 'var(--text-3)' }}>
-                {current.content_type === 'vocabulary' ? '単語' : '漢字'}
-              </p>
-              {showEnglish && (
-                <span
-                  className="text-[9px] font-bold px-1.5 py-0.5 rounded tracking-wider"
-                  style={{ background: 'rgba(255,0,128,0.15)', color: 'var(--pink)', border: '1px solid rgba(255,0,128,0.3)' }}
-                >
-                  EN ON
-                </span>
-              )}
-            </div>
-
-            {/* Main Japanese character */}
-            <p
-              className="font-japanese font-bold mb-3"
-              style={{ fontSize: '80px', lineHeight: 1, color: 'var(--text-1)' }}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
+        {CATEGORIES.map((cat) => {
+          const due = cat.type === null ? total : (counts[cat.type] || 0);
+          return (
+            <button
+              key={cat.label}
+              onClick={() => onSelect(cat)}
+              disabled={due === 0}
+              className="rounded-xl p-6 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+              onMouseEnter={(e) => { if (due > 0) { e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)'; e.currentTarget.style.background = 'rgba(255,0,128,0.05)'; } }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--bg-surface)'; }}
             >
-              {current.front}
-            </p>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 font-japanese font-bold"
+                style={{ background: due > 0 ? 'rgba(255,0,128,0.1)' : 'var(--bg-elevated)', fontSize: '24px', color: due > 0 ? 'var(--pink)' : 'var(--text-3)', border: `1px solid ${due > 0 ? 'rgba(255,0,128,0.25)' : 'var(--border)'}` }}>
+                {cat.icon}
+              </div>
+              <p className="font-japanese text-xs mb-1" style={{ color: 'var(--text-3)' }}>{cat.jp}</p>
+              <p className="text-sm font-semibold mb-1" style={{ color: 'var(--text-1)' }}>{cat.label}</p>
+              <p className="text-xs mb-3" style={{ color: 'var(--text-3)' }}>{cat.sub}</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-bold font-japanese" style={{ color: due > 0 ? 'var(--pink)' : 'var(--text-3)' }}>{due}</span>
+                <span className="text-xs" style={{ color: 'var(--text-3)' }}>{due === 1 ? 'card due' : 'cards due'}</span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      {total === 0 && (
+        <div className="mt-8">
+          <p className="font-japanese text-lg font-bold mb-2" style={{ color: '#44ddaa' }}>完璧！</p>
+          <p className="text-sm" style={{ color: 'var(--text-2)' }}>No cards due today. Come back tomorrow!</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
-            {/* Reading (hiragana) — always visible */}
-            {current.reading && (
-              <p className="font-japanese text-base mb-2" style={{ color: 'var(--text-3)' }}>
-                {current.reading}
-              </p>
+// ─── Detail panel (shown after answering) ─────────────────────────────────────
+function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
+  const isKanji = card.content_type === 'kanji';
+
+  function parseExample(ex) {
+    if (!ex) return null;
+    const m = ex.match(/^(.+?)\s*\((.+?)\)$/);
+    return m ? { word: m[1], reading: m[2] } : { word: ex, reading: null };
+  }
+
+  const ex1 = parseExample(card.hint);
+  const ex2 = parseExample(card.hint2);
+
+  return (
+    <div className="mt-4 rounded-xl overflow-hidden"
+      style={{ border: `1px solid ${isCorrect ? 'rgba(68,221,170,0.3)' : 'rgba(255,60,80,0.3)'}` }}>
+      {/* Result bar */}
+      <div className="px-5 py-3 flex items-center gap-3"
+        style={{ background: isCorrect ? 'rgba(68,221,170,0.08)' : 'rgba(255,60,80,0.08)' }}>
+        <span className="text-sm font-semibold" style={{ color: isCorrect ? '#44ddaa' : '#ff3c50' }}>
+          {isCorrect ? '✓ Correct!' : '✗ Wrong'}
+        </span>
+        <span className="text-sm" style={{ color: 'var(--text-2)' }}>
+          Answer: <strong style={{ color: 'var(--text-1)' }}>{card.back}</strong>
+        </span>
+      </div>
+
+      {/* Word detail */}
+      <div className="px-5 py-4 grid grid-cols-1 gap-4" style={{ background: 'var(--bg-elevated)' }}>
+        <div className="flex items-start gap-6">
+          <div className="shrink-0 text-center">
+            <p className="font-japanese font-bold leading-none" style={{ fontSize: '52px', color: 'var(--text-1)' }}>{card.front}</p>
+            {card.reading && <p className="font-japanese text-sm mt-1" style={{ color: 'var(--text-3)' }}>{card.reading}</p>}
+            {showEnglish && card.reading && (
+              <p className="font-mono text-xs mt-0.5" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomaji(card.reading)}</p>
             )}
-
-            {/* English meaning — shown on front when setting is ON */}
-            {showEnglish && !flipped && (
-              <p
-                className="text-base font-medium mt-3 mb-2"
-                style={{ color: 'var(--pink)', opacity: 0.85 }}
-              >
-                {current.back}
-              </p>
+          </div>
+          <div className="flex-1 grid grid-cols-2 gap-3 text-sm">
+            <div className="col-span-2">
+              <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>Meaning</p>
+              <p className="font-semibold" style={{ color: 'var(--text-1)' }}>{card.back}</p>
+            </div>
+            {isKanji && card.on_yomi && (
+              <div>
+                <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>On-yomi</p>
+                <p className="font-japanese font-semibold" style={{ color: 'var(--text-1)' }}>{card.on_yomi}</p>
+                {showEnglish && <p className="font-mono text-xs" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomajiParts(card.on_yomi)}</p>}
+              </div>
             )}
-
-            {!flipped ? (
-              <button
-                onClick={() => setFlipped(true)}
-                className="mt-6 btn-secondary"
-              >
-                答えを見る
-              </button>
-            ) : (
-              <div className="mt-6">
-                <p
-                  className="text-xl font-semibold mb-2"
-                  style={{ color: 'var(--pink)' }}
-                >
-                  {current.back}
+            {isKanji && card.reading && (
+              <div>
+                <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>Kun-yomi</p>
+                <p className="font-japanese font-semibold" style={{ color: 'var(--text-1)' }}>{card.reading}</p>
+                {showEnglish && <p className="font-mono text-xs" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomajiParts(card.reading)}</p>}
+              </div>
+            )}
+            {isKanji && card.stroke_count && (
+              <div>
+                <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>Strokes</p>
+                <p className="font-semibold" style={{ color: 'var(--text-1)' }}>{card.stroke_count}</p>
+              </div>
+            )}
+            {(ex1 || ex2) && (
+              <div className="col-span-2">
+                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--text-3)' }}>
+                  {isKanji ? 'Example words' : 'Example sentence'}
                 </p>
-                {current.hint && (
-                  <p className="font-japanese text-sm mb-3" style={{ color: 'var(--text-3)' }}>
-                    {current.hint}
-                  </p>
-                )}
-                <div className="flex justify-center">
-                  <AudioButton text={current.front} />
+                <div className="flex flex-wrap gap-4">
+                  {[ex1, ex2].filter(Boolean).map((ex, i) => (
+                    <div key={i}>
+                      <span className="font-japanese text-sm font-semibold" style={{ color: 'var(--text-1)' }}>{ex.word}</span>
+                      {ex.reading && (
+                        <>
+                          <span className="font-japanese text-xs ml-1" style={{ color: 'var(--text-3)' }}>{ex.reading}</span>
+                          {showEnglish && <span className="font-mono text-xs ml-1" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomaji(ex.reading)}</span>}
+                        </>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
           </div>
+          <div className="shrink-0"><AudioButton text={card.front} /></div>
+        </div>
+      </div>
 
-          {/* SRS buttons */}
-          {flipped && (
-            <div className="grid grid-cols-4 gap-2">
-              {[
-                { label: 'again', jp: 'また',  en: '<1d',  cls: 'btn-again' },
-                { label: 'hard',  jp: '難しい', en: '~3d',  cls: 'btn-hard'  },
-                { label: 'good',  jp: '良い',  en: '~7d',  cls: 'btn-good'  },
-                { label: 'easy',  jp: '簡単',  en: '~21d', cls: 'btn-easy'  },
-              ].map(({ label, jp, en, cls }) => (
-                <button
-                  key={label}
-                  onClick={() => submitAnswer(label)}
-                  disabled={submitting}
-                  className={`${cls} flex flex-col items-center gap-0.5`}
-                >
-                  <span className="font-japanese text-xs">{jp}</span>
-                  <span style={{ fontSize: '10px', opacity: 0.6 }}>{en}</span>
-                </button>
-              ))}
+      {/* ── Difficulty rating ── */}
+      <div className="px-5 py-4" style={{ background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)' }}>
+        <p className="text-xs mb-3 flex items-center gap-2" style={{ color: 'var(--text-3)' }}>
+          <span>How well did you know this?</span>
+          <span className="font-mono" style={{ color: 'var(--text-3)', opacity: 0.6 }}>Press 1–4</span>
+        </p>
+        <div className="grid grid-cols-4 gap-2">
+          {RATINGS.map((r) => (
+            <button
+              key={r.label}
+              onClick={() => onRate(r.label)}
+              className="rounded-lg py-3 px-2 flex flex-col items-center gap-1 transition-all font-semibold text-xs"
+              style={{ background: r.bg, border: `1px solid ${r.border}`, color: r.color }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = r.bg.replace('0.1', '0.2'); }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = r.bg; }}
+            >
+              <span className="text-sm font-bold">{r.key}</span>
+              <span className="font-japanese text-xs">{r.jp}</span>
+              <span style={{ color: r.color, opacity: 0.7, fontSize: 10 }}>
+                {previewInterval(r.label, card)}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Quiz Drill ───────────────────────────────────────────────────────────────
+function QuizDrill({ category, pools, onBack }) {
+  const [cards, setCards]       = useState([]);
+  const [index, setIndex]       = useState(0);
+  const [chosen, setChosen]     = useState(null);    // answer string picked
+  const [rated, setRated]       = useState(false);   // difficulty submitted
+  const [done, setDone]         = useState(false);
+  const [loading, setLoading]   = useState(true);
+  const [stats, setStats]       = useState({ correct: 0, total: 0 });
+  const { showEnglish } = useSettings();
+
+  const fetchCards = useCallback(() => {
+    setLoading(true);
+    const url = category.type ? `/api/review/due?type=${category.type}` : '/api/review/due';
+    fetch(url).then((r) => r.json()).then((d) => { setCards(d.cards); setLoading(false); });
+  }, [category]);
+
+  useEffect(() => { fetchCards(); }, [fetchCards]);
+
+  const current = cards[index];
+  const pool = current ? (pools[current.content_type] || pools.vocabulary || []) : [];
+  const options = useMemo(
+    () => (current ? buildOptions(current.back, pool) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [current?.id],
+  );
+
+  // ── Keyboard shortcuts ──────────────────────────────────────────────────────
+  useEffect(() => {
+    function onKey(e) {
+      // Don't fire on input fields
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      const key = e.key;
+
+      if (!chosen) {
+        // Phase 1: pick answer (1-4 maps to options A-D)
+        const idx = parseInt(key, 10) - 1;
+        if (idx >= 0 && idx <= 3 && options[idx] !== undefined) {
+          handleAnswer(options[idx]);
+        }
+      } else if (!rated) {
+        // Phase 2: pick difficulty (1-4 = Again/Hard/Good/Easy)
+        const ratingIdx = parseInt(key, 10) - 1;
+        if (ratingIdx >= 0 && ratingIdx <= 3) {
+          handleRate(RATINGS[ratingIdx].label);
+        }
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chosen, rated, options, current]);
+
+  function handleAnswer(answer) {
+    if (chosen || !current) return;
+    setChosen(answer);
+    const isCorrect = answer === current.back;
+    setStats((s) => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
+    // Don't submit SRS yet — wait for difficulty rating
+  }
+
+  async function handleRate(ratingLabel) {
+    if (rated || !current) return;
+    setRated(true);
+
+    // Submit SRS with the user-chosen difficulty label
+    await fetch('/api/review/answer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cardId: current.id, label: ratingLabel }),
+    });
+
+    // Advance after a brief pause so user sees the button light up
+    setTimeout(() => {
+      if (index + 1 >= cards.length) {
+        setDone(true);
+      } else {
+        setIndex(index + 1);
+        setChosen(null);
+        setRated(false);
+      }
+    }, 250);
+  }
+
+  function optStyle(opt) {
+    if (!chosen) return {
+      background: 'var(--bg-surface)',
+      border: '1px solid var(--border)',
+      color: 'var(--text-1)',
+      cursor: 'pointer',
+    };
+    const isCorrect = opt === current.back;
+    const isPicked  = opt === chosen;
+    if (isCorrect) return { background: 'rgba(68,221,170,0.12)', border: '1px solid #44ddaa', color: '#44ddaa' };
+    if (isPicked)  return { background: 'rgba(255,60,80,0.1)', border: '1px solid rgba(255,60,80,0.5)', color: '#ff3c50' };
+    return { background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-3)', opacity: 0.35, cursor: 'default' };
+  }
+
+  function restart() {
+    setIndex(0); setChosen(null); setRated(false); setDone(false);
+    setStats({ correct: 0, total: 0 });
+    fetchCards();
+  }
+
+  return (
+    <div>
+      {/* Header */}
+      <div className="mb-6 flex items-start gap-4">
+        <button
+          onClick={onBack}
+          className="mt-1 p-1.5 rounded-md transition-colors shrink-0"
+          style={{ color: 'var(--text-3)', border: '1px solid var(--border)' }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--pink)'; e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-3)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+        >
+          <ArrowLeft size={16} />
+        </button>
+        <div>
+          <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>{category.jp} · クイズ</p>
+          <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>{category.label}</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>Quiz — {cards.length} cards due</p>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="py-24 text-center font-japanese text-sm" style={{ color: 'var(--text-3)' }}>読み込み中…</div>
+      ) : done || cards.length === 0 ? (
+        /* ── Done screen ── */
+        <div className="max-w-sm mx-auto rounded-xl p-10 text-center"
+          style={{ background: 'var(--bg-surface)', border: '1px solid rgba(255,0,128,0.2)' }}>
+          <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#44ddaa' }} />
+          <p className="font-japanese text-2xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>
+            {cards.length === 0 ? '完璧！' : 'お疲れ様！'}
+          </p>
+          <p className="text-sm mb-2" style={{ color: 'var(--text-2)' }}>
+            {cards.length === 0 ? 'No cards due.' : `${stats.correct} / ${stats.total} correct`}
+          </p>
+          {stats.total > 0 && (
+            <p className="font-japanese text-4xl font-bold mb-6" style={{ color: 'var(--pink)' }}>
+              {Math.round((stats.correct / stats.total) * 100)}点
+            </p>
+          )}
+          <div className="flex gap-2 justify-center">
+            <button onClick={restart} className="btn-secondary flex items-center gap-2"><RotateCcw size={13} /> もう一度</button>
+            <button onClick={onBack} className="btn-secondary flex items-center gap-2"><ArrowLeft size={13} /> カテゴリ</button>
+          </div>
+        </div>
+      ) : current ? (
+        <div className="max-w-xl mx-auto">
+          {/* Progress bar */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex-1 h-0.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
+              <div className="h-full rounded-full transition-all duration-500"
+                style={{ width: `${(index / cards.length) * 100}%`, background: 'var(--pink)' }} />
             </div>
+            <span className="text-xs font-mono shrink-0" style={{ color: 'var(--text-3)' }}>{index + 1}/{cards.length}</span>
+            <span className="text-xs font-mono shrink-0" style={{ color: '#44ddaa' }}>{stats.correct}✓</span>
+          </div>
+
+          {/* Question card */}
+          <div className="rounded-xl p-8 text-center mb-4"
+            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
+            <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
+              {current.content_type === 'vocabulary' ? '単語 — What does this mean?' : '漢字 — What does this mean?'}
+            </p>
+            <p className="font-japanese font-bold mb-2" style={{ fontSize: '72px', lineHeight: 1, color: 'var(--text-1)' }}>
+              {current.front}
+            </p>
+            {current.reading && (
+              <p className="font-japanese text-base mt-2" style={{ color: 'var(--text-3)' }}>{current.reading}</p>
+            )}
+            {showEnglish && current.reading && (
+              <p className="font-mono text-sm mt-1" style={{ color: 'var(--pink)', opacity: 0.75 }}>{toRomaji(current.reading)}</p>
+            )}
+          </div>
+
+          {/* Answer options — 2×2 with key hints */}
+          {!chosen && (
+            <p className="text-center text-xs mb-2 font-mono" style={{ color: 'var(--text-3)', opacity: 0.6 }}>
+              Click or press 1 · 2 · 3 · 4
+            </p>
+          )}
+          <div className="grid grid-cols-2 gap-3 mb-2">
+            {options.map((opt, i) => (
+              <button
+                key={opt}
+                onClick={() => handleAnswer(opt)}
+                disabled={!!chosen}
+                className="py-4 px-3 rounded-xl text-sm font-semibold text-left transition-all flex items-start gap-2"
+                style={optStyle(opt)}
+              >
+                <span
+                  className="shrink-0 w-5 h-5 rounded flex items-center justify-center font-mono text-xs font-bold"
+                  style={{ background: 'rgba(255,255,255,0.06)', color: 'inherit', minWidth: 20 }}
+                >
+                  {i + 1}
+                </span>
+                <span>{opt}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Detail + difficulty rating panel (appears after answering) */}
+          {chosen && (
+            <DetailPanel
+              card={current}
+              isCorrect={chosen === current.back}
+              onRate={handleRate}
+              showEnglish={showEnglish}
+            />
           )}
         </div>
       ) : null}
     </div>
   );
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
+export default function ReviewPage() {
+  const [counts, setCounts]       = useState({});
+  const [pools, setPools]         = useState({});
+  const [loading, setLoading]     = useState(true);
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  function loadCounts() {
+    setLoading(true);
+    fetch('/api/review/due')
+      .then((r) => r.json())
+      .then((d) => { setCounts(d.counts || {}); setPools(d.pools || {}); setLoading(false); });
+  }
+
+  useEffect(() => { loadCounts(); }, []);
+
+  function handleBack() { setActiveCategory(null); loadCounts(); }
+
+  if (activeCategory) return <QuizDrill category={activeCategory} pools={pools} onBack={handleBack} />;
+  return loading
+    ? <div className="py-24 text-center font-japanese text-sm" style={{ color: 'var(--text-3)' }}>読み込み中…</div>
+    : <CategoryPicker counts={counts} onSelect={setActiveCategory} />;
 }
