@@ -17,8 +17,8 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64 text-zinc-400 text-sm">
-        Loading…
+      <div className="flex items-center justify-center h-64 text-sm" style={{ color: 'var(--text-3)' }}>
+        読み込み中…
       </div>
     );
   }
@@ -27,102 +27,96 @@ export default function Dashboard() {
 
   return (
     <div>
-      {/* Header */}
+      {/* Hero header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-zinc-900 tracking-tight">Dashboard</h1>
-        <p className="text-sm text-zinc-500 mt-1">JLPT N5 study progress overview</p>
-      </div>
-
-      {/* Stats row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard
-          icon={<Flame size={18} className="text-orange-500" />}
-          label="Study Streak"
-          value={`${streak} day${streak !== 1 ? 's' : ''}`}
-        />
-        <StatCard
-          icon={<RotateCcw size={18} className="text-blue-500" />}
-          label="Due Today"
-          value={dueToday}
-          accent={dueToday > 0}
-        />
-        <StatCard
-          icon={<Trophy size={18} className="text-green-500" />}
-          label="Reviewed Today"
-          value={reviewedToday}
-        />
-        <StatCard
-          icon={<Clock size={18} className="text-zinc-400" />}
-          label="This Week"
-          value={`${timeStudiedMinutes}m`}
-        />
-      </div>
-
-      {/* Start Review CTA */}
-      {dueToday > 0 && (
-        <div className="card p-5 mb-8 flex items-center justify-between">
+        <div className="flex items-end gap-4">
           <div>
-            <p className="text-sm font-medium text-zinc-900">
-              You have <span className="text-zinc-900 font-semibold">{dueToday} cards</span> due for review
+            <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>
+              日本語能力試験 N5
             </p>
-            <p className="text-xs text-zinc-500 mt-0.5">Keep your streak going — review now!</p>
+            <h1 className="text-3xl font-bold tracking-tight" style={{ color: 'var(--text-1)' }}>
+              ダッシュボード
+            </h1>
+            <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>Dashboard — study progress overview</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <StatCard icon={<Flame size={16} />} label="連続学習" en="Streak" value={`${streak}日`} />
+        <StatCard icon={<RotateCcw size={16} />} label="本日の復習" en="Due Today" value={dueToday} accent={dueToday > 0} />
+        <StatCard icon={<Trophy size={16} />} label="今日完了" en="Reviewed" value={reviewedToday} />
+        <StatCard icon={<Clock size={16} />} label="今週の学習" en="This Week" value={`${timeStudiedMinutes}分`} />
+      </div>
+
+      {/* CTA */}
+      {dueToday > 0 && (
+        <div
+          className="rounded-lg p-5 mb-6 flex items-center justify-between"
+          style={{
+            background: 'rgba(255,0,128,0.06)',
+            border: '1px solid rgba(255,0,128,0.2)',
+          }}
+        >
+          <div>
+            <p className="text-sm font-semibold" style={{ color: 'var(--text-1)' }}>
+              <span style={{ color: 'var(--pink)' }}>{dueToday}枚</span> のカードが復習待ちです
+            </p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
+              Keep your streak going — start now!
+            </p>
           </div>
           <Link href="/review" className="btn-primary shrink-0">
-            Start Review
+            復習開始 →
           </Link>
         </div>
       )}
 
-      {/* Progress section */}
-      <div className="card p-6 mb-8">
-        <h2 className="section-title mb-5">Section Progress</h2>
-        <div className="space-y-5">
-          <ProgressBar
-            label="Vocabulary"
-            value={progress.vocabulary.mastered}
-            max={progress.vocabulary.total}
-            colorClass="bg-blue-500"
-          />
-          <ProgressBar
-            label="Kanji"
-            value={progress.kanji.mastered}
-            max={progress.kanji.total}
-            colorClass="bg-purple-500"
-          />
+      {/* Progress */}
+      <div className="card p-6 mb-6">
+        <div className="flex items-center gap-3 mb-5">
+          <h2 className="section-title">進捗状況</h2>
+          <span className="text-xs" style={{ color: 'var(--text-3)' }}>Progress</span>
         </div>
-        <p className="text-xs text-zinc-400 mt-4">
-          Mastered = cards with interval ≥ 21 days
+        <div className="space-y-5">
+          <ProgressBar label="単語 Vocabulary" value={progress.vocabulary.mastered} max={progress.vocabulary.total} colorClass="bg-pink-DEFAULT" />
+          <ProgressBar label="漢字 Kanji"       value={progress.kanji.mastered}      max={progress.kanji.total}      colorClass="bg-purple-500" />
+        </div>
+        <p className="text-xs mt-4" style={{ color: 'var(--text-3)' }}>
+          習得済み = interval ≥ 21日
         </p>
       </div>
 
-      {/* Quick links */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
-        <QuickLink href="/vocabulary" icon={<BookOpen size={16} />} label="Vocabulary" sub="100 words" />
-        <QuickLink href="/kanji" icon={<Square size={16} />} label="Kanji" sub="80 characters" />
-        <QuickLink href="/quiz" icon={<Trophy size={16} />} label="Quiz" sub="Test yourself" />
-        <QuickLink href="/grammar" icon={<BookOpen size={16} />} label="Grammar" sub="20 patterns" />
-        <QuickLink href="/listening" icon={<RotateCcw size={16} />} label="Listening" sub="10 exercises" />
-        <QuickLink href="/mock-test" icon={<Clock size={16} />} label="Mock Test" sub="55 min exam" />
+      {/* Quick nav */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+        <QuickLink href="/vocabulary" jp="単語" label="Vocabulary" sub="100 words" />
+        <QuickLink href="/kanji"      jp="漢字" label="Kanji"      sub="80 characters" />
+        <QuickLink href="/quiz"       jp="試験" label="Quiz"       sub="Test yourself" />
+        <QuickLink href="/grammar"    jp="文法" label="Grammar"    sub="20 patterns" />
+        <QuickLink href="/listening"  jp="聴解" label="Listening"  sub="10 exercises" />
+        <QuickLink href="/mock-test"  jp="模試" label="Mock Test"  sub="55 min exam" />
       </div>
 
       {/* Recent quizzes */}
       {recentQuizzes?.length > 0 && (
-        <div className="card p-6">
-          <h2 className="section-title mb-4">Recent Quizzes</h2>
+        <div className="card p-6 mb-4">
+          <div className="flex items-center gap-2 mb-4">
+            <h2 className="section-title">最近のクイズ</h2>
+            <span className="text-xs" style={{ color: 'var(--text-3)' }}>Recent Quizzes</span>
+          </div>
           <div className="space-y-2">
             {recentQuizzes.map((q) => {
               const score = q.total_questions > 0
                 ? Math.round((q.correct_answers / q.total_questions) * 100)
                 : 0;
               return (
-                <div key={q.id} className="flex items-center justify-between py-2 border-b border-zinc-100 last:border-0">
+                <div key={q.id} className="flex items-center justify-between py-2" style={{ borderBottom: '1px solid var(--border)' }}>
                   <div>
-                    <p className="text-sm text-zinc-700 capitalize">{q.quiz_type} quiz</p>
-                    <p className="text-xs text-zinc-400">{q.total_questions} questions · {new Date(q.created_at).toLocaleDateString()}</p>
+                    <p className="text-sm capitalize" style={{ color: 'var(--text-2)' }}>{q.quiz_type} quiz</p>
+                    <p className="text-xs" style={{ color: 'var(--text-3)' }}>{q.total_questions}問 · {new Date(q.created_at).toLocaleDateString('ja-JP')}</p>
                   </div>
-                  <span className={`text-sm font-medium ${score >= 70 ? 'text-green-600' : 'text-red-500'}`}>
-                    {score}%
-                  </span>
+                  <span className="text-sm font-bold" style={{ color: score >= 70 ? '#44ddaa' : '#ff6666' }}>{score}%</span>
                 </div>
               );
             })}
@@ -132,51 +126,72 @@ export default function Dashboard() {
 
       {/* Last mock test */}
       {lastMockTest && (
-        <div className="card p-6 mt-4">
-          <h2 className="section-title mb-4">Last Mock Test</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <ScoreCell label="Vocabulary" score={lastMockTest.vocab_score} />
-            <ScoreCell label="Grammar" score={lastMockTest.grammar_score} />
-            <ScoreCell label="Reading" score={lastMockTest.reading_score} />
-            <ScoreCell label="Listening" score={lastMockTest.listening_score} />
+        <div className="card p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <h2 className="section-title">前回の模擬試験</h2>
+            <span className="text-xs" style={{ color: 'var(--text-3)' }}>Last Mock Test</span>
           </div>
-          <p className="text-xs text-zinc-400 mt-3">
-            Taken: {new Date(lastMockTest.taken_at).toLocaleString()}
-          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: '単語', en: 'Vocab',     score: lastMockTest.vocab_score },
+              { label: '文法', en: 'Grammar',   score: lastMockTest.grammar_score },
+              { label: '読解', en: 'Reading',   score: lastMockTest.reading_score },
+              { label: '聴解', en: 'Listening', score: lastMockTest.listening_score },
+            ].map(({ label, en, score }) => (
+              <div key={en} className="text-center">
+                <p className="font-japanese text-base" style={{ color: 'var(--text-3)' }}>{label}</p>
+                <p className="text-2xl font-bold" style={{ color: score >= 60 ? '#44ddaa' : '#ff6666' }}>{score}%</p>
+                <p className="text-xs" style={{ color: 'var(--text-3)' }}>{en}</p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function StatCard({ icon, label, value, accent = false }) {
+function StatCard({ icon, label, en, value, accent = false }) {
   return (
-    <div className={`card p-4 ${accent ? 'border-blue-200' : ''}`}>
-      <div className="flex items-center gap-2 mb-2">
-        {icon}
-        <span className="text-xs text-zinc-500">{label}</span>
+    <div
+      className="rounded-lg p-4"
+      style={{
+        background: accent ? 'rgba(255,0,128,0.06)' : 'var(--bg-surface)',
+        border: `1px solid ${accent ? 'rgba(255,0,128,0.25)' : 'var(--border)'}`,
+      }}
+    >
+      <div className="flex items-center gap-1.5 mb-2">
+        <span style={{ color: accent ? 'var(--pink)' : 'var(--text-3)' }}>{icon}</span>
+        <span className="font-japanese text-xs" style={{ color: 'var(--text-3)' }}>{label}</span>
       </div>
-      <p className={`text-2xl font-semibold tracking-tight ${accent ? 'text-blue-600' : 'text-zinc-900'}`}>
+      <p className="text-2xl font-bold font-japanese tracking-tight" style={{ color: accent ? 'var(--pink)' : 'var(--text-1)' }}>
         {value}
       </p>
+      <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-3)' }}>{en}</p>
     </div>
   );
 }
 
-function QuickLink({ href, icon, label, sub }) {
+function QuickLink({ href, jp, label, sub }) {
   return (
-    <Link href={href} className="card p-4 hover:bg-zinc-50 transition-colors block">
-      <div className="flex items-center gap-2 mb-1 text-zinc-600">{icon}<span className="text-sm font-medium text-zinc-900">{label}</span></div>
-      <p className="text-xs text-zinc-400">{sub}</p>
+    <Link
+      href={href}
+      className="rounded-lg p-4 block transition-all group"
+      style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(255,0,128,0.3)';
+        e.currentTarget.style.background = 'rgba(255,0,128,0.04)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'var(--border)';
+        e.currentTarget.style.background = 'var(--bg-surface)';
+      }}
+    >
+      <div className="flex items-baseline gap-2 mb-1">
+        <span className="font-japanese text-xl font-bold" style={{ color: 'var(--pink)' }}>{jp}</span>
+        <span className="text-sm font-medium" style={{ color: 'var(--text-1)' }}>{label}</span>
+      </div>
+      <p className="text-xs" style={{ color: 'var(--text-3)' }}>{sub}</p>
     </Link>
-  );
-}
-
-function ScoreCell({ label, score }) {
-  return (
-    <div className="text-center">
-      <p className={`text-xl font-semibold ${score >= 60 ? 'text-green-600' : 'text-red-500'}`}>{score}%</p>
-      <p className="text-xs text-zinc-500 mt-0.5">{label}</p>
-    </div>
   );
 }

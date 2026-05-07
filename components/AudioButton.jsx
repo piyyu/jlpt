@@ -16,7 +16,7 @@ export default function AudioButton({ text, lang = 'ja-JP', rate = 1.0, classNam
     utterance.lang = lang;
     utterance.rate = rate;
     utterance.onstart = () => setPlaying(true);
-    utterance.onend = () => setPlaying(false);
+    utterance.onend   = () => setPlaying(false);
     utterance.onerror = () => setPlaying(false);
     window.speechSynthesis.speak(utterance);
   }
@@ -26,14 +26,15 @@ export default function AudioButton({ text, lang = 'ja-JP', rate = 1.0, classNam
       onClick={speak}
       disabled={playing}
       title={`Listen: ${text}`}
-      className={`inline-flex items-center gap-1.5 text-zinc-500 hover:text-zinc-800 transition-colors disabled:opacity-50 ${className}`}
+      className={`inline-flex items-center gap-1.5 transition-all disabled:opacity-40 ${className}`}
+      style={{ color: playing ? 'var(--pink)' : 'var(--text-3)' }}
+      onMouseEnter={(e) => { if (!playing) e.currentTarget.style.color = 'var(--pink)'; }}
+      onMouseLeave={(e) => { if (!playing) e.currentTarget.style.color = 'var(--text-3)'; }}
     >
-      {playing ? (
-        <Loader size={14} className="animate-spin" />
-      ) : (
-        <Volume2 size={14} />
-      )}
-      <span className="text-xs">{playing ? 'Playing…' : 'Listen'}</span>
+      {playing
+        ? <Loader size={13} className="animate-spin" />
+        : <Volume2 size={13} />}
+      <span style={{ fontSize: '11px' }}>{playing ? '再生中…' : '音声'}</span>
     </button>
   );
 }
