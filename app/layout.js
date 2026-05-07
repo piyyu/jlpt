@@ -2,8 +2,8 @@ import './globals.css';
 import Sidebar from '@/components/Sidebar';
 
 export const metadata = {
-  title: 'JLPT N5 — 日本語能力試験',
-  description: 'Complete JLPT N5 Japanese study app with SRS, quizzes, grammar, kanji, and more.',
+  title: 'KOTOBA — 言葉 JLPT N5',
+  description: 'KOTOBA: a complete JLPT N5 Japanese study app with SRS, quizzes, grammar, kanji, and more.',
 };
 
 export default function RootLayout({ children }) {
@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
 
           <Sidebar />
 
-          <main className="flex-1 min-w-0 relative z-10">
+          <main className="flex-1 min-w-0 relative z-10 md:ml-56">
             {/* Mobile spacer */}
             <div className="md:hidden h-14" />
             <div className="max-w-5xl mx-auto px-5 py-8">

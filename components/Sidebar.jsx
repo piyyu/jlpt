@@ -115,22 +115,34 @@ function Logo() {
   return (
     <div className="px-4 py-5" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="flex items-center gap-3">
-        {/* Logo mark */}
+        {/* Logo mark — 言 on black with pink ring */}
         <div
-          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 relative overflow-hidden"
-          style={{ background: 'var(--pink)' }}
+          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+          style={{
+            background: '#0d0d0d',
+            border: '1.5px solid var(--pink)',
+            boxShadow: '0 0 10px rgba(255,0,128,0.3)',
+          }}
         >
-          <span className="font-japanese text-black font-bold text-lg leading-none">日</span>
+          <span
+            className="font-japanese font-bold leading-none"
+            style={{ fontSize: '18px', color: 'var(--pink)' }}
+          >
+            言
+          </span>
         </div>
         <div>
-          <p className="text-sm font-bold tracking-wide leading-tight" style={{ color: 'var(--text-1)' }}>
-            JLPT N5
+          <p
+            className="font-bold tracking-widest leading-tight uppercase"
+            style={{ fontSize: '13px', color: 'var(--text-1)', letterSpacing: '0.12em' }}
+          >
+            KOTOBA
           </p>
           <p
             className="font-japanese leading-tight"
-            style={{ fontSize: '10px', color: 'var(--text-3)', letterSpacing: '0.05em' }}
+            style={{ fontSize: '9px', color: 'var(--pink)', letterSpacing: '0.08em', opacity: 0.7 }}
           >
-            日本語能力試験
+            言葉 · JLPT N5
           </p>
         </div>
       </div>
@@ -157,9 +169,9 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Desktop */}
+      {/* Desktop — fixed sidebar, never scrolls with page */}
       <aside
-        className="hidden md:flex flex-col w-56 min-h-screen sticky top-0 shrink-0"
+        className="hidden md:flex flex-col w-56 h-screen fixed top-0 left-0 z-30"
         style={{ background: '#0a0a0a', borderRight: '1px solid var(--border)' }}
       >
         <Logo />
