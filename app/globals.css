@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #18181b; /* zinc-900 */
+    background: #ffffff;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  .font-japanese {
+    font-family: 'Noto Sans JP', 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Card */
+  .card {
+    @apply border border-zinc-200 rounded-lg bg-white shadow-sm;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  }
+
+  /* Answer buttons */
+  .btn-again {
+    @apply border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+  }
+  .btn-hard {
+    @apply border border-orange-200 bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+  }
+  .btn-good {
+    @apply border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+  }
+  .btn-easy {
+    @apply border border-green-200 bg-green-50 text-green-700 hover:bg-green-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+  }
+
+  /* Primary action button */
+  .btn-primary {
+    @apply bg-zinc-900 text-white hover:bg-zinc-700 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+  }
+
+  /* Section heading */
+  .section-title {
+    @apply text-lg font-semibold text-zinc-900 tracking-tight;
+  }
+
+  /* Table styles */
+  .data-table {
+    @apply w-full text-sm;
+  }
+  .data-table th {
+    @apply text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-4 py-3 border-b border-zinc-200 bg-zinc-50;
+  }
+  .data-table td {
+    @apply px-4 py-3 border-b border-zinc-100 text-zinc-700;
+  }
+  .data-table tr:hover td {
+    @apply bg-zinc-50;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 2px;
+}
+
+/* Sidebar transition */
+.sidebar-transition {
+  transition: width 200ms ease, transform 200ms ease;
+}
+
+/* Progress bar animation */
+.progress-bar-fill {
+  transition: width 600ms ease;
+}

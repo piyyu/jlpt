@@ -1,0 +1,26 @@
+id,type,display_value,answer,hint
+1,time,午前九時,9:00 AM,午前 = AM; 九 = 9; 時 = o'clock
+2,time,午後三時,3:00 PM,午後 = PM; 三 = 3; 時 = o'clock
+3,time,十二時半,12:30,十二 = 12; 時 = hour; 半 = half
+4,time,八時十五分,8:15,八 = 8; 十五 = 15; 分 = minute
+5,time,六時四十五分,6:45,六 = 6; 四十五 = 45; 分 = minute
+6,date,一月一日,January 1st,一月 = January; 一日 = 1st
+7,date,三月三日,March 3rd,三月 = March; 三日 = 3rd
+8,date,七月七日,July 7th,七月 = July; 七日 = 7th
+9,date,十一月二十三日,November 23rd,十一月 = November; 二十三日 = 23rd
+10,date,十二月三十一日,December 31st,十二月 = December; 三十一日 = 31st
+11,price,三百円,300 yen,三百 = 300; 円 = yen
+12,price,五百円,500 yen,五百 = 500; 円 = yen
+13,price,千円,1000 yen,千 = 1000; 円 = yen
+14,price,二千五百円,2500 yen,二千 = 2000; 五百 = 500; 円 = yen
+15,price,一万円,10000 yen,一万 = 10000; 円 = yen
+16,counter,本が三本,3 long thin objects (bottles/pens etc.),三本 uses the 本 counter for cylindrical objects
+17,counter,紙が五枚,5 flat objects (sheets of paper),五枚 uses the 枚 counter for flat items
+18,counter,犬が二匹,2 small animals,二匹 uses the 匹 counter for small animals
+19,counter,人が四人,4 people,四人 uses the 人 counter; note: 四 reads よ here
+20,counter,本が一冊,1 bound book,一冊 uses the 冊 counter for books
+21,counter,車が六台,6 machines / vehicles,六台 uses the 台 counter for machines
+22,counter,猫が七匹,7 small animals,七匹 uses the 匹 counter
+23,counter,鉛筆が八本,8 pencils,八本 uses the 本 counter
+24,counter,学生が九人,9 students,九人 uses the 人 counter
+25,counter,リンゴが十個,10 round objects (apples),十個 uses the 個 counter for individual items
