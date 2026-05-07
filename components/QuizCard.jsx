@@ -3,17 +3,6 @@
 import { useState } from 'react';
 import { CheckCircle, XCircle } from 'lucide-react';
 
-/**
- * QuizCard — shows a question with multiple choice options.
- * @param {object} props
- * @param {string} props.prompt         - The question / character to display
- * @param {string} [props.hint]         - Reading hint (shown below prompt)
- * @param {string[]} props.options      - Array of 4 option strings
- * @param {string} props.correctAnswer  - The correct option string
- * @param {function} props.onAnswer     - Called with (wasCorrect: boolean)
- * @param {number} [props.index]        - Question number
- * @param {number} [props.total]        - Total questions
- */
 export default function QuizCard({ prompt, hint, options = [], correctAnswer, onAnswer, index, total }) {
   const [selected, setSelected] = useState(null);
   const answered = selected !== null;
@@ -22,63 +11,87 @@ export default function QuizCard({ prompt, hint, options = [], correctAnswer, on
     if (answered) return;
     setSelected(option);
     const correct = option === correctAnswer;
-    setTimeout(() => {
-      onAnswer(correct);
-      setSelected(null);
-    }, 900);
+    setTimeout(() => { onAnswer(correct); setSelected(null); }, 900);
+  }
+
+  function optionStyle(option) {
+    if (!answered) {
+      return {
+        background: 'var(--bg-elevated)',
+        border: '1px solid var(--border)',
+        color: 'var(--text-2)',
+      };
+    }
+    if (option === correctAnswer) {
+      return {
+        background: 'rgba(0,210,130,0.1)',
+        border: '1px solid rgba(0,210,130,0.4)',
+        color: '#44ddaa',
+      };
+    }
+    if (option === selected) {
+      return {
+        background: 'rgba(255,60,60,0.1)',
+        border: '1px solid rgba(255,60,60,0.4)',
+        color: '#ff6666',
+      };
+    }
+    return {
+      background: 'var(--bg-surface)',
+      border: '1px solid var(--border)',
+      color: 'var(--text-3)',
+      opacity: 0.5,
+    };
   }
 
   return (
-    <div className="card p-8 max-w-xl mx-auto">
-      {/* Progress */}
+    <div
+      className="rounded-xl p-8 max-w-xl mx-auto"
+      style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+    >
+      {/* Progress bar */}
       {index != null && total != null && (
         <div className="flex items-center gap-2 mb-6">
-          <div className="flex-1 h-1 bg-zinc-100 rounded-full overflow-hidden">
+          <div
+            className="flex-1 h-0.5 rounded-full overflow-hidden"
+            style={{ background: 'var(--bg-elevated)' }}
+          >
             <div
-              className="h-full bg-zinc-900 rounded-full transition-all duration-300"
-              style={{ width: `${((index) / total) * 100}%` }}
+              className="h-full rounded-full transition-all duration-300"
+              style={{ width: `${((index - 1) / total) * 100}%`, background: 'var(--pink)' }}
             />
           </div>
-          <span className="text-xs text-zinc-400 shrink-0">{index}/{total}</span>
+          <span className="text-xs shrink-0 font-mono" style={{ color: 'var(--text-3)' }}>
+            {index}/{total}
+          </span>
         </div>
       )}
 
       {/* Prompt */}
       <div className="text-center mb-8">
-        <p className="text-5xl font-japanese font-medium text-zinc-900 mb-2">{prompt}</p>
-        {hint && <p className="text-sm text-zinc-400 font-japanese">{hint}</p>}
+        <p className="font-japanese font-bold mb-2" style={{ fontSize: '64px', lineHeight: 1, color: 'var(--text-1)' }}>
+          {prompt}
+        </p>
+        {hint && (
+          <p className="font-japanese text-sm" style={{ color: 'var(--text-3)' }}>{hint}</p>
+        )}
       </div>
 
       {/* Options */}
-      <div className="grid grid-cols-1 gap-2">
-        {options.map((option) => {
-          let style = 'border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50';
-          if (answered) {
-            if (option === correctAnswer) {
-              style = 'border border-green-300 bg-green-50 text-green-800';
-            } else if (option === selected) {
-              style = 'border border-red-300 bg-red-50 text-red-800';
-            } else {
-              style = 'border border-zinc-100 bg-zinc-50 text-zinc-400';
-            }
-          }
-          return (
-            <button
-              key={option}
-              onClick={() => handleSelect(option)}
-              disabled={answered}
-              className={`flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-all text-left ${style}`}
-            >
-              <span>{option}</span>
-              {answered && option === correctAnswer && (
-                <CheckCircle size={16} className="text-green-600 shrink-0" />
-              )}
-              {answered && option === selected && option !== correctAnswer && (
-                <XCircle size={16} className="text-red-500 shrink-0" />
-              )}
-            </button>
-          );
-        })}
+      <div className="space-y-2">
+        {options.map((option) => (
+          <button
+            key={option}
+            onClick={() => handleSelect(option)}
+            disabled={answered}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-all text-left"
+            style={optionStyle(option)}
+          >
+            <span>{option}</span>
+            {answered && option === correctAnswer && <CheckCircle size={15} style={{ color: '#44ddaa' }} />}
+            {answered && option === selected && option !== correctAnswer && <XCircle size={15} style={{ color: '#ff6666' }} />}
+          </button>
+        ))}
       </div>
     </div>
   );

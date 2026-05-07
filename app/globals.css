@@ -4,21 +4,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens ─────────────────────────────────────── */
+:root {
+  --bg-base:     #080808;
+  --bg-surface:  #111111;
+  --bg-elevated: #1a1a1a;
+  --border:      #222222;
+  --text-1:      #f5f5f5;
+  --text-2:      #999999;
+  --text-3:      #555555;
+  --pink:        #FF0080;
+  --pink-hover:  #FF33A0;
+  --pink-dim:    rgba(255, 0, 128, 0.08);
+  --pink-border: rgba(255, 0, 128, 0.25);
+}
+
+/* ── Base ──────────────────────────────────────────────── */
 @layer base {
-  * {
-    box-sizing: border-box;
-  }
+  * { box-sizing: border-box; }
 
   html {
     font-family: 'Inter', system-ui, sans-serif;
-    color: #18181b; /* zinc-900 */
-    background: #ffffff;
+    background: var(--bg-base);
+    color: var(--text-1);
   }
 
   body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    background: var(--bg-base);
   }
 
   .font-japanese {
@@ -26,80 +41,193 @@
   }
 }
 
+/* ── Component classes ─────────────────────────────────── */
 @layer components {
-  /* Card */
+
   .card {
-    @apply border border-zinc-200 rounded-lg bg-white shadow-sm;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    @apply rounded-lg;
   }
 
-  /* Badge */
   .badge {
     @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
   }
 
-  /* Answer buttons */
+  /* SRS answer buttons */
   .btn-again {
-    @apply border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+    background: rgba(255, 60, 60, 0.1);
+    border: 1px solid rgba(255, 60, 60, 0.35);
+    color: #ff6666;
+    @apply px-4 py-2 rounded-md text-sm font-medium transition-all hover:brightness-125;
   }
   .btn-hard {
-    @apply border border-orange-200 bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+    background: rgba(255, 160, 0, 0.1);
+    border: 1px solid rgba(255, 160, 0, 0.35);
+    color: #ffaa44;
+    @apply px-4 py-2 rounded-md text-sm font-medium transition-all hover:brightness-125;
   }
   .btn-good {
-    @apply border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+    background: rgba(0, 210, 130, 0.1);
+    border: 1px solid rgba(0, 210, 130, 0.35);
+    color: #44ddaa;
+    @apply px-4 py-2 rounded-md text-sm font-medium transition-all hover:brightness-125;
   }
   .btn-easy {
-    @apply border border-green-200 bg-green-50 text-green-700 hover:bg-green-100 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+    background: rgba(80, 160, 255, 0.1);
+    border: 1px solid rgba(80, 160, 255, 0.35);
+    color: #66aaff;
+    @apply px-4 py-2 rounded-md text-sm font-medium transition-all hover:brightness-125;
   }
 
-  /* Primary action button */
+  /* Primary = pink */
   .btn-primary {
-    @apply bg-zinc-900 text-white hover:bg-zinc-700 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+    background: var(--pink);
+    color: #fff;
+    @apply px-4 py-2 rounded-md text-sm font-semibold transition-all hover:opacity-85 active:scale-95;
   }
 
-  /* Secondary button */
+  /* Secondary = dark surface */
   .btn-secondary {
-    @apply border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 transition-colors px-4 py-2 rounded-md text-sm font-medium;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    @apply px-4 py-2 rounded-md text-sm font-medium transition-all hover:border-pink hover:text-pink;
   }
 
-  /* Section heading */
   .section-title {
-    @apply text-lg font-semibold text-zinc-900 tracking-tight;
+    color: var(--text-1);
+    @apply text-lg font-semibold tracking-tight;
   }
 
-  /* Table styles */
-  .data-table {
-    @apply w-full text-sm;
-  }
+  .data-table { @apply w-full text-sm; }
+
   .data-table th {
-    @apply text-left text-xs font-medium text-zinc-500 uppercase tracking-wider px-4 py-3 border-b border-zinc-200 bg-zinc-50;
+    color: var(--text-3);
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border);
+    @apply text-left text-xs font-medium uppercase tracking-wider px-4 py-3;
   }
+
   .data-table td {
-    @apply px-4 py-3 border-b border-zinc-100 text-zinc-700;
+    color: var(--text-2);
+    border-bottom: 1px solid var(--border);
+    @apply px-4 py-3;
   }
+
   .data-table tr:hover td {
-    @apply bg-zinc-50;
+    background: var(--bg-elevated);
   }
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: #f4f4f5;
-}
-::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
-  border-radius: 2px;
+/* ── Global dark-mode overrides for inline Tailwind classes ── */
+
+/* Text */
+.text-zinc-900, .text-zinc-800 { color: var(--text-1) !important; }
+.text-zinc-700                 { color: #ddd !important; }
+.text-zinc-600, .text-zinc-500 { color: var(--text-2) !important; }
+.text-zinc-400                 { color: var(--text-3) !important; }
+
+/* Backgrounds */
+.bg-white                      { background-color: var(--bg-surface)  !important; }
+.bg-zinc-50                    { background-color: #181818 !important; }
+.bg-zinc-100                   { background-color: var(--bg-elevated)  !important; }
+.bg-zinc-900                   { background-color: var(--pink)         !important; }
+
+/* Hover */
+.hover\:bg-zinc-50:hover       { background-color: var(--bg-elevated) !important; }
+.hover\:bg-zinc-900:hover      { background-color: var(--pink-hover)  !important; }
+.hover\:bg-zinc-700:hover      { background-color: var(--pink-hover)  !important; }
+.hover\:text-zinc-900:hover    { color: var(--text-1) !important; }
+.hover\:text-zinc-700:hover    { color: #ddd !important; }
+.hover\:text-zinc-800:hover    { color: var(--text-1) !important; }
+
+/* Borders */
+.border-zinc-200               { border-color: var(--border) !important; }
+.border-zinc-100               { border-color: #1f1f1f      !important; }
+
+/* Focus ring */
+.focus\:ring-zinc-900:focus { --tw-ring-color: var(--pink) !important; }
+.focus\:border-transparent:focus { border-color: var(--pink) !important; }
+
+/* Shadows */
+.shadow-sm                     { box-shadow: none !important; }
+.shadow-lg                     { box-shadow: 0 0 40px rgba(255,0,128,0.12) !important; }
+
+/* ── Correct/Wrong answer color overrides ─── */
+.bg-green-50                   { background-color: rgba(0,210,130,0.08) !important; }
+.border-green-200,
+.border-green-300              { border-color: rgba(0,210,130,0.4) !important; }
+.text-green-600,
+.text-green-700,
+.text-green-800                { color: #44ddaa !important; }
+.text-green-500                { color: #00dd88 !important; }
+
+.bg-red-50                     { background-color: rgba(255,60,60,0.08) !important; }
+.border-red-100,
+.border-red-200,
+.border-red-300                { border-color: rgba(255,60,60,0.4) !important; }
+.text-red-500,
+.text-red-600,
+.text-red-700,
+.text-red-800                  { color: #ff6666 !important; }
+.hover\:bg-red-50:hover,
+.hover\:bg-red-100:hover       { background-color: rgba(255,60,60,0.12) !important; }
+
+/* Blue accents */
+.bg-blue-50                    { background-color: rgba(80,160,255,0.08) !important; }
+.border-blue-200               { border-color: rgba(80,160,255,0.35) !important; }
+.text-blue-500,
+.text-blue-600,
+.text-blue-700                 { color: #66aaff !important; }
+
+/* Orange accents */
+.bg-orange-50                  { background-color: rgba(255,160,0,0.08) !important; }
+.border-orange-200             { border-color: rgba(255,160,0,0.35) !important; }
+.text-orange-500,
+.text-orange-700               { color: #ffaa44 !important; }
+
+/* Purple accents */
+.bg-purple-50                  { background-color: rgba(180,80,255,0.08) !important; }
+.text-purple-500,
+.text-purple-700               { color: #cc88ff !important; }
+
+/* ── Form elements ──────────────────────────────────────── */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  background-color: var(--bg-elevated) !important;
+  border-color: var(--border) !important;
+  color: var(--text-1) !important;
 }
 
-/* Sidebar transition */
-.sidebar-transition {
-  transition: width 200ms ease, transform 200ms ease;
+input::placeholder { color: var(--text-3) !important; }
+
+input:focus,
+select:focus {
+  border-color: var(--pink) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(255,0,128,0.2) !important;
 }
 
-/* Progress bar animation */
-.progress-bar-fill {
-  transition: width 600ms ease;
+input[type="range"] { accent-color: var(--pink); }
+input[type="checkbox"] { accent-color: var(--pink); }
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 2px; }
+
+/* ── Animations ─────────────────────────────────────────── */
+.progress-bar-fill { transition: width 600ms ease; }
+
+/* Pink glow pulse for active cards */
+@keyframes pinkPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,0,128,0); }
+  50%       { box-shadow: 0 0 20px 2px rgba(255,0,128,0.15); }
+}
+
+.card-review {
+  animation: pinkPulse 3s ease-in-out infinite;
 }

@@ -11,7 +11,7 @@ export default function ReviewPage() {
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 });
+  const [stats, setStats] = useState({ correct: 0, total: 0 });
 
   useEffect(() => {
     fetch('/api/review/due')
@@ -25,23 +25,14 @@ export default function ReviewPage() {
     if (submitting || !current) return;
     setSubmitting(true);
     const wasCorrect = label === 'good' || label === 'easy';
-    setSessionStats((s) => ({
-      correct: s.correct + (wasCorrect ? 1 : 0),
-      total: s.total + 1,
-    }));
-
+    setStats((s) => ({ correct: s.correct + (wasCorrect ? 1 : 0), total: s.total + 1 }));
     await fetch('/api/review/answer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cardId: current.id, label }),
     });
-
-    if (index + 1 >= cards.length) {
-      setDone(true);
-    } else {
-      setIndex(index + 1);
-      setFlipped(false);
-    }
+    if (index + 1 >= cards.length) { setDone(true); }
+    else { setIndex(index + 1); setFlipped(false); }
     setSubmitting(false);
   }
 
@@ -49,72 +40,108 @@ export default function ReviewPage() {
     setLoading(true);
     const d = await fetch('/api/review/due').then((r) => r.json());
     setCards(d.cards);
-    setIndex(0);
-    setFlipped(false);
-    setDone(false);
-    setSessionStats({ correct: 0, total: 0 });
+    setIndex(0); setFlipped(false); setDone(false);
+    setStats({ correct: 0, total: 0 });
     setLoading(false);
   }
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-zinc-900 tracking-tight">Review</h1>
-        <p className="text-sm text-zinc-500 mt-1">Spaced repetition review — {cards.length} cards due</p>
+      {/* Header */}
+      <div className="mb-8">
+        <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>
+          スペースド・リピティション
+        </p>
+        <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>復習</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>
+          Review — {cards.length} cards due today
+        </p>
       </div>
 
       {loading ? (
-        <div className="py-16 text-center text-zinc-400 text-sm">Loading cards…</div>
+        <div className="py-24 text-center font-japanese text-sm" style={{ color: 'var(--text-3)' }}>
+          読み込み中…
+        </div>
       ) : done || cards.length === 0 ? (
-        <div className="max-w-sm mx-auto card p-8 text-center">
-          <CheckCircle size={40} className="text-green-500 mx-auto mb-4" />
-          <p className="text-xl font-semibold text-zinc-900 mb-1">
-            {cards.length === 0 ? 'All caught up!' : 'Review complete!'}
+        <div
+          className="max-w-sm mx-auto rounded-xl p-10 text-center"
+          style={{ background: 'var(--bg-surface)', border: '1px solid rgba(255,0,128,0.2)' }}
+        >
+          <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#44ddaa' }} />
+          <p className="font-japanese text-2xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>
+            {cards.length === 0 ? '完璧！' : 'お疲れ様！'}
           </p>
-          <p className="text-sm text-zinc-500 mb-6">
-            {cards.length === 0
-              ? 'No cards are due for review today.'
-              : `${sessionStats.correct} / ${sessionStats.total} answered correctly`}
+          <p className="text-sm mb-1" style={{ color: 'var(--text-2)' }}>
+            {cards.length === 0 ? 'No cards due for review.' : `${stats.correct} / ${stats.total} correct`}
           </p>
+          {stats.total > 0 && (
+            <p className="font-japanese text-3xl font-bold mb-6" style={{ color: 'var(--pink)' }}>
+              {Math.round((stats.correct / stats.total) * 100)}点
+            </p>
+          )}
           <button onClick={restart} className="btn-secondary flex items-center gap-2 mx-auto">
-            <RotateCcw size={14} /> Check again
+            <RotateCcw size={13} /> もう一度
           </button>
         </div>
       ) : current ? (
         <div className="max-w-md mx-auto">
           {/* Progress */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
+            <div className="flex-1 h-0.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
               <div
-                className="h-full bg-zinc-900 rounded-full transition-all duration-300"
-                style={{ width: `${(index / cards.length) * 100}%` }}
+                className="h-full rounded-full transition-all duration-500"
+                style={{ width: `${(index / cards.length) * 100}%`, background: 'var(--pink)' }}
               />
             </div>
-            <span className="text-xs text-zinc-400 shrink-0">{index}/{cards.length}</span>
+            <span className="text-xs font-mono shrink-0" style={{ color: 'var(--text-3)' }}>
+              {index}/{cards.length}
+            </span>
           </div>
 
           {/* Card */}
-          <div className="card p-8 text-center mb-4">
-            <p className="text-xs text-zinc-400 uppercase tracking-wider mb-4 capitalize">{current.content_type}</p>
-            <p className="font-japanese text-6xl font-medium text-zinc-900 mb-2">{current.front}</p>
+          <div
+            className="rounded-xl p-10 text-center mb-5 card-review"
+            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
+          >
+            <p
+              className="font-japanese text-xs uppercase tracking-widest mb-6"
+              style={{ color: 'var(--text-3)' }}
+            >
+              {current.content_type === 'vocabulary' ? '単語' : '漢字'}
+            </p>
+            <p
+              className="font-japanese font-bold mb-3"
+              style={{ fontSize: '80px', lineHeight: 1, color: 'var(--text-1)' }}
+            >
+              {current.front}
+            </p>
             {current.reading && !flipped && (
-              <p className="text-sm font-japanese text-zinc-400">{current.reading}</p>
+              <p className="font-japanese text-base" style={{ color: 'var(--text-3)' }}>
+                {current.reading}
+              </p>
             )}
 
             {!flipped ? (
               <button
                 onClick={() => setFlipped(true)}
-                className="btn-secondary mt-6"
+                className="mt-8 btn-secondary"
               >
-                Reveal Answer
+                答えを見る
               </button>
             ) : (
               <div className="mt-6">
-                <p className="text-lg font-medium text-zinc-700 mb-1">{current.back}</p>
+                <p
+                  className="text-xl font-semibold mb-2"
+                  style={{ color: 'var(--pink)' }}
+                >
+                  {current.back}
+                </p>
                 {current.hint && (
-                  <p className="text-sm font-japanese text-zinc-400 mb-1">{current.hint}</p>
+                  <p className="font-japanese text-sm mb-3" style={{ color: 'var(--text-3)' }}>
+                    {current.hint}
+                  </p>
                 )}
-                <div className="flex justify-center mt-2">
+                <div className="flex justify-center">
                   <AudioButton text={current.front} />
                 </div>
               </div>
@@ -125,19 +152,19 @@ export default function ReviewPage() {
           {flipped && (
             <div className="grid grid-cols-4 gap-2">
               {[
-                { label: 'again', display: 'Again', desc: '<1d', style: 'btn-again' },
-                { label: 'hard', display: 'Hard', desc: '~3d', style: 'btn-hard' },
-                { label: 'good', display: 'Good', desc: '~7d', style: 'btn-good' },
-                { label: 'easy', display: 'Easy', desc: '~21d', style: 'btn-easy' },
-              ].map(({ label, display, desc, style }) => (
+                { label: 'again', jp: 'また',  en: '<1d',  cls: 'btn-again' },
+                { label: 'hard',  jp: '難しい', en: '~3d',  cls: 'btn-hard'  },
+                { label: 'good',  jp: '良い',  en: '~7d',  cls: 'btn-good'  },
+                { label: 'easy',  jp: '簡単',  en: '~21d', cls: 'btn-easy'  },
+              ].map(({ label, jp, en, cls }) => (
                 <button
                   key={label}
                   onClick={() => submitAnswer(label)}
                   disabled={submitting}
-                  className={`${style} flex flex-col items-center`}
+                  className={`${cls} flex flex-col items-center gap-0.5`}
                 >
-                  <span>{display}</span>
-                  <span className="text-[10px] opacity-60">{desc}</span>
+                  <span className="font-japanese text-xs">{jp}</span>
+                  <span style={{ fontSize: '10px', opacity: 0.6 }}>{en}</span>
                 </button>
               ))}
             </div>
