@@ -5,21 +5,28 @@ export function GET(request) {
   const db = getDb();
   const { searchParams } = new URL(request.url);
   const search = searchParams.get('search') || '';
-  const type = searchParams.get('type') || '';
+  const type   = searchParams.get('type')   || '';
 
-  let query = 'SELECT * FROM vocabulary WHERE 1=1';
+  let query = `
+    SELECT v.*,
+      CASE WHEN us.content_id IS NOT NULL THEN 1 ELSE 0 END AS is_selected
+    FROM vocabulary v
+    LEFT JOIN user_selections us
+      ON us.content_type = 'vocabulary' AND us.content_id = v.id
+    WHERE 1=1
+  `;
   const params = [];
 
   if (search) {
-    query += ' AND (japanese LIKE ? OR reading LIKE ? OR english LIKE ?)';
+    query += ' AND (v.japanese LIKE ? OR v.reading LIKE ? OR v.english LIKE ?)';
     const like = `%${search}%`;
     params.push(like, like, like);
   }
   if (type) {
-    query += ' AND type = ?';
+    query += ' AND v.type = ?';
     params.push(type);
   }
-  query += ' ORDER BY id';
+  query += ' ORDER BY v.id';
 
   const rows = db.prepare(query).all(...params);
   return NextResponse.json(rows);

@@ -189,14 +189,43 @@ function seedTable(db, tableName, rows, insertFn) {
   console.log(`  ✓ Seeded ${count} rows into ${tableName}`);
 }
 
+function guessType(meaning, expression) {
+  const m = (meaning || '').toLowerCase();
+  const e = (expression || '');
+  if (/^to\s/.test(m) || /\bto\s\w/.test(m) || /\bv\.\w*\)/.test(m)) return 'verb';
+  if (/い$/.test(e) && !/[をにはがでもの]/.test(e)) return 'adjective';
+  if (/\(na\b/.test(m) || /\bna-adj/.test(m)) return 'adjective';
+  if (/^～/.test(e) || /counter/.test(m) || /\bnumber of\b/.test(m)) return 'expression';
+  if (/\b(conjunction|particle|interjection|suffix|prefix|auxiliary)\b/.test(m)) return 'expression';
+  if (/\b(always|never|often|sometimes|already|still|soon|again|also|only|just|very|really|quite)\b/.test(m)) return 'adverb';
+  return 'noun';
+}
+
 function seedVocabulary(db) {
-  const rows = readCsv('vocabulary.csv');
+  // n5.csv columns: expression, reading, meaning, tags, guid
+  const rows = readCsv('n5.csv');
   const stmt = db.prepare(`
     INSERT OR REPLACE INTO vocabulary (id, japanese, reading, english, type, example_jp, example_en)
-    VALUES (@id, @japanese, @reading, @english, @type, @example_jp, @example_en)
+    VALUES (?, ?, ?, ?, ?, NULL, NULL)
   `);
-  seedTable(db, 'vocabulary', rows, (r) => stmt.run(r));
+
+  db.prepare('DELETE FROM vocabulary').run();
+  let count = 0;
+  const insertAll = db.transaction(() => {
+    for (const [i, r] of rows.entries()) {
+      const expr    = (r.expression || '').trim();
+      const reading = (r.reading    || '').trim();
+      const meaning = (r.meaning    || '').trim();
+      if (!expr || !meaning) continue;
+      const type = guessType(meaning, expr);
+      stmt.run(i + 1, expr, reading, meaning, type);
+      count++;
+    }
+  });
+  insertAll();
+  console.log(`  ✓ Seeded ${count} rows into vocabulary (from n5.csv)`);
 }
+
 
 function seedGrammar(db) {
   const rows = readCsv('grammar.csv');

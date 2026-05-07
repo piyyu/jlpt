@@ -57,15 +57,32 @@ export function GET() {
   const quizSessions = db.prepare('SELECT * FROM quiz_sessions ORDER BY created_at DESC LIMIT 5').all();
   const lastMockTest = db.prepare('SELECT * FROM mock_test_results ORDER BY taken_at DESC LIMIT 1').get();
 
+  // Per-type due counts for the dashboard rings
+  const dueCounts = db.prepare(`
+    SELECT content_type, COUNT(*) as due
+    FROM srs_cards WHERE next_review_date <= ?
+    GROUP BY content_type
+  `).all(today);
+  const counts = Object.fromEntries(dueCounts.map((r) => [r.content_type, r.due]));
+
+  // Use selected items count for the progress rings instead of mastered
+  const selectedVocab = db.prepare(
+    "SELECT COUNT(*) as count FROM user_selections WHERE content_type='vocabulary'"
+  ).get().count;
+  const selectedKanji = db.prepare(
+    "SELECT COUNT(*) as count FROM user_selections WHERE content_type='kanji'"
+  ).get().count;
+
   return NextResponse.json({
     streak,
     dueToday,
     reviewedToday,
     timeStudiedMinutes: Math.round(timeStudied),
     progress: {
-      vocabulary: { total: totalVocab, mastered: masteredVocab },
-      kanji: { total: totalKanji, mastered: masteredKanji },
+      vocabulary: { total: totalVocab, mastered: selectedVocab },
+      kanji: { total: totalKanji, mastered: selectedKanji },
     },
+    counts,
     recentQuizzes: quizSessions,
     lastMockTest,
   });

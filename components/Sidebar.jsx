@@ -25,12 +25,9 @@ const NAV = [
     groupEn: 'LEARN',
     items: [
       { href: '/vocabulary',  label: 'Vocabulary', labelJp: '単語',      icon: BookOpen },
-      { href: '/grammar',     label: 'Grammar',    labelJp: '文法',      icon: FileText },
       { href: '/kanji',       label: 'Kanji',      labelJp: '漢字',      icon: Square },
       { href: '/hiragana',    label: 'Hiragana',   labelJp: 'ひらがな',  icon: AlignLeft },
       { href: '/katakana',    label: 'Katakana',   labelJp: 'カタカナ',  icon: AlignLeft },
-      { href: '/particles',   label: 'Particles',  labelJp: '助詞',      icon: Hash },
-      { href: '/numbers',     label: 'Numbers',    labelJp: '数字',      icon: Hash },
     ],
   },
   {
@@ -38,8 +35,6 @@ const NAV = [
     groupEn: 'PRACTICE',
     items: [
       { href: '/quiz',        label: 'Quiz',       labelJp: 'クイズ',    icon: Trophy },
-      { href: '/listening',   label: 'Listening',  labelJp: '聴解',      icon: Mic },
-      { href: '/reading',     label: 'Reading',    labelJp: '読解',      icon: ScrollText },
       { href: '/mock-test',   label: 'Mock Test',  labelJp: '模擬試験',  icon: ClipboardList },
     ],
   },
@@ -51,6 +46,7 @@ const NAV = [
     ],
   },
 ];
+
 
 function NavLinks({ pathname, onClose }) {
   return (

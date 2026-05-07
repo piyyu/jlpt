@@ -5,9 +5,16 @@ function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
-function getVocabQuestions(db, count) {
-  const all = db.prepare('SELECT * FROM vocabulary ORDER BY RANDOM() LIMIT ?').all(count * 3);
-  const selected = all.slice(0, count);
+function getVocabQuestions(db, count, selectedOnly = false) {
+  const all = db.prepare('SELECT * FROM vocabulary').all();
+  
+  let targetPool = all;
+  if (selectedOnly) {
+    const selectedIds = db.prepare("SELECT content_id FROM user_selections WHERE content_type = 'vocabulary'").all().map(r => r.content_id);
+    targetPool = all.filter(item => selectedIds.includes(item.id));
+  }
+  
+  const selected = shuffle(targetPool).slice(0, count);
   return selected.map((item) => {
     const distractors = all
       .filter((d) => d.id !== item.id)
@@ -26,9 +33,16 @@ function getVocabQuestions(db, count) {
   });
 }
 
-function getKanjiQuestions(db, count) {
-  const all = db.prepare('SELECT * FROM kanji ORDER BY RANDOM() LIMIT ?').all(count * 3);
-  const selected = all.slice(0, count);
+function getKanjiQuestions(db, count, selectedOnly = false) {
+  const all = db.prepare('SELECT * FROM kanji').all();
+  
+  let targetPool = all;
+  if (selectedOnly) {
+    const selectedIds = db.prepare("SELECT content_id FROM user_selections WHERE content_type = 'kanji'").all().map(r => r.content_id);
+    targetPool = all.filter(item => selectedIds.includes(item.id));
+  }
+  
+  const selected = shuffle(targetPool).slice(0, count);
   return selected.map((item) => {
     const distractors = all
       .filter((d) => d.id !== item.id)
@@ -71,15 +85,15 @@ function getGrammarQuestions(db, count) {
 export async function POST(request) {
   const db = getDb();
   const body = await request.json();
-  const { quiz_type = 'mixed', count = 10 } = body;
+  const { quiz_type = 'mixed', count = 10, selected_only = false } = body;
 
   let questions = [];
   const n = Math.min(count, 30);
 
   if (quiz_type === 'vocabulary') {
-    questions = getVocabQuestions(db, n);
+    questions = getVocabQuestions(db, n, selected_only);
   } else if (quiz_type === 'kanji') {
-    questions = getKanjiQuestions(db, n);
+    questions = getKanjiQuestions(db, n, selected_only);
   } else if (quiz_type === 'grammar') {
     questions = getGrammarQuestions(db, n);
   } else {

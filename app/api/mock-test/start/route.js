@@ -1,69 +1,77 @@
 import { NextResponse } from 'next/server';
 import getDb from '@/lib/db';
 
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
+function fisherYates(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-export async function POST() {
+export async function POST(request) {
   const db = getDb();
+  let questionCount = 20;
+  try {
+    const body = await request.json().catch(() => ({}));
+    if (body.questionCount) questionCount = Math.min(50, Math.max(5, body.questionCount));
+  } catch (_) {}
 
-  // Language & vocabulary (10 questions)
-  const vocabAll = db.prepare('SELECT * FROM vocabulary ORDER BY RANDOM() LIMIT 30').all();
-  const vocabQ = vocabAll.slice(0, 10).map((item) => {
-    const opts = shuffle([
-      item.english,
-      ...vocabAll.filter((d) => d.id !== item.id).slice(0, 3).map((d) => d.english),
-    ]);
-    return { type: 'vocabulary', id: item.id, prompt: item.japanese, hint: item.reading, correct: item.english, options: opts };
+  const half = Math.floor(questionCount / 2);
+  const vocabCount = half;
+  const kanjiCount = questionCount - half;
+
+  // ── Vocabulary questions ────────────────────────────────────────────────────
+  const vocabPool = db.prepare('SELECT * FROM vocabulary ORDER BY RANDOM() LIMIT ?').all(vocabCount + 20);
+  const vocabQ = fisherYates(vocabPool).slice(0, vocabCount).map((item) => {
+    const distractors = fisherYates(
+      vocabPool.filter((d) => d.id !== item.id && d.english !== item.english)
+    ).slice(0, 3).map((d) => d.english);
+    return {
+      type: 'vocabulary',
+      id: item.id,
+      prompt: item.japanese,
+      hint: item.reading,
+      question: 'What does this word mean?',
+      correct: item.english,
+      options: fisherYates([item.english, ...distractors]),
+    };
   });
 
-  // Grammar (5 questions)
-  const grammarAll = db.prepare('SELECT * FROM grammar ORDER BY RANDOM() LIMIT 15').all();
-  const grammarQ = grammarAll.slice(0, 5).map((item) => {
-    const opts = shuffle([
-      item.meaning,
-      ...grammarAll.filter((d) => d.id !== item.id).slice(0, 3).map((d) => d.meaning),
-    ]);
-    return { type: 'grammar', id: item.id, prompt: item.pattern, hint: item.example1_jp, correct: item.meaning, options: opts };
+  // ── Kanji questions ─────────────────────────────────────────────────────────
+  const kanjiPool = db.prepare('SELECT * FROM kanji ORDER BY RANDOM() LIMIT ?').all(kanjiCount + 20);
+  const kanjiQ = fisherYates(kanjiPool).slice(0, kanjiCount).map((item) => {
+    const distractors = fisherYates(
+      kanjiPool.filter((d) => d.id !== item.id && d.meaning !== item.meaning)
+    ).slice(0, 3).map((d) => d.meaning);
+    return {
+      type: 'kanji',
+      id: item.id,
+      prompt: item.character,
+      hint: item.kun_yomi || item.on_yomi || '',
+      question: 'What does this kanji mean?',
+      correct: item.meaning,
+      options: fisherYates([item.meaning, ...distractors]),
+    };
   });
 
-  // Reading (5 questions)
-  const readingAll = db.prepare('SELECT * FROM reading_passages ORDER BY RANDOM() LIMIT 5').all();
-  const readingQ = readingAll.map((item) => ({
-    type: 'reading',
-    id: item.id,
-    prompt: item.title,
-    passage: item.passage,
-    question: item.question,
-    correct: item[`option_${item.correct_option}`],
-    options: [item.option_a, item.option_b, item.option_c, item.option_d],
-  }));
+  // Interleave vocab and kanji for a mixed feel
+  const allQ = [];
+  const maxLen = Math.max(vocabQ.length, kanjiQ.length);
+  for (let i = 0; i < maxLen; i++) {
+    if (vocabQ[i]) allQ.push(vocabQ[i]);
+    if (kanjiQ[i]) allQ.push(kanjiQ[i]);
+  }
 
-  // Listening (5 questions)
-  const listeningAll = db.prepare('SELECT * FROM listening_scripts ORDER BY RANDOM() LIMIT 5').all();
-  const listeningQ = listeningAll.map((item) => ({
-    type: 'listening',
-    id: item.id,
-    prompt: item.script_jp,
-    question: item.question,
-    correct: item[`option_${item.correct_option}`],
-    options: [item.option_a, item.option_b, item.option_c, item.option_d],
-  }));
-
-  const session = db.prepare(`
-    INSERT INTO mock_test_results (vocab_score, grammar_score, reading_score, listening_score, total_score)
-    VALUES (0, 0, 0, 0, 0)
-  `).run();
+  const session = db.prepare(
+    'INSERT INTO mock_test_results (vocab_score, grammar_score, reading_score, listening_score, total_score) VALUES (0, 0, 0, 0, 0)'
+  ).run();
 
   return NextResponse.json({
     session_id: session.lastInsertRowid,
-    sections: {
-      vocabulary: vocabQ,
-      grammar: grammarQ,
-      reading: readingQ,
-      listening: listeningQ,
-    },
-    time_limits: { language_reading_minutes: 25, listening_minutes: 30 },
+    questions: allQ,
+    totalQuestions: allQ.length,
+    timeLimitSeconds: allQ.length * 30, // 30 seconds per question
   });
 }
