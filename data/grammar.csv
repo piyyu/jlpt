@@ -1,0 +1,21 @@
+id,pattern,meaning,example1_jp,example1_en,example2_jp,example2_en,example3_jp,example3_en
+1,〜は〜です,X is Y (identifying/describing),私は学生です。,I am a student.,これはペンです。,This is a pen.,田中さんは先生です。,Mr. Tanaka is a teacher.
+2,〜は〜ではありません,X is not Y (negative of です),私は先生ではありません。,I am not a teacher.,これは本ではありません。,This is not a book.,彼は学生ではありません。,He is not a student.
+3,〜が好きです,to like 〜,私は猫が好きです。,I like cats.,彼女は音楽が好きです。,She likes music.,子供はアイスが好きです。,Children like ice cream.
+4,〜が嫌いです,to dislike 〜,私は虫が嫌いです。,I dislike insects.,彼は掃除が嫌いです。,He dislikes cleaning.,妹は勉強が嫌いです。,My younger sister dislikes studying.
+5,〜があります / 〜がいます,there is 〜 (thing/person),テーブルの上に本があります。,There is a book on the table.,公園に子供がいます。,There are children in the park.,部屋に猫がいます。,There is a cat in the room.
+6,〜をください,please give me 〜,水をください。,Please give me water.,このパンをください。,Please give me this bread.,メニューをください。,Please give me the menu.
+7,〜てください,please do 〜,ここに座ってください。,Please sit here.,ゆっくり話してください。,Please speak slowly.,この本を読んでください。,Please read this book.
+8,〜たいです,want to do 〜,日本へ行きたいです。,I want to go to Japan.,寿司を食べたいです。,I want to eat sushi.,日本語を話したいです。,I want to speak Japanese.
+9,〜ましょう,let's do 〜 / shall we,一緒に行きましょう。,Let's go together.,昼ご飯を食べましょう。,Let's eat lunch.,勉強しましょう。,Let's study.
+10,〜ませんか,won't you 〜? / would you like to 〜?,一緒に映画を見ませんか？,Won't you watch a movie with me?,コーヒーを飲みませんか？,Would you like to have coffee?,散歩しませんか？,Would you like to take a walk?
+11,〜ことができます,can do 〜 / be able to,日本語を話すことができます。,I can speak Japanese.,車を運転することができます。,I can drive a car.,泳ぐことができません。,I cannot swim.
+12,〜ています,is doing 〜 (progressive),今勉強しています。,I am studying now.,雨が降っています。,It is raining.,彼は働いています。,He is working.
+13,〜たことがあります,have done 〜 (experience),日本に行ったことがあります。,I have been to Japan.,寿司を食べたことがあります。,I have eaten sushi.,富士山に登ったことがあります。,I have climbed Mt. Fuji.
+14,〜なければなりません,must do 〜 / have to,宿題をしなければなりません。,I have to do my homework.,薬を飲まなければなりません。,I have to take medicine.,早く起きなければなりません。,I have to wake up early.
+15,〜てもいいです,it's okay to do 〜 / may,ここに座ってもいいですか？,May I sit here?,写真を撮ってもいいです。,You may take photos.,この本を借りてもいいですか？,May I borrow this book?
+16,〜てはいけません,must not do 〜,ここで食べてはいけません。,You must not eat here.,駐車してはいけません。,You must not park here.,タバコを吸ってはいけません。,You must not smoke.
+17,〜から,because 〜 / from 〜,眠いから、寝ます。,I'll sleep because I'm sleepy.,東京から来ました。,I came from Tokyo.,雨が降ったから、行きません。,I won't go because it rained.
+18,〜のために,for the sake of 〜 / in order to,健康のために運動します。,I exercise for my health.,試験のために勉強します。,I study for the exam.,友達のために料理しました。,I cooked for my friend.
+19,〜より〜の方が,〜 is more 〜 than 〜 (comparison),電車よりバスの方が安いです。,The bus is cheaper than the train.,夏より冬の方が好きです。,I prefer winter to summer.,コーヒーよりお茶の方が好きです。,I prefer tea to coffee.
+20,〜と〜とどちらが,which is more 〜 between 〜 and 〜 (choice),犬と猫とどちらが好きですか？,Which do you like better – dogs or cats?,バスと電車とどちらが速いですか？,Which is faster – the bus or the train?,コーヒーと紅茶とどちらが好きですか？,Which do you prefer – coffee or tea?

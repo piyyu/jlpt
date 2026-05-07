@@ -1,0 +1,101 @@
+id,japanese,reading,english,type,example_jp,example_en
+1,日本語,にほんご,Japanese language,noun,日本語を勉強しています。,I am studying Japanese.
+2,先生,せんせい,teacher,noun,先生は親切です。,The teacher is kind.
+3,学生,がくせい,student,noun,私は学生です。,I am a student.
+4,学校,がっこう,school,noun,学校は遠いです。,The school is far away.
+5,本,ほん,book,noun,この本は面白いです。,This book is interesting.
+6,水,みず,water,noun,水を飲みます。,I drink water.
+7,食べ物,たべもの,food,noun,日本の食べ物が好きです。,I like Japanese food.
+8,飲み物,のみもの,drink / beverage,noun,何か飲み物はありますか？,Is there something to drink?
+9,電車,でんしゃ,train,noun,電車で来ました。,I came by train.
+10,車,くるま,car,noun,車を持っていません。,I don't have a car.
+11,家,いえ,house / home,noun,家に帰ります。,I'm going home.
+12,駅,えき,station,noun,駅はどこですか？,Where is the station?
+13,お店,おみせ,shop / store,noun,このお店は安いです。,This shop is cheap.
+14,会社,かいしゃ,company,noun,会社に勤めています。,I work at a company.
+15,病院,びょういん,hospital,noun,病院へ行きました。,I went to the hospital.
+16,銀行,ぎんこう,bank,noun,銀行はどこですか？,Where is the bank?
+17,郵便局,ゆうびんきょく,post office,noun,郵便局で手紙を送りました。,I sent a letter at the post office.
+18,図書館,としょかん,library,noun,図書館で勉強します。,I study at the library.
+19,公園,こうえん,park,noun,公園で遊びます。,I play at the park.
+20,空港,くうこう,airport,noun,空港に迎えに行きます。,I'll go pick someone up at the airport.
+21,山,やま,mountain,noun,山に登りました。,I climbed the mountain.
+22,川,かわ,river,noun,川で魚を釣ります。,I fish in the river.
+23,海,うみ,sea / ocean,noun,海は綺麗です。,The sea is beautiful.
+24,空,そら,sky,noun,空が青いです。,The sky is blue.
+25,花,はな,flower,noun,花が咲いています。,The flowers are blooming.
+26,木,き,tree,noun,木の下で休みます。,I rest under the tree.
+27,犬,いぬ,dog,noun,犬が好きです。,I like dogs.
+28,猫,ねこ,cat,noun,猫を飼っています。,I have a cat.
+29,魚,さかな,fish,noun,魚を食べます。,I eat fish.
+30,鳥,とり,bird,noun,鳥が飛んでいます。,A bird is flying.
+31,食べる,たべる,to eat,verb,ご飯を食べます。,I eat rice/meal.
+32,飲む,のむ,to drink,verb,お水を飲みます。,I drink water.
+33,行く,いく,to go,verb,学校に行きます。,I go to school.
+34,来る,くる,to come,verb,友達が来ます。,My friend is coming.
+35,帰る,かえる,to return / go home,verb,家に帰ります。,I return home.
+36,見る,みる,to see / watch,verb,テレビを見ます。,I watch TV.
+37,聞く,きく,to listen / ask,verb,音楽を聞きます。,I listen to music.
+38,話す,はなす,to speak / talk,verb,日本語を話します。,I speak Japanese.
+39,読む,よむ,to read,verb,本を読みます。,I read a book.
+40,書く,かく,to write,verb,手紙を書きます。,I write a letter.
+41,買う,かう,to buy,verb,りんごを買います。,I buy an apple.
+42,売る,うる,to sell,verb,野菜を売ります。,I sell vegetables.
+43,作る,つくる,to make / create,verb,料理を作ります。,I make food.
+44,起きる,おきる,to wake up / get up,verb,朝七時に起きます。,I wake up at 7 AM.
+45,寝る,ねる,to sleep / go to bed,verb,十時に寝ます。,I go to bed at 10.
+46,待つ,まつ,to wait,verb,友達を待ちます。,I wait for my friend.
+47,会う,あう,to meet,verb,友達に会います。,I meet my friend.
+48,乗る,のる,to ride / board,verb,電車に乗ります。,I ride the train.
+49,降りる,おりる,to get off / descend,verb,駅で降ります。,I get off at the station.
+50,開ける,あける,to open,verb,窓を開けます。,I open the window.
+51,閉める,しめる,to close,verb,ドアを閉めます。,I close the door.
+52,入る,はいる,to enter,verb,部屋に入ります。,I enter the room.
+53,出る,でる,to exit / leave,verb,家を出ます。,I leave the house.
+54,始まる,はじまる,to begin (intrans.),verb,授業が始まります。,The class begins.
+55,終わる,おわる,to end / finish,verb,仕事が終わります。,The work ends.
+56,大きい,おおきい,big / large,adjective,大きい犬がいます。,There is a big dog.
+57,小さい,ちいさい,small / little,adjective,小さい猫が可愛いです。,The small cat is cute.
+58,高い,たかい,tall / expensive,adjective,この山は高いです。,This mountain is tall.
+59,低い,ひくい,low / short,adjective,この椅子は低いです。,This chair is low.
+60,長い,ながい,long,adjective,この道は長いです。,This road is long.
+61,短い,みじかい,short,adjective,時間が短いです。,The time is short.
+62,多い,おおい,many / a lot,adjective,人が多いです。,There are many people.
+63,少ない,すくない,few / not many,adjective,お金が少ないです。,I have little money.
+64,新しい,あたらしい,new,adjective,新しい本を買いました。,I bought a new book.
+65,古い,ふるい,old (not for people),adjective,古い家に住んでいます。,I live in an old house.
+66,暑い,あつい,hot (weather),adjective,夏は暑いです。,Summer is hot.
+67,寒い,さむい,cold (weather),adjective,冬は寒いです。,Winter is cold.
+68,熱い,あつい,hot (to touch),adjective,お茶が熱いです。,The tea is hot.
+69,冷たい,つめたい,cold (to touch),adjective,水が冷たいです。,The water is cold.
+70,おいしい,おいしい,delicious / tasty,adjective,この料理はおいしいです。,This dish is delicious.
+71,まずい,まずい,bad-tasting,adjective,この薬はまずいです。,This medicine tastes bad.
+72,好き,すき,to like / fond of,adjective,猫が好きです。,I like cats.
+73,嫌い,きらい,to dislike,adjective,虫が嫌いです。,I dislike insects.
+74,上手,じょうず,skillful / good at,adjective,彼は料理が上手です。,He is good at cooking.
+75,下手,へた,unskillful / bad at,adjective,私は歌が下手です。,I am bad at singing.
+76,今日,きょう,today,noun,今日は月曜日です。,Today is Monday.
+77,明日,あした,tomorrow,noun,明日また来てください。,Please come again tomorrow.
+78,昨日,きのう,yesterday,noun,昨日何をしましたか？,What did you do yesterday?
+79,今,いま,now,adverb,今何時ですか？,What time is it now?
+80,後で,あとで,later / afterwards,adverb,後で電話します。,I'll call later.
+81,もう,もう,already / not anymore,adverb,もう食べました。,I've already eaten.
+82,まだ,まだ,still / not yet,adverb,まだ終わっていません。,I haven't finished yet.
+83,いつも,いつも,always,adverb,いつも早く起きます。,I always wake up early.
+84,時々,ときどき,sometimes,adverb,時々映画を見ます。,I sometimes watch movies.
+85,全然,ぜんぜん,not at all (with negative),adverb,全然わかりません。,I don't understand at all.
+86,とても,とても,very / extremely,adverb,とても嬉しいです。,I am very happy.
+87,少し,すこし,a little / a few,adverb,少し待ってください。,Please wait a little.
+88,一緒に,いっしょに,together,adverb,一緒に行きましょう。,Let's go together.
+89,友達,ともだち,friend,noun,友達と遊びました。,I played with my friend.
+90,家族,かぞく,family,noun,家族が大好きです。,I love my family.
+91,父,ちち,father (own),noun,父は医者です。,My father is a doctor.
+92,母,はは,mother (own),noun,母は料理が好きです。,My mother likes cooking.
+93,兄,あに,older brother (own),noun,兄は大学生です。,My older brother is a university student.
+94,姉,あね,older sister (own),noun,姉はとても優しいです。,My older sister is very kind.
+95,弟,おとうと,younger brother,noun,弟はまだ子供です。,My younger brother is still a child.
+96,妹,いもうと,younger sister,noun,妹は高校生です。,My younger sister is a high school student.
+97,名前,なまえ,name,noun,お名前は何ですか？,What is your name?
+98,時間,じかん,time,noun,時間がありません。,I don't have time.
+99,天気,てんき,weather,noun,今日の天気はいいです。,Today's weather is good.
+100,料理,りょうり,cooking / dish,noun,料理を作るのが好きです。,I like making food.
