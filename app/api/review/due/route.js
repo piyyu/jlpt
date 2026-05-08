@@ -47,12 +47,7 @@ export function GET(request) {
       CASE s.content_type
         WHEN 'vocabulary' THEN v.reading
         WHEN 'kanji' THEN
-          CASE
-            WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != ''
-              THEN TRIM(SUBSTR(k.kun_yomi, 1, CASE WHEN INSTR(k.kun_yomi, '・') > 0 THEN INSTR(k.kun_yomi, '・') - 1 ELSE LENGTH(k.kun_yomi) END))
-            ELSE
-              TRIM(SUBSTR(k.on_yomi, 1, CASE WHEN INSTR(k.on_yomi, '・') > 0 THEN INSTR(k.on_yomi, '・') - 1 ELSE LENGTH(k.on_yomi) END))
-          END
+          TRIM(COALESCE(k.kun_yomi, '') || CASE WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != '' AND k.on_yomi IS NOT NULL AND k.on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(k.on_yomi, ''))
       END AS drill_answer,
       CASE s.content_type
         WHEN 'vocabulary' THEN v.reading
@@ -113,16 +108,13 @@ export function GET(request) {
     : `SELECT reading AS answer FROM vocabulary WHERE reading IS NOT NULL AND reading != '' ORDER BY RANDOM() LIMIT 40`;
 
   const kanjiPoolQuery = selectionCount > 0
-    ? `SELECT COALESCE(NULLIF(k.kun_yomi,''), k.on_yomi) AS answer FROM kanji k
+    ? `SELECT TRIM(COALESCE(k.kun_yomi, '') || CASE WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != '' AND k.on_yomi IS NOT NULL AND k.on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(k.on_yomi, '')) AS answer FROM kanji k
        INNER JOIN user_selections us ON us.content_type = 'kanji' AND us.content_id = k.id
        ORDER BY RANDOM() LIMIT 40`
-    : `SELECT COALESCE(NULLIF(kun_yomi,''), on_yomi) AS answer FROM kanji ORDER BY RANDOM() LIMIT 40`;
+    : `SELECT TRIM(COALESCE(kun_yomi, '') || CASE WHEN kun_yomi IS NOT NULL AND kun_yomi != '' AND on_yomi IS NOT NULL AND on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(on_yomi, '')) AS answer FROM kanji ORDER BY RANDOM() LIMIT 40`;
 
   const vocabPool = db.prepare(vocabPoolQuery).all().map((r) => r.answer);
-  const kanjiPool = db.prepare(kanjiPoolQuery).all().map((r) => {
-    if (!r.answer) return null;
-    return r.answer.split(/[・、/\s]/)[0].trim() || null;
-  }).filter(Boolean);
+  const kanjiPool = db.prepare(kanjiPoolQuery).all().map((r) => r.answer).filter(Boolean);
 
   // Due counts
   const countsQuery = `

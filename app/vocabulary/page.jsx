@@ -6,12 +6,23 @@ import { Search, ChevronDown, ChevronUp, CheckSquare, Square, X } from 'lucide-r
 import { toRomaji } from '@/lib/toRomaji';
 import { useSettings } from '@/lib/useSettings';
 
-const TYPES = ['', 'noun', 'verb', 'adjective', 'adverb', 'expression'];
+const CATEGORIES = [
+  'Numbers & Counters',
+  'Time & Dates',
+  'People & Family',
+  'Food & Drink',
+  'School & Work',
+  'Places & Directions',
+  'Greetings & Expressions',
+  'Things & Objects',
+  'Verbs',
+  'Adjectives'
+];
 
 export default function VocabularyPage() {
   const [vocab, setVocab] = useState([]);
   const [search, setSearch] = useState('');
-  const [type, setType] = useState('');
+  const [category, setCategory] = useState('');
   const [expanded, setExpanded] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selections, setSelections] = useState(new Set()); // Set of selected IDs
@@ -19,16 +30,17 @@ export default function VocabularyPage() {
   const [toggling, setToggling] = useState(null); // ID being toggled right now
   const { showEnglish } = useSettings();
 
+
   // Load vocab + current selections
   const loadVocab = useCallback(() => {
     const params = new URLSearchParams();
     if (search) params.set('search', search);
-    if (type) params.set('type', type);
+    if (category) params.set('category', category);
     setLoading(true);
     fetch(`/api/vocab?${params}`)
       .then((r) => r.json())
       .then((d) => { setVocab(d); setLoading(false); });
-  }, [search, type]);
+  }, [search, category]);
 
   useEffect(() => { loadVocab(); }, [loadVocab]);
 
@@ -70,12 +82,17 @@ export default function VocabularyPage() {
     setSelCount(0);
   }
 
-  const typeBadgeColor = {
-    noun: { background: 'rgba(56,189,248,0.12)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.25)' },
-    verb: { background: 'rgba(74,222,128,0.12)', color: '#4ade80', border: '1px solid rgba(74,222,128,0.25)' },
-    adjective: { background: 'rgba(196,181,253,0.12)', color: '#c4b5fd', border: '1px solid rgba(196,181,253,0.25)' },
-    adverb: { background: 'rgba(251,191,36,0.12)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.25)' },
-    expression: { background: 'rgba(249,115,22,0.12)', color: '#f97316', border: '1px solid rgba(249,115,22,0.25)' },
+  const categoryBadgeColor = {
+    'Numbers & Counters': { background: 'rgba(56,189,248,0.12)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.25)' },
+    'Time & Dates': { background: 'rgba(168,85,247,0.12)', color: '#a855f7', border: '1px solid rgba(168,85,247,0.25)' },
+    'People & Family': { background: 'rgba(236,72,153,0.12)', color: '#ec4899', border: '1px solid rgba(236,72,153,0.25)' },
+    'Food & Drink': { background: 'rgba(249,115,22,0.12)', color: '#f97316', border: '1px solid rgba(249,115,22,0.25)' },
+    'School & Work': { background: 'rgba(16,185,129,0.12)', color: '#10b981', border: '1px solid rgba(16,185,129,0.25)' },
+    'Places & Directions': { background: 'rgba(59,130,246,0.12)', color: '#3b82f6', border: '1px solid rgba(59,130,246,0.25)' },
+    'Greetings & Expressions': { background: 'rgba(234,179,8,0.12)', color: '#eab308', border: '1px solid rgba(234,179,8,0.25)' },
+    'Things & Objects': { background: 'rgba(107,114,128,0.12)', color: '#6b7280', border: '1px solid rgba(107,114,128,0.25)' },
+    'Verbs': { background: 'rgba(74,222,128,0.12)', color: '#4ade80', border: '1px solid rgba(74,222,128,0.25)' },
+    'Adjectives': { background: 'rgba(196,181,253,0.12)', color: '#c4b5fd', border: '1px solid rgba(196,181,253,0.25)' },
   };
 
   // Row number across filtered list (1-based)
@@ -87,7 +104,7 @@ export default function VocabularyPage() {
         <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>単語リスト</p>
         <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>Vocabulary</h1>
         <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>
-          N5 vocabulary — {vocab.length} words shown
+          N5 vocabulary — {vocab.length} words found
           {selCount > 0 && (
             <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full"
               style={{ background: 'rgba(255,0,128,0.12)', color: 'var(--pink)', border: '1px solid rgba(255,0,128,0.3)' }}>
@@ -111,12 +128,13 @@ export default function VocabularyPage() {
           />
         </div>
         <select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
           className="px-3 py-2 text-sm rounded-lg focus:outline-none"
           style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-1)' }}
         >
-          {TYPES.map((t) => <option key={t} value={t}>{t || 'All types'}</option>)}
+          <option value="">All Categories</option>
+          {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
         <div className="flex gap-2">
           {selCount > 0 && (
@@ -154,12 +172,13 @@ export default function VocabularyPage() {
                 <th>Reading</th>
                 {showEnglish && <th>Romaji</th>}
                 <th>English</th>
-                <th>Type</th>
+                <th>Category</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {vocab.map((word, i) => {
+                const actualIndex = i;
                 const isSel = selections.has(word.id);
                 const isExp = expanded === word.id;
                 return (
@@ -171,7 +190,7 @@ export default function VocabularyPage() {
                     >
                       {/* Row number */}
                       <td>
-                        <span className="text-xs font-mono" style={{ color: 'var(--text-3)' }}>{rowNum(i)}</span>
+                        <span className="text-xs font-mono" style={{ color: 'var(--text-3)' }}>{rowNum(actualIndex)}</span>
                       </td>
 
                       {/* Checkbox */}
@@ -213,13 +232,13 @@ export default function VocabularyPage() {
                       {/* English */}
                       <td style={{ color: 'var(--text-2)' }}>{word.english}</td>
 
-                      {/* Type badge */}
+                      {/* Category badge */}
                       <td>
                         <span
                           className="badge"
-                          style={typeBadgeColor[word.type] || { background: 'var(--bg-elevated)', color: 'var(--text-3)' }}
+                          style={categoryBadgeColor[word.category] || { background: 'var(--bg-elevated)', color: 'var(--text-3)' }}
                         >
-                          {word.type}
+                          {word.category}
                         </span>
                       </td>
 

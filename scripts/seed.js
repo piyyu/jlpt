@@ -38,6 +38,8 @@ function initSchema(db) {
       reading TEXT NOT NULL,
       english TEXT NOT NULL,
       type TEXT NOT NULL,
+      category TEXT DEFAULT 'Other',
+      importance INTEGER DEFAULT 100,
       example_jp TEXT,
       example_en TEXT
     );
@@ -205,8 +207,8 @@ function seedVocabulary(db) {
   // n5.csv columns: expression, reading, meaning, tags, guid
   const rows = readCsv('n5.csv');
   const stmt = db.prepare(`
-    INSERT OR REPLACE INTO vocabulary (id, japanese, reading, english, type, example_jp, example_en)
-    VALUES (?, ?, ?, ?, ?, NULL, NULL)
+    INSERT OR REPLACE INTO vocabulary (id, japanese, reading, english, type, category, importance, example_jp, example_en)
+    VALUES (?, ?, ?, ?, ?, 'Other', 100, NULL, NULL)
   `);
 
   db.prepare('DELETE FROM vocabulary').run();

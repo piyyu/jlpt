@@ -98,12 +98,12 @@ const migrate = db.transaction(() => {
 
     // Reuse existing id if the word already existed (preserves SRS card links)
     let id;
-    if (existingMap.has(expr)) {
+    if (existingMap.has(expr) && !newIds.has(existingMap.get(expr))) {
       id = existingMap.get(expr);
       reused++;
     } else {
       // Find a free id
-      while (newIds.has(nextId) || existingMap.values().includes?.(nextId)) nextId++;
+      while (newIds.has(nextId) || Array.from(existingMap.values()).includes(nextId)) nextId++;
       id = nextId++;
       created++;
     }
