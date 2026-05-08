@@ -72,30 +72,41 @@ export default function QuizPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-zinc-900 tracking-tight">Quiz</h1>
-        <p className="text-sm text-zinc-500 mt-1">Test your knowledge with multiple choice questions</p>
+        <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>小テスト</p>
+        <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>Quiz</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>Test your knowledge with multiple choice questions</p>
       </div>
 
       {phase === 'setup' && (
-        <div className="max-w-sm">
-          <div className="card p-6 space-y-5">
+        <div className="max-w-md">
+          <div className="rounded-xl p-6 space-y-6" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
             <div>
-              <label className="text-sm font-medium text-zinc-700 block mb-2">Quiz Type</label>
+              <label className="text-xs uppercase tracking-wider block mb-3" style={{ color: 'var(--text-3)' }}>Quiz Type</label>
               <div className="grid grid-cols-2 gap-2">
                 {TYPES.map((t) => (
                   <button key={t} onClick={() => setQuizType(t)}
-                    className={`py-2 px-3 rounded-lg text-sm capitalize border transition-colors ${quizType === t ? 'border-zinc-900 bg-zinc-900 text-white' : 'border-zinc-200 text-zinc-600 hover:bg-zinc-50'}`}>
+                    className="py-3 px-3 rounded-lg text-sm font-semibold capitalize transition-all"
+                    style={{
+                      background: quizType === t ? 'rgba(255,0,128,0.1)' : 'var(--bg-elevated)',
+                      border: `1px solid ${quizType === t ? 'var(--pink)' : 'var(--border)'}`,
+                      color: quizType === t ? 'var(--pink)' : 'var(--text-2)'
+                    }}>
                     {t}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-zinc-700 block mb-2">Number of Questions</label>
+              <label className="text-xs uppercase tracking-wider block mb-3" style={{ color: 'var(--text-3)' }}>Number of Questions</label>
               <div className="grid grid-cols-4 gap-2">
                 {COUNTS.map((c) => (
                   <button key={c} onClick={() => setCount(c)}
-                    className={`py-2 px-3 rounded-lg text-sm border transition-colors ${count === c ? 'border-zinc-900 bg-zinc-900 text-white' : 'border-zinc-200 text-zinc-600 hover:bg-zinc-50'}`}>
+                    className="py-3 px-3 rounded-lg text-sm font-semibold transition-all"
+                    style={{
+                      background: count === c ? 'rgba(255,0,128,0.1)' : 'var(--bg-elevated)',
+                      border: `1px solid ${count === c ? 'var(--pink)' : 'var(--border)'}`,
+                      color: count === c ? 'var(--pink)' : 'var(--text-2)'
+                    }}>
                     {c}
                   </button>
                 ))}
@@ -103,19 +114,22 @@ export default function QuizPage() {
             </div>
 
             {['vocabulary', 'kanji'].includes(quizType) && (
-              <label className="flex items-center gap-2 cursor-pointer mt-2">
+              <label className="flex items-center gap-3 cursor-pointer mt-4 p-3 rounded-lg transition-colors hover:bg-white/5" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)' }}>
                 <input
                   type="checkbox"
                   checked={selectedOnly}
                   onChange={(e) => setSelectedOnly(e.target.checked)}
-                  className="w-4 h-4 rounded text-zinc-900 focus:ring-zinc-900"
+                  className="w-4 h-4 rounded"
+                  style={{ accentColor: 'var(--pink)' }}
                 />
-                <span className="text-sm text-zinc-700">Quiz Selected Items Only</span>
+                <span className="text-sm font-medium" style={{ color: 'var(--text-1)' }}>Quiz Selected Items Only</span>
               </label>
             )}
 
-            <button onClick={startQuiz} disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2">
-              <Trophy size={14} />
+            <button onClick={startQuiz} disabled={loading} 
+              className="w-full py-4 rounded-lg font-bold text-sm flex justify-center items-center gap-2 transition-transform hover:scale-[1.02]"
+              style={{ background: 'var(--text-1)', color: 'var(--bg-base)', opacity: loading ? 0.7 : 1 }}>
+              <Trophy size={16} />
               {loading ? 'Starting…' : 'Start Quiz'}
             </button>
           </div>
@@ -124,6 +138,7 @@ export default function QuizPage() {
 
       {phase === 'quiz' && questions[qIndex] && (
         <QuizCard
+          key={qIndex}
           prompt={questions[qIndex].prompt}
           hint={questions[qIndex].hint}
           options={questions[qIndex].options}
@@ -131,42 +146,54 @@ export default function QuizPage() {
           onAnswer={handleAnswer}
           index={qIndex + 1}
           total={questions.length}
+          details={questions[qIndex].details}
+          content_type={questions[qIndex].content_type}
         />
       )}
 
       {phase === 'results' && (
         <div className="max-w-xl mx-auto">
-          <div className="card p-8 text-center mb-6">
-            <p className="text-5xl font-semibold text-zinc-900 mb-1">{score}%</p>
-            <p className="text-zinc-500 text-sm">{correctCount} / {answers.length} correct</p>
-            <p className={`text-sm font-medium mt-2 ${score >= 70 ? 'text-green-600' : 'text-red-500'}`}>
+          <div className="rounded-xl p-8 text-center mb-6" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
+            <p className="font-japanese text-6xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>{score}<span className="text-3xl">点</span></p>
+            <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>{correctCount} / {answers.length} correct</p>
+            <p className="text-sm font-semibold mt-2" style={{ color: score >= 70 ? '#44ddaa' : '#ff3c50' }}>
               {score >= 80 ? '🎉 Excellent!' : score >= 60 ? '👍 Good job!' : '📚 Keep studying!'}
             </p>
           </div>
 
           {/* Answer review */}
-          <div className="card overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-zinc-100">
-              <p className="text-sm font-medium text-zinc-900">Answer Review</p>
+          <div className="rounded-xl overflow-hidden mb-6" style={{ border: '1px solid var(--border)' }}>
+            <div className="px-5 py-3" style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border)' }}>
+              <p className="text-sm font-semibold" style={{ color: 'var(--text-2)' }}>Answer Review</p>
             </div>
-            <div className="divide-y divide-zinc-100">
+            <div style={{ background: 'var(--bg-surface)' }}>
               {answers.map((a, i) => (
-                <div key={i} className="flex items-center gap-3 px-5 py-3">
+                <div key={i} className="flex items-center gap-3 px-5 py-3" style={{ borderBottom: i < answers.length - 1 ? '1px solid var(--border)' : 'none' }}>
                   {a.wasCorrect
-                    ? <CheckCircle size={14} className="text-green-500 shrink-0" />
-                    : <XCircle size={14} className="text-red-500 shrink-0" />}
-                  <span className="font-japanese text-sm text-zinc-800">{a.prompt}</span>
-                  <span className="text-xs text-zinc-400 ml-auto">{a.correct_answer}</span>
+                    ? <CheckCircle size={14} style={{ color: '#44ddaa', flexShrink: 0 }} />
+                    : <XCircle size={14} style={{ color: '#ff3c50', flexShrink: 0 }} />}
+                  <span className="font-japanese text-sm font-medium" style={{ color: 'var(--text-1)' }}>{a.prompt}</span>
+                  <span className="font-japanese text-xs ml-auto" style={{ color: 'var(--text-3)' }}>{a.correct_answer}</span>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="flex gap-3">
-            <button onClick={startQuiz} className="btn-primary flex-1 flex items-center justify-center gap-2">
+            <button
+              onClick={startQuiz}
+              className="flex-1 py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2"
+              style={{ background: 'var(--text-1)', color: 'var(--bg-base)' }}
+            >
               <RotateCcw size={14} /> Retry
             </button>
-            <button onClick={() => setPhase('setup')} className="btn-secondary flex-1">New Quiz</button>
+            <button
+              onClick={() => setPhase('setup')}
+              className="flex-1 py-3 rounded-lg font-semibold text-sm"
+              style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', color: 'var(--text-2)' }}
+            >
+              New Quiz
+            </button>
           </div>
         </div>
       )}
