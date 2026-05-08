@@ -131,7 +131,7 @@ function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
           {isCorrect ? '✓ Correct!' : '✗ Wrong'}
         </span>
         <span className="text-sm" style={{ color: 'var(--text-2)' }}>
-          Answer: <strong style={{ color: 'var(--text-1)' }}>{card.back}</strong>
+          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--text-1)' }}>{card.drill_answer}</strong> <span style={{opacity: 0.7}}>({card.back})</span>
         </span>
       </div>
 
@@ -246,7 +246,7 @@ function QuizDrill({ category, pools, onBack }) {
   const current = cards[index];
   const pool = current ? (pools[current.content_type] || pools.vocabulary || []) : [];
   const options = useMemo(
-    () => (current ? buildOptions(current.back, pool) : []),
+    () => (current && current.drill_answer ? buildOptions(current.drill_answer, pool) : []),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [current?.id],
   );
@@ -280,7 +280,7 @@ function QuizDrill({ category, pools, onBack }) {
   function handleAnswer(answer) {
     if (chosen || !current) return;
     setChosen(answer);
-    const isCorrect = answer === current.back;
+    const isCorrect = answer === current.drill_answer;
     setStats((s) => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
     // Don't submit SRS yet — wait for difficulty rating
   }
@@ -315,7 +315,7 @@ function QuizDrill({ category, pools, onBack }) {
       color: 'var(--text-1)',
       cursor: 'pointer',
     };
-    const isCorrect = opt === current.back;
+    const isCorrect = opt === current.drill_answer;
     const isPicked  = opt === chosen;
     if (isCorrect) return { background: 'rgba(68,221,170,0.12)', border: '1px solid #44ddaa', color: '#44ddaa' };
     if (isPicked)  return { background: 'rgba(255,60,80,0.1)', border: '1px solid rgba(255,60,80,0.5)', color: '#ff3c50' };
@@ -387,17 +387,11 @@ function QuizDrill({ category, pools, onBack }) {
           <div className="rounded-xl p-8 text-center mb-4"
             style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
             <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
-              {current.content_type === 'vocabulary' ? '単語 — What does this mean?' : '漢字 — What does this mean?'}
+              {current.content_type === 'vocabulary' ? '単語 — How do you read this?' : '漢字 — How do you read this?'}
             </p>
             <p className="font-japanese font-bold mb-2" style={{ fontSize: '72px', lineHeight: 1, color: 'var(--text-1)' }}>
               {current.front}
             </p>
-            {current.reading && (
-              <p className="font-japanese text-base mt-2" style={{ color: 'var(--text-3)' }}>{current.reading}</p>
-            )}
-            {showEnglish && current.reading && (
-              <p className="font-mono text-sm mt-1" style={{ color: 'var(--pink)', opacity: 0.75 }}>{toRomaji(current.reading)}</p>
-            )}
           </div>
 
           {/* Answer options — 2×2 with key hints */}
@@ -412,7 +406,7 @@ function QuizDrill({ category, pools, onBack }) {
                 key={opt}
                 onClick={() => handleAnswer(opt)}
                 disabled={!!chosen}
-                className="py-4 px-3 rounded-xl text-sm font-semibold text-left transition-all flex items-start gap-2"
+                className="py-4 px-4 rounded-xl text-lg font-japanese font-medium text-left transition-all flex items-start gap-2"
                 style={optStyle(opt)}
               >
                 <span
@@ -430,7 +424,7 @@ function QuizDrill({ category, pools, onBack }) {
           {chosen && (
             <DetailPanel
               card={current}
-              isCorrect={chosen === current.back}
+              isCorrect={chosen === current.drill_answer}
               onRate={handleRate}
               showEnglish={showEnglish}
             />

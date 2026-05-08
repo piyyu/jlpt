@@ -16,7 +16,7 @@ export async function POST(request) {
   try {
     const body = await request.json().catch(() => ({}));
     if (body.questionCount) questionCount = Math.min(50, Math.max(5, body.questionCount));
-  } catch (_) {}
+  } catch (_) { }
 
   const half = Math.floor(questionCount / 2);
   const vocabCount = half;
