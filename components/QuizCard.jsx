@@ -21,6 +21,14 @@ export default function QuizCard({
   const answered = selected !== null;
 
   /* ------------------------------------------------------------------
+   * Reset state when question changes (mount)
+   * ------------------------------------------------------------------ */
+  useEffect(() => {
+    setSelected(null);
+    setIsSaved(false);
+  }, [prompt]);
+
+  /* ------------------------------------------------------------------
    * Load saved-state once an answer is given
    * ------------------------------------------------------------------ */
   useEffect(() => {
@@ -136,8 +144,8 @@ export default function QuizCard({
       {/* Prompt */}
       <div className="text-center mb-8 px-4">
         <p
-          className="font-japanese font-bold mb-2"
-          style={{ fontSize: content_type === 'grammar' ? '28px' : '72px', lineHeight: 1.1, color: 'var(--text-1)' }}
+          className={`${(content_type === 'grammar' || content_type === 'vocabulary') ? 'font-sans' : 'font-japanese'} font-bold mb-2`}
+          style={{ fontSize: (content_type === 'grammar' || content_type === 'vocabulary') ? '28px' : '72px', lineHeight: 1.2, color: 'var(--text-1)' }}
         >
           {prompt}
         </p>
@@ -148,7 +156,7 @@ export default function QuizCard({
       <div className="space-y-2 mb-6">
         {options.map((option, i) => (
           <button
-            key={option}
+            key={`${index}-${option}`}
             onClick={() => handleSelect(option)}
             disabled={answered}
             className="w-full flex items-center justify-between px-4 py-4 rounded-lg font-japanese text-lg font-medium transition-all text-left"

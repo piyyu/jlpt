@@ -35,7 +35,7 @@ function getVocabQuestions(db, count, selectedOnly = false) {
     return {
       content_type: 'vocabulary',
       content_id: item.id,
-      prompt: item.japanese,
+      prompt: item.english,
       hint: null,
       correct_answer: item.reading,
       options: shuffle([item.reading, ...distractors]),
@@ -56,13 +56,17 @@ function getKanjiQuestions(db, count, selectedOnly = false) {
     if (pool.length === 0) pool = all;
   }
 
+  function readingLabel(k) {
+    const parts = [k.kun_yomi, k.on_yomi].filter(Boolean);
+    return parts.join(' / ') || k.meaning;
+  }
+
   return shuffle(pool).slice(0, count).map((item) => {
-    const answer = firstReading(item.kun_yomi) || firstReading(item.on_yomi) || item.meaning;
+    const answer = readingLabel(item);
     const distractors = shuffle(
       all
         .filter((d) => d.id !== item.id)
-        .map((d) => firstReading(d.kun_yomi) || firstReading(d.on_yomi))
-        .filter(Boolean)
+        .map((d) => readingLabel(d))
         .filter((r) => r !== answer)
     ).slice(0, 3);
 

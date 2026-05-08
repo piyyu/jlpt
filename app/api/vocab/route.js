@@ -5,7 +5,8 @@ export function GET(request) {
   const db = getDb();
   const { searchParams } = new URL(request.url);
   const search = searchParams.get('search') || '';
-  const type   = searchParams.get('type')   || '';
+  const type     = searchParams.get('type')     || '';
+  const category = searchParams.get('category') || '';
 
   let query = `
     SELECT v.*,
@@ -26,7 +27,11 @@ export function GET(request) {
     query += ' AND v.type = ?';
     params.push(type);
   }
-  query += ' ORDER BY v.id';
+  if (category) {
+    query += ' AND v.category = ?';
+    params.push(category);
+  }
+  query += ' ORDER BY v.importance ASC, v.id ASC';
 
   const rows = db.prepare(query).all(...params);
   return NextResponse.json(rows);
