@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# KOTOBA
+
+A modern, local-first Japanese language learning application designed to help you prepare for the JLPT N5. It features a Spaced Repetition System (SRS) powered by the widely used SM-2 algorithm (similar to Anki), interactive quiz modes, and comprehensive content covering vocabulary, kanji, grammar, and more!
+
+## Features
+
+- **Spaced Repetition System (SRS)**: Optimize your study sessions. Cards are scheduled at optimal intervals based on your past performance to ensure long-term retention.
+- **Targeted Practice (Selections)**: Manually lock specific vocabulary or kanji elements into your "Selections" list to filter your reviews into a concentrated, custom deck.
+- **Quiz Modes & Mock Tests**: Test your knowledge across different topics with multiple-choice questions or challenge yourself with a mock exam.
+- **Audio Support**: Hear the native pronunciation of vocabulary words directly in the app.
+- **Comprehensive Content**:
+  - Hiragana & Katakana
+  - N5 Vocabulary & Kanji
+  - Particles & Grammar
+  - Reading & Listening Practice
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework (App Router)
+- [Better-SQLite3](https://github.com/WiseLibs/better-sqlite3) - Lightweight, fast local database architecture
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first styling
+- [Lucide React](https://lucide.dev/) - Beautiful iconography
 
 ## Getting Started
 
-First, run the development server:
-
+### 1. Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Initialize the Database
+Before running the app for the first time, populate the local SQLite database (`jlpt.db`) from the raw dataset files located in the `data/` folder.
+```bash
+npm run seed
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Run the Development Server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) with your browser to automatically jump into your studies.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Project Structure
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `/app` - Core application logic containing Next.js pages and API routes
+- `/components` - Reusable UI widgets (Quiz cards, Audio buttons, Navigation, etc.)
+- `/data` - Raw CSV dataset files representing the study material
+- `/lib` - Application utility functions (DB connection logic, SM-2 Spaced Repetition algorithm, Romaji conversion, etc.)
+- `/scripts` - Automation scripts for managing, seeding, and migrating database definitions

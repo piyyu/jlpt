@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, Fragment } from 'react';
+import { useEffect, useState, useCallback, Fragment, useMemo } from 'react';
 import AudioButton from '@/components/AudioButton';
 import { Search, ChevronDown, ChevronUp, CheckSquare, Square, X } from 'lucide-react';
 import { toRomaji } from '@/lib/toRomaji';
@@ -81,6 +81,42 @@ export default function VocabularyPage() {
     setSelections(new Set());
     setSelCount(0);
   }
+
+  async function toggleGroup(words, selectAll) {
+    if (!words || words.length === 0) return;
+    const ids = words.map((w) => w.id);
+    const next = new Set(selections);
+
+    for (const id of ids) {
+      if (selectAll) next.add(id);
+      else next.delete(id);
+    }
+
+    setSelections(next);
+    setSelCount(next.size);
+
+    await fetch('/api/selections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content_type: 'vocabulary', content_ids: ids, selected: selectAll }),
+    });
+  }
+
+  // Pre-calculate groups
+  const groupedVocab = useMemo(() => {
+    const groups = {};
+    for (const w of vocab) {
+      const cat = w.category || 'Uncategorized';
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(w);
+    }
+    // Only return groups that actually have words
+    const catsToShow = [...CATEGORIES, 'Uncategorized'].filter(c => groups[c] && groups[c].length > 0);
+    return catsToShow.map(c => ({
+      name: c,
+      words: groups[c]
+    }));
+  }, [vocab]);
 
   const categoryBadgeColor = {
     'Numbers & Counters': { background: 'rgba(56,189,248,0.12)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.25)' },
@@ -177,12 +213,41 @@ export default function VocabularyPage() {
               </tr>
             </thead>
             <tbody>
-              {vocab.map((word, i) => {
-                const actualIndex = i;
-                const isSel = selections.has(word.id);
-                const isExp = expanded === word.id;
+              {groupedVocab.map((group) => {
+                const isGroupSelected = group.words.length > 0 && group.words.every(w => selections.has(w.id));
                 return (
-                  <Fragment key={word.id}>
+                  <Fragment key={group.name}>
+                    <tr>
+                      <td colSpan={showEnglish ? 8 : 7} className="px-4 py-3 bg-[var(--bg-elevated)] border-b border-[var(--border)] relative">
+                        <div className="flex items-center gap-4">
+                          <span
+                            style={categoryBadgeColor[group.name] || { background: 'var(--bg-elevated)', color: 'var(--text-3)' }}
+                            className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full"
+                          >
+                            {group.name}
+                          </span>
+                          <span className="text-xs text-[var(--text-3)]">{group.words.length} items</span>
+
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleGroup(group.words, !isGroupSelected); }}
+                            className="ml-auto text-xs px-3 py-1.5 flex items-center gap-2 rounded transition-colors"
+                            style={{
+                              background: isGroupSelected ? 'var(--pink)' : 'transparent',
+                              color: isGroupSelected ? '#fff' : 'var(--text-1)',
+                              border: isGroupSelected ? '1px solid var(--pink)' : '1px solid var(--border)'
+                            }}
+                          >
+                            {isGroupSelected ? 'Deselect Group' : 'Select Group'}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    {group.words.map((word) => {
+                      const actualIndex = vocab.findIndex(v => v.id === word.id);
+                      const isSel = selections.has(word.id);
+                      const isExp = expanded === word.id;
+                      return (
+                        <Fragment key={word.id}>
                     <tr
                       className="cursor-pointer"
                       onClick={() => setExpanded(isExp ? null : word.id)}
@@ -285,6 +350,8 @@ export default function VocabularyPage() {
                   </Fragment>
                 );
               })}
+              </Fragment>
+              )})}
             </tbody>
           </table>
         )}

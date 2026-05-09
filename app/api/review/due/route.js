@@ -18,11 +18,12 @@ export function GET(request) {
     : `SELECT COUNT(*) as n FROM user_selections`;
   const { n: selectionCount } = db.prepare(selectionCountQuery).get();
 
-  // If user has made selections, filter to only those and IGNORE due dates.
+  // Always filter by due date (like Anki).
+  // If user has selections, it acts as a "custom deck" filter.
   const whereClauses = [];
-  if (selectionCount === 0) {
-    whereClauses.push('s.next_review_date <= ?');
-  } else {
+  whereClauses.push('s.next_review_date <= ?');
+
+  if (selectionCount > 0) {
     whereClauses.push(`EXISTS (
         SELECT 1 FROM user_selections us2
         WHERE us2.content_type = s.content_type AND us2.content_id = s.content_id
@@ -97,7 +98,7 @@ export function GET(request) {
     LIMIT 50
   `;
 
-  const cards = selectionCount === 0 ? db.prepare(queryStr).all(today) : db.prepare(queryStr).all();
+  const cards = db.prepare(queryStr).all(today);
 
   // Distractor pools: vocab → readings, kanji → first kun/on reading
   const vocabPoolQuery = selectionCount > 0
@@ -123,9 +124,7 @@ export function GET(request) {
     ${whereStr}
     GROUP BY s.content_type
   `;
-  const counts = selectionCount === 0
-    ? db.prepare(countsQuery).all(today)
-    : db.prepare(countsQuery).all();
+  const counts = db.prepare(countsQuery).all(today);
 
   return NextResponse.json({
     cards,
