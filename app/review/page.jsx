@@ -131,7 +131,7 @@ function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
           {isCorrect ? '✓ Correct!' : '✗ Wrong'}
         </span>
         <span className="text-sm" style={{ color: 'var(--text-2)' }}>
-          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--text-1)' }}>{card.drill_answer}</strong> <span style={{opacity: 0.7}}>({card.back})</span>
+          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--text-1)' }}>{card.drill_answer}</strong> <span style={{opacity: 0.7}}>({card.content_type === 'vocabulary' ? card.front : card.back})</span>
         </span>
       </div>
 
@@ -387,31 +387,32 @@ function QuizDrill({ category, pools, onBack }) {
           <div className="rounded-xl p-8 text-center mb-4"
             style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
             <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
-              {current.content_type === 'vocabulary' ? '単語 — How do you read this?' : '漢字 — How do you read this?'}
+              {current.content_type === 'vocabulary' ? '単語 — Translate to Japanese' : '漢字 — How do you read this?'}
             </p>
-            <p className="font-japanese font-bold mb-2" style={{ fontSize: '72px', lineHeight: 1, color: 'var(--text-1)' }}>
-              {current.front}
+            <p className={`${current.content_type === 'vocabulary' ? 'font-semibold' : 'font-japanese font-bold'} mb-2`}
+               style={{ fontSize: current.content_type === 'vocabulary' ? '40px' : '72px', lineHeight: 1.1, color: 'var(--text-1)' }}>
+              {current.content_type === 'vocabulary' ? current.back : current.front}
             </p>
           </div>
 
-          {/* Answer options — 2×2 with key hints */}
+          {/* Answer options */}
           {!chosen && (
             <p className="text-center text-xs mb-2 font-mono" style={{ color: 'var(--text-3)', opacity: 0.6 }}>
               Click or press 1 · 2 · 3 · 4
             </p>
           )}
-          <div className="grid grid-cols-2 gap-3 mb-2">
+          <div className="space-y-2 mb-2">
             {options.map((opt, i) => (
               <button
                 key={opt}
                 onClick={() => handleAnswer(opt)}
                 disabled={!!chosen}
-                className="py-4 px-4 rounded-xl text-lg font-japanese font-medium text-left transition-all flex items-start gap-2"
+                className="w-full flex items-center px-4 py-4 rounded-xl text-lg font-japanese font-medium text-left transition-all gap-3"
                 style={optStyle(opt)}
               >
                 <span
-                  className="shrink-0 w-5 h-5 rounded flex items-center justify-center font-mono text-xs font-bold"
-                  style={{ background: 'rgba(255,255,255,0.06)', color: 'inherit', minWidth: 20 }}
+                  className="shrink-0 w-6 h-6 rounded flex items-center justify-center font-mono text-xs font-bold"
+                  style={{ background: 'rgba(255,255,255,0.06)', color: 'inherit', minWidth: 24 }}
                 >
                   {i + 1}
                 </span>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import QuizCard from '@/components/QuizCard';
 import { Trophy, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
@@ -8,7 +8,7 @@ import { Trophy, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 const TYPES = ['mixed', 'vocabulary', 'kanji', 'grammar'];
 const COUNTS = [5, 10, 15, 20];
 
-export default function QuizPage() {
+function QuizContent() {
   const searchParams = useSearchParams();
   const initialType = searchParams.get('type') || 'mixed';
   const initialSelected = searchParams.get('selected_only') === 'true';
@@ -126,7 +126,7 @@ export default function QuizPage() {
               </label>
             )}
 
-            <button onClick={startQuiz} disabled={loading} 
+            <button onClick={startQuiz} disabled={loading}
               className="w-full py-4 rounded-lg font-bold text-sm flex justify-center items-center gap-2 transition-transform hover:scale-[1.02]"
               style={{ background: 'var(--text-1)', color: 'var(--bg-base)', opacity: loading ? 0.7 : 1 }}>
               <Trophy size={16} />
@@ -198,5 +198,13 @@ export default function QuizPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function QuizPage() {
+  return (
+    <Suspense fallback={<div className="flex h-screen items-center justify-center p-8"><span className="text-xl text-[var(--accent)] text-center animate-pulse">Loading quiz environment...</span></div>}>
+      <QuizContent />
+    </Suspense>
   );
 }
