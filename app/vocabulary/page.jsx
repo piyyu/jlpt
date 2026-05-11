@@ -20,7 +20,9 @@ const CATEGORIES = [
   'Colors',
   'Things & Objects',
   'Adjectives',
-  'Verbs'
+  'Verbs',
+  'Leisure & Sports',
+  'Other'
 ];
 
 export default function VocabularyPage() {
@@ -29,6 +31,7 @@ export default function VocabularyPage() {
   const [category, setCategory] = useState('');
   const [expanded, setExpanded] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedOnly, setSelectedOnly] = useState(false);
   const [selections, setSelections] = useState(new Set()); // Set of selected IDs
   const [selCount, setSelCount] = useState(0);
   const [toggling, setToggling] = useState(null); // ID being toggled right now
@@ -84,6 +87,7 @@ export default function VocabularyPage() {
     });
     setSelections(new Set());
     setSelCount(0);
+    setSelectedOnly(false);
   }
 
   async function toggleGroup(words, selectAll) {
@@ -109,18 +113,28 @@ export default function VocabularyPage() {
   // Pre-calculate groups
   const groupedVocab = useMemo(() => {
     const groups = {};
-    for (const w of vocab) {
-      const cat = w.category || 'Uncategorized';
+    const filteredVocab = selectedOnly ? vocab.filter(w => selections.has(w.id)) : vocab;
+    
+    for (const w of filteredVocab) {
+      const cat = w.category || 'Other';
       if (!groups[cat]) groups[cat] = [];
       groups[cat].push(w);
     }
-    // Only return groups that actually have words
-    const catsToShow = [...CATEGORIES, 'Uncategorized'].filter(c => groups[c] && groups[c].length > 0);
-    return catsToShow.map(c => ({
+    // Get all unique categories from the data, but keep our preferred order if possible
+    const foundCats = Object.keys(groups);
+    const orderedCats = [...CATEGORIES, 'Other', 'Uncategorized'].filter(c => foundCats.includes(c));
+    const extraCats = foundCats.filter(c => !orderedCats.includes(c));
+    
+    return [...orderedCats, ...extraCats].map(c => ({
       name: c,
       words: groups[c]
     }));
-  }, [vocab]);
+  }, [vocab, selectedOnly, selections]);
+
+  // Flattened list of words currently shown (to calculate global index)
+  const displayedWords = useMemo(() => {
+    return groupedVocab.flatMap(g => g.words);
+  }, [groupedVocab]);
 
   const categoryBadgeColor = {
     'Numbers & Counters': { background: 'rgba(56,189,248,0.12)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.25)' },
@@ -139,17 +153,14 @@ export default function VocabularyPage() {
     'Adjectives': { background: 'rgba(196,181,253,0.12)', color: '#c4b5fd', border: '1px solid rgba(196,181,253,0.25)' },
   };
 
-  // Row number across filtered list (1-based)
-  const rowNum = (i) => i + 1;
-
   return (
     <div>
       <div className="mb-6">
         <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>単語リスト</p>
         <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>Vocabulary</h1>
         <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>
-          N5 vocabulary — {vocab.length} words found
-          {selCount > 0 && (
+          {selectedOnly ? `Selected Vocabulary — ${displayedWords.length} words` : `N5 vocabulary — ${vocab.length} words found`}
+          {selCount > 0 && !selectedOnly && (
             <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full"
               style={{ background: 'rgba(255,0,128,0.12)', color: 'var(--pink)', border: '1px solid rgba(255,0,128,0.3)' }}>
               {selCount} selected for review
@@ -180,6 +191,20 @@ export default function VocabularyPage() {
           <option value="">All Categories</option>
           {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
+        
+        <button
+          onClick={() => setSelectedOnly(!selectedOnly)}
+          disabled={selCount === 0 && !selectedOnly}
+          className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-all ${selCount === 0 && !selectedOnly ? 'opacity-50 cursor-not-allowed' : ''}`}
+          style={{ 
+            background: selectedOnly ? 'var(--pink)' : 'var(--bg-surface)', 
+            border: `1px solid ${selectedOnly ? 'var(--pink)' : 'var(--border)'}`, 
+            color: selectedOnly ? '#fff' : 'var(--text-1)' 
+          }}
+        >
+          {selectedOnly ? 'Showing Selected' : `Show Selected Only (${selCount})`}
+        </button>
+
         <div className="flex gap-2">
           {selCount > 0 && (
             <button
@@ -251,7 +276,7 @@ export default function VocabularyPage() {
                       </td>
                     </tr>
                     {group.words.map((word) => {
-                      const actualIndex = vocab.findIndex(v => v.id === word.id);
+                      const displayedIndex = displayedWords.findIndex(v => v.id === word.id);
                       const isSel = selections.has(word.id);
                       const isExp = expanded === word.id;
                       return (
@@ -263,7 +288,7 @@ export default function VocabularyPage() {
                     >
                       {/* Row number */}
                       <td>
-                        <span className="text-xs font-mono" style={{ color: 'var(--text-3)' }}>{rowNum(actualIndex)}</span>
+                        <span className="text-xs font-mono" style={{ color: 'var(--text-3)' }}>{displayedIndex + 1}</span>
                       </td>
 
                       {/* Checkbox */}
@@ -360,10 +385,11 @@ export default function VocabularyPage() {
                   </Fragment>
                 );
               })}
-              </Fragment>
-              )})}
-            </tbody>
-          </table>
+            </Fragment>
+          );
+        })}
+      </tbody>
+    </table>
         )}
       </div>
     </div>

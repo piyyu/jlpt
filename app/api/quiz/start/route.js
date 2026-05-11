@@ -29,16 +29,21 @@ function getVocabQuestions(db, count, selectedOnly = false) {
   }
 
   return shuffle(pool).slice(0, count).map((item) => {
-    const distractors = shuffle(all.filter((d) => d.id !== item.id && d.reading !== item.reading))
-      .slice(0, 3)
-      .map((d) => d.reading);
+    const prompt = item.english;
+    const answer = item.reading;
+    
+    const distractors = shuffle(all.filter((d) => d.id !== item.id))
+      .map(d => d.reading)
+      .filter(a => a !== answer)
+      .slice(0, 3);
+      
     return {
       content_type: 'vocabulary',
       content_id: item.id,
-      prompt: item.english,
+      prompt,
       hint: null,
-      correct_answer: item.reading,
-      options: shuffle([item.reading, ...distractors]),
+      correct_answer: answer,
+      options: shuffle([answer, ...distractors]),
       details: item,
     };
   });

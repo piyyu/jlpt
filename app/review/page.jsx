@@ -168,7 +168,8 @@ function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
           {isCorrect ? '✓ Correct!' : '✗ Wrong'}
         </span>
         <span className="text-sm" style={{ color: 'var(--text-2)' }}>
-          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--text-1)' }}>{card.drill_answer}</strong> <span style={{opacity: 0.7}}>({card.content_type === 'vocabulary' ? card.front : card.back})</span>
+          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--pink)' }}>{card.drill_answer}</strong> 
+          {!isKanji && <span style={{opacity: 0.7, marginLeft: '8px'}}>({card.front})</span>}
         </span>
       </div>
 
@@ -176,10 +177,17 @@ function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
       <div className="px-5 py-4 grid grid-cols-1 gap-4" style={{ background: 'var(--bg-elevated)' }}>
         <div className="flex items-start gap-6">
           <div className="shrink-0 text-center">
-            <p className="font-japanese font-bold leading-none" style={{ fontSize: '52px', color: 'var(--text-1)' }}>{card.front}</p>
-            {card.reading && <p className="font-japanese text-sm mt-1" style={{ color: 'var(--text-3)' }}>{card.reading}</p>}
-            {showEnglish && card.reading && (
-              <p className="font-mono text-xs mt-0.5" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomaji(card.reading)}</p>
+            <p className="font-japanese font-bold leading-none" style={{ fontSize: '52px', color: 'var(--text-1)' }}>
+              {isKanji ? card.front : card.front}
+            </p>
+            {!isKanji && (
+              <div className="mt-2">
+                <p className="font-japanese text-sm" style={{ color: 'var(--text-3)' }}>{card.reading}</p>
+                <p className="font-mono text-xs opacity-60" style={{ color: 'var(--pink)' }}>{toRomaji(card.reading)}</p>
+              </div>
+            )}
+            {isKanji && (
+              <p className="font-mono text-xs mt-1" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomajiParts(card.reading)}</p>
             )}
           </div>
           <div className="flex-1 grid grid-cols-2 gap-3 text-sm">
@@ -281,11 +289,17 @@ function QuizDrill({ category, pools, onBack }) {
   useEffect(() => { fetchCards(); }, [fetchCards]);
 
   const current = cards[index];
-  const pool = current ? (pools[current.content_type] || pools.vocabulary || []) : [];
+  const pool = useMemo(() => {
+    if (!current) return [];
+    if (current.content_type === 'kanji') return pools.kanji || [];
+    // For vocabulary, check if answer is English or Japanese
+    const isJapanese = /[ぁ-んァ-ン]/.test(current.drill_answer);
+    return isJapanese ? pools.vocabulary_reading : pools.vocabulary_english;
+  }, [current, pools]);
+
   const options = useMemo(
     () => (current && current.drill_answer ? buildOptions(current.drill_answer, pool) : []),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [current?.id],
+    [current, pool],
   );
 
   // ── Keyboard shortcuts ──────────────────────────────────────────────────────
@@ -423,13 +437,12 @@ function QuizDrill({ category, pools, onBack }) {
           {/* Question card */}
           {(() => {
             const isVocab = current.content_type === 'vocabulary';
-            const hasKanji = isVocab && /[㐀-䶵一-鿋豈-頻]/.test(current.front);
-            // Mixed mode: for vocab with kanji, 50% chance to show Kanji (Recognition) instead of English (Recall)
-            const useRecognition = isVocab && hasKanji && (current.id % 2 !== 0);
+            // For vocab, always use English meaning (back). For Kanji, keep the recognition mode.
+            const useRecognition = !isVocab && (current.id % 2 !== 0);
 
-            const promptText = useRecognition ? current.front : (isVocab ? current.back : current.front);
-            const instruction = useRecognition ? '単語 — How do you read this?' : (isVocab ? '単語 — Translate to Japanese' : '漢字 — How do you read this?');
-            const isBig = !isVocab || useRecognition;
+            const promptText = isVocab ? current.back : (useRecognition ? current.front : current.back);
+            const instruction = isVocab ? '単語 — Translate to Japanese' : (useRecognition ? '漢字 — How do you read this?' : '漢字 — What does this mean?');
+            const isBig = !isVocab && useRecognition;
 
             return (
               <div className="rounded-xl p-8 text-center mb-4"
@@ -437,8 +450,8 @@ function QuizDrill({ category, pools, onBack }) {
                 <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
                   {instruction}
                 </p>
-                <p className={`${isBig ? 'font-japanese font-bold' : 'font-semibold'} mb-2`}
-                   style={{ fontSize: isBig ? '72px' : '40px', lineHeight: 1.1, color: 'var(--text-1)' }}>
+                <p className={`${isBig ? 'font-japanese font-bold' : (isVocab ? 'font-sans font-bold' : 'font-semibold')} mb-2`}
+                   style={{ fontSize: isBig ? '72px' : (isVocab ? '28px' : '40px'), lineHeight: 1.1, color: 'var(--text-1)' }}>
                   {promptText}
                 </p>
               </div>
@@ -466,7 +479,14 @@ function QuizDrill({ category, pools, onBack }) {
                 >
                   {i + 1}
                 </span>
-                <span>{opt}</span>
+                <span>
+                  {opt}
+                  {current.content_type === 'vocabulary' && chosen && (
+                    <span className="opacity-40 text-sm ml-2 font-mono font-normal animate-in fade-in slide-in-from-left-1 duration-300">
+                      ({toRomaji(opt)})
+                    </span>
+                  )}
+                </span>
               </button>
             ))}
           </div>

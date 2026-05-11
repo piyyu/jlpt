@@ -40,9 +40,17 @@ export async function POST(request) {
   const deleteStmt = db.prepare(`DELETE FROM user_selections WHERE content_type = ? AND content_id = ?`);
 
   const today = new Date().toISOString().split('T')[0];
+  const insertSrsStmt = db.prepare(`
+    INSERT OR IGNORE INTO srs_cards (content_type, content_id, next_review_date) 
+    VALUES (?, ?, ?)
+  `);
   const updateSrsStmt = db.prepare(`
     UPDATE srs_cards 
     SET next_review_date = ? 
+    WHERE content_type = ? AND content_id = ?
+  `);
+  const deleteSrsStmt = db.prepare(`
+    DELETE FROM srs_cards 
     WHERE content_type = ? AND content_id = ?
   `);
 
@@ -50,10 +58,13 @@ export async function POST(request) {
     for (const id of ids) {
       if (selected) {
         insertStmt.run(content_type, id);
-        // Force the card to be due today so it appears in the Review list immediately
+        // Ensure srs_card exists and is due today
+        insertSrsStmt.run(content_type, id, today);
         updateSrsStmt.run(today, content_type, id);
       } else {
         deleteStmt.run(content_type, id);
+        // Remove from SRS as well if user deselects
+        deleteSrsStmt.run(content_type, id);
       }
     }
   })();
