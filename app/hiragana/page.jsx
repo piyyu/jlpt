@@ -74,6 +74,7 @@ export default function HiraganaPage() {
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, answered, options]);
 
   function handleAnswer(opt) {

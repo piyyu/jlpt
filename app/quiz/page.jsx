@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import QuizCard from '@/components/QuizCard';
+import AudioButton from '@/components/AudioButton';
 import { Trophy, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 
 const TYPES = ['mixed', 'vocabulary', 'kanji', 'grammar'];
@@ -174,6 +175,7 @@ function QuizContent() {
                     : <XCircle size={14} style={{ color: '#ff3c50', flexShrink: 0 }} />}
                   <span className="font-japanese text-sm font-medium" style={{ color: 'var(--text-1)' }}>{a.prompt}</span>
                   <span className="font-japanese text-xs ml-auto" style={{ color: 'var(--text-3)' }}>{a.correct_answer}</span>
+                  <AudioButton text={a.prompt} className="ml-2 opacity-50 hover:opacity-100" />
                 </div>
               ))}
             </div>
