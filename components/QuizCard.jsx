@@ -170,6 +170,11 @@ export default function QuizCard({
                 {i + 1}
               </span>
               {option}
+              {content_type === 'vocabulary' && answered && (
+                <span className="opacity-40 text-sm ml-2 font-mono font-normal animate-in fade-in slide-in-from-left-1 duration-300">
+                  ({toRomaji(option)})
+                </span>
+              )}
             </span>
             {answered && option === correctAnswer && <CheckCircle size={16} style={{ color: '#44ddaa' }} />}
             {answered && option === selected && option !== correctAnswer && <XCircle size={16} style={{ color: '#ff6666' }} />}
@@ -182,10 +187,11 @@ export default function QuizCard({
         <div className="rounded-xl p-6 mb-6" style={{ background: 'var(--bg-surface)', border: '1px solid rgba(255,0,128,0.2)' }}>
           <div className="flex items-start gap-6">
 
-            {/* Left: big character + controls */}
-            <div className="text-center shrink-0 w-24">
-              <p className="font-japanese font-bold leading-none" style={{ fontSize: '56px', color: 'var(--text-1)' }}>
-                {content_type === 'kanji' ? details.character : details.japanese}
+            {/* Left: focus on the answer */}
+            <div className="text-center shrink-0 w-32">
+              <p className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--text-3)' }}>Correct Answer</p>
+              <p className="font-japanese font-bold leading-tight" style={{ fontSize: '32px', color: 'var(--pink)' }}>
+                {correctAnswer}
               </p>
 
               {content_type === 'kanji' && details.stroke_count && (

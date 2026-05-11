@@ -82,72 +82,76 @@ export function GET(request) {
   if (type) {
     const limitForFetch = type === 'kanji' ? kanjiRemaining : vocabRemaining;
     const drillQueryStr = `
-      SELECT s.*,
-        CASE s.content_type
+      SELECT sub.*,
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.japanese
           WHEN 'kanji' THEN k.character
         END AS front,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.english
           WHEN 'kanji' THEN k.meaning
         END AS back,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.reading
           WHEN 'kanji' THEN
             TRIM(COALESCE(k.kun_yomi, '') || CASE WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != '' AND k.on_yomi IS NOT NULL AND k.on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(k.on_yomi, ''))
         END AS drill_answer,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.reading
           WHEN 'kanji'      THEN k.kun_yomi
         END AS reading,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.example_jp
           WHEN 'kanji' THEN k.example_word1
         END AS hint,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.example_en
           WHEN 'kanji' THEN k.example_word2
         END AS hint2,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN NULL
           WHEN 'kanji' THEN k.on_yomi
         END AS on_yomi,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN NULL
           WHEN 'kanji' THEN k.stroke_count
         END AS stroke_count,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.type
           WHEN 'kanji' THEN NULL
         END AS word_type,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.example_jp
           WHEN 'kanji' THEN NULL
         END AS example_jp,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN v.example_en
           WHEN 'kanji' THEN NULL
         END AS example_en,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN NULL
           WHEN 'kanji' THEN k.example_word1
         END AS example_word1,
-        CASE s.content_type
+        CASE sub.content_type
           WHEN 'vocabulary' THEN NULL
           WHEN 'kanji' THEN k.example_word2
         END AS example_word2
-      FROM srs_cards s
-      LEFT JOIN vocabulary v ON s.content_type = 'vocabulary' AND s.content_id = v.id
-      LEFT JOIN kanji k ON s.content_type = 'kanji' AND s.content_id = k.id
-      ${whereStr}
-      ORDER BY s.next_review_date ASC
-      LIMIT ?
+      FROM (
+        SELECT s.*, (ABS(RANDOM()) % 2) as rnd
+        FROM srs_cards s
+        ${whereStr}
+        ORDER BY s.next_review_date ASC
+        LIMIT ?
+      ) sub
+      LEFT JOIN vocabulary v ON sub.content_type = 'vocabulary' AND sub.content_id = v.id
+      LEFT JOIN kanji k ON sub.content_type = 'kanji' AND sub.content_id = k.id
     `;
     cards = db.prepare(drillQueryStr).all(...whereParams, limitForFetch);
   }
 
   // Distractor pools
-  const vocabPool = db.prepare(`SELECT reading AS answer FROM vocabulary WHERE reading IS NOT NULL AND reading != '' ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer);
+  const vocabReadingPool = db.prepare(`SELECT reading AS answer FROM vocabulary WHERE reading IS NOT NULL AND reading != '' ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer);
+  const vocabEnglishPool = db.prepare(`SELECT english AS answer FROM vocabulary WHERE english IS NOT NULL AND english != '' ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer);
   const kanjiPool = db.prepare(`SELECT TRIM(COALESCE(kun_yomi, '') || CASE WHEN kun_yomi IS NOT NULL AND kun_yomi != '' AND on_yomi IS NOT NULL AND on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(on_yomi, '')) AS answer FROM kanji ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer).filter(Boolean);
 
   return NextResponse.json({
@@ -157,7 +161,11 @@ export function GET(request) {
     counts: dueCounts,
     available: availableCounts,
     limits: { vocabulary: vocabRemaining, kanji: kanjiRemaining },
-    pools: { vocabulary: vocabPool, kanji: kanjiPool },
+    pools: { 
+      vocabulary_reading: vocabReadingPool, 
+      vocabulary_english: vocabEnglishPool, 
+      kanji: kanjiPool 
+    },
     selectionActive: selectionCount > 0,
     selectionCount
   });

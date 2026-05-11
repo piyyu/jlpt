@@ -1,739 +1,1012 @@
-id,japanese,reading,english,type,category,importance,example_jp,example_en
-1,"私","わたし","I, myself",noun,"People & Family",0,"あの人は私です。","That person is the I."
-2,"余り","あまり","not very; surplus",adverb,"Greetings & Expressions",100,"これは余りです。","This is the not very."
-3,"いいえ","いいえ","no, not at all",noun,"Greetings & Expressions",100,"これはいいえです。","This is the no."
-4,"ええ","ええ",yes,noun,"Greetings & Expressions",100,"これはええです。","This is the yes."
-5,"大勢","おおぜい","great number of people",expression,"Greetings & Expressions",100,"これは大勢です。","This is the great number of people."
-6,"お～","お～","honorable ~ (honorific)",noun,"Greetings & Expressions",100,"これはお～です。","This is the honorable ~ (honorific)."
-7,"方","かた","-- honorific form for 人 (ひと) --; way of doing",noun,"Greetings & Expressions",100,"これは方です。","This is the -- honorific form for 人 (ひと) --."
-8,"結構","けっこう","splendid; enough, tolerably",noun,"Greetings & Expressions",100,"これは結構です。","This is the splendid."
-9,"こんにちは","こんにちは","Good afternoon",noun,"Greetings & Expressions",100,"これはこんにちはです。","This is the Good afternoon."
-10,"午後","ごご","afternoon, P.M.",noun,"Greetings & Expressions",100,"これは午後です。","This is the afternoon."
-11,"すみません","すみません","Excuse me; Im sorry",noun,"Greetings & Expressions",100,"これはすみませんです。","This is the Excuse me."
-12,"どうぞ","どうぞ","please, kindly, by all means",noun,"Greetings & Expressions",100,"これはどうぞです。","This is the please."
-13,"はい","はい",yes,noun,"Greetings & Expressions",100,"これははいです。","This is the yes."
-14,"昼","ひる","noon, daytime",noun,"Greetings & Expressions",100,"これは昼です。","This is the noon."
-15,"もしもし","もしもし","Hello? (used on the phone)",noun,"Greetings & Expressions",100,"これはもしもしです。","This is the Hello? (used on the phone)."
-16,"ノート","ノート",notebook,noun,"Greetings & Expressions",100,"これはノートです。","This is the notebook."
-17,"～円","～えん",Yen,expression,"Greetings & Expressions",100,"これは～円です。","This is the Yen."
-18,"～か月","～かげつ","(number of) months",expression,"Greetings & Expressions",100,"これは～か月です。","This is the (number of) months."
-19,"～がる","～がる",feel,expression,"Greetings & Expressions",100,"これは～がるです。","This is the feel."
-20,"～側","～がわ","~ side",expression,"Greetings & Expressions",100,"これは～側です。","This is the ~ side."
-21,"～語","～ご","word, language",expression,"Greetings & Expressions",100,"これは～語です。","This is the word."
-22,"～歳","～さい","~ years old",expression,"Greetings & Expressions",100,"これは～歳です。","This is the ~ years old."
-23,"～さん","～さん","Mr. ~, Ms. ~",expression,"Greetings & Expressions",100,"これは～さんです。","This is the Mr. ~."
-24,"～週間","～しゅうかん","~ weeks",expression,"Greetings & Expressions",100,"これは～週間です。","This is the ~ weeks."
-25,"～時間","～じかん","~ hours",expression,"Greetings & Expressions",100,"これは～時間です。","This is the ~ hours."
-26,"～中","～じゅう","during, while",expression,"Greetings & Expressions",100,"これは～中です。","This is the during."
-27,"～たち","～たち","plural suffix",expression,"Greetings & Expressions",100,"これは～たちです。","This is the plural suffix."
-28,"～だけ","～だけ","only ~, just ~, as ~",expression,"Greetings & Expressions",100,"これは～だけです。","This is the only ~."
-29,"～など","～など","et cetera",expression,"Greetings & Expressions",100,"これは～などです。","This is the et cetera."
-30,"～年","～ねん","~ years",expression,"Greetings & Expressions",100,"これは～年です。","This is the ~ years."
-31,"～番","～ばん","~st; ~th best",expression,"Greetings & Expressions",100,"これは～番です。","This is the ~st."
-32,"～分","～ふん","~ minutes",expression,"Greetings & Expressions",100,"これは～分です。","This is the ~ minutes."
-33,"零","れい","zero, nought",noun,"Numbers & Counters",100,"これは零です。","This is the zero."
-34,"一","いち",one,noun,"Numbers & Counters",100,"これは一です。","This is the one."
-35,"二","に",two,noun,"Numbers & Counters",100,"これは二です。","This is the two."
-36,"三","さん",three,noun,"Numbers & Counters",100,"これは三です。","This is the three."
-37,"四","し",four,noun,"Numbers & Counters",100,"これは四です。","This is the four."
-38,"五","ご",five,noun,"Numbers & Counters",100,"これは五です。","This is the five."
-39,"六","ろく",six,noun,"Numbers & Counters",100,"これは六です。","This is the six."
-40,"七","しち",seven,noun,"Numbers & Counters",100,"これは七です。","This is the seven."
-41,"八","はち",eight,noun,"Numbers & Counters",100,"これは八です。","This is the eight."
-42,"九","きゅう",nine,noun,"Numbers & Counters",100,"これは九です。","This is the nine."
-43,"十","じゅう",ten,noun,"Numbers & Counters",100,"これは十です。","This is the ten."
-44,"百","ひゃく",hundred,noun,"Numbers & Counters",100,"これは百です。","This is the hundred."
-45,"～階","～かい","counter for stories (floors) of a building",expression,"Numbers & Counters",100,"これは～階です。","This is the counter for stories (floors) of a building."
-46,"～個","～こ","counter for small items (e.g., fruits, cups)",expression,"Numbers & Counters",100,"これは～個です。","This is the counter for small items (e.g.."
-47,"～冊","～さつ","counter for books",expression,"Numbers & Counters",100,"これは～冊です。","This is the counter for books."
-48,"～人","～じん","counter for people",expression,"Numbers & Counters",100,"これは～人です。","This is the counter for people."
-49,"～台","～だい","counter for vehicles; machines",expression,"Numbers & Counters",100,"これは～台です。","This is the counter for vehicles."
-50,"～度","～ど","counter for occurrences; ~ degree; ~ point",expression,"Numbers & Counters",100,"これは～度です。","This is the counter for occurrences."
-51,"～杯","～はい","counter for cupfuls",expression,"Numbers & Counters",100,"これは～杯です。","This is the counter for cupfuls."
-52,"～匹","～ひき","counter for small animals",expression,"Numbers & Counters",100,"これは～匹です。","This is the counter for small animals."
-53,"～本","～ほん","counter for long cylindrical things",expression,"Numbers & Counters",100,"これは～本です。","This is the counter for long cylindrical things."
-54,"～枚","～まい","counter for flat things",expression,"Numbers & Counters",100,"これは～枚です。","This is the counter for flat things."
-55,"千","せん",thousand,noun,"Numbers & Counters",100,"これは千です。","This is the thousand."
-56,"万","まん","ten thousand",noun,"Numbers & Counters",100,"これは万です。","This is the ten thousand."
-57,"半","はん","half (e.g., にじはん | half-past two)",noun,"Numbers & Counters",100,"これは半です。","This is the half (e.g.."
-58,"～回","～かい","counter for occurrences (~ times)",expression,"Numbers & Counters",100,"これは～回です。","This is the counter for occurrences (~ times)."
-59,"朝","あさ",morning,noun,"Time & Dates",100,"朝に会いましょう。","Let's meet morning."
-60,"明後日","あさって","day after tomorrow",noun,"Time & Dates",100,"明後日に会いましょう。","Let's meet day after tomorrow."
-61,"明日","あした",tomorrow,noun,"Time & Dates",100,"明日に会いましょう。","Let's meet tomorrow."
-62,"いただきます","いただきます","Thank you for the meal (before eating)",noun,"Time & Dates",100,"いただきますに会いましょう。","Let's meet Thank you for the meal (before eating)."
-63,"一日","いちにち","one day (duration)",noun,"Time & Dates",100,"一日に会いましょう。","Let's meet one day (duration)."
-64,"五日","いつか","five days; fifth day of the month",noun,"Time & Dates",100,"五日に会いましょう。","Let's meet five days."
-65,"いつも","いつも","always, usually, every time, never (with neg. verb)",adverb,"Time & Dates",100,"いつもに会いましょう。","Let's meet always."
-66,"今","いま",now,noun,"Time & Dates",100,"今に会いましょう。","Let's meet now."
-67,"一昨日","おととい","the day before yesterday",noun,"Time & Dates",100,"一昨日に会いましょう。","Let's meet the day before yesterday."
-68,"おととし","おととし","year before last",noun,"Time & Dates",100,"おととしに会いましょう。","Let's meet year before last."
-69,"おはよう","おはよう","Good morning",noun,"Time & Dates",100,"おはように会いましょう。","Let's meet Good morning."
-70,"おはようございます","おはようございます","Good morning (polite)",noun,"Time & Dates",100,"おはようございますに会いましょう。","Let's meet Good morning (polite)."
-71,"かかる","かかる","it takes (amount of time, money) (v.i.)",noun,"Time & Dates",100,"かかるに会いましょう。","Let's meet it takes (amount of time."
-72,"火曜日","かようび",Tuesday,noun,"Time & Dates",100,"火曜日に会いましょう。","Let's meet Tuesday."
-73,"昨日","きのう",yesterday,noun,"Time & Dates",100,"昨日に会いましょう。","Let's meet yesterday."
-74,"今日","きょう","today, this day",noun,"Time & Dates",100,"今日に会いましょう。","Let's meet today."
-75,"去年","きょねん","last year",noun,"Time & Dates",100,"去年に会いましょう。","Let's meet last year."
-76,"金曜日","きんようび",Friday,noun,"Time & Dates",100,"金曜日に会いましょう。","Let's meet Friday."
-77,"今朝","けさ","this morning",noun,"Time & Dates",100,"今朝に会いましょう。","Let's meet this morning."
-78,"月曜日","げつようび",Monday,noun,"Time & Dates",100,"月曜日に会いましょう。","Let's meet Monday."
-79,"九日","ここのか","nine days; ninth day of the month",noun,"Time & Dates",100,"九日に会いましょう。","Let's meet nine days."
-80,"今年","ことし","this year",noun,"Time & Dates",100,"今年に会いましょう。","Let's meet this year."
-81,"今月","こんげつ","this month",noun,"Time & Dates",100,"今月に会いましょう。","Let's meet this month."
-82,"今週","こんしゅう","this week",noun,"Time & Dates",100,"今週に会いましょう。","Let's meet this week."
-83,"今晩","こんばん","tonight, this evening",noun,"Time & Dates",100,"今晩に会いましょう。","Let's meet tonight."
-84,"こんばんは","こんばんは","Good evening",noun,"Time & Dates",100,"こんばんはに会いましょう。","Let's meet Good evening."
-85,"午前","ごぜん","morning, A.M.",noun,"Time & Dates",100,"午前に会いましょう。","Let's meet morning."
-86,"ごちそうさまでした","ごちそうさまでした","Thank you for the meal (after eating)",noun,"Time & Dates",100,"ごちそうさまでしたに会いましょう。","Let's meet Thank you for the meal (after eating)."
-87,"さあ","さあ","come now, well",noun,"Time & Dates",100,"さあに会いましょう。","Let's meet come now."
-88,"さ来年","さらいねん","year after next",noun,"Time & Dates",100,"さ来年に会いましょう。","Let's meet year after next."
-89,"時間","じかん",time,noun,"Time & Dates",100,"時間に会いましょう。","Let's meet time."
-90,"水曜日","すいようび",Wednesday,noun,"Time & Dates",100,"水曜日に会いましょう。","Let's meet Wednesday."
-91,"先月","せんげつ","last month",noun,"Time & Dates",100,"先月に会いましょう。","Let's meet last month."
-92,"先週","せんしゅう","last week",noun,"Time & Dates",100,"先週に会いましょう。","Let's meet last week."
-93,"それから","それから","and then, after that",noun,"Time & Dates",100,"それからに会いましょう。","Let's meet and then."
-94,"十日","とおか","ten days; tenth day of the month",noun,"Time & Dates",100,"十日に会いましょう。","Let's meet ten days."
-95,"時々","ときどき",sometimes,adverb,"Time & Dates",100,"時々に会いましょう。","Let's meet sometimes."
-96,"年","とし","year, age",noun,"Time & Dates",100,"年に会いましょう。","Let's meet year."
-97,"土曜日","どようび",Saturday,noun,"Time & Dates",100,"土曜日に会いましょう。","Let's meet Saturday."
-98,"七日","なのか","seven days; seventh day (of the month)",noun,"Time & Dates",100,"七日に会いましょう。","Let's meet seven days."
-99,"日曜日","にちようび",Sunday,noun,"Time & Dates",100,"日曜日に会いましょう。","Let's meet Sunday."
-100,"初めて","はじめて","for the first time",noun,"Time & Dates",100,"初めてに会いましょう。","Let's meet for the first time."
-101,"二十日","はつか","twenty days, twentieth (day of the month)",noun,"Time & Dates",100,"二十日に会いましょう。","Let's meet twenty days."
-102,"晩","ばん",evening,noun,"Time & Dates",100,"晩に会いましょう。","Let's meet evening."
-103,"晩御飯","ばんごはん","dinner, evening meal",noun,"Time & Dates",100,"晩御飯に会いましょう。","Let's meet dinner."
-104,"一月","ひとつき","one month",noun,"Time & Dates",100,"一月に会いましょう。","Let's meet one month."
-105,"暇","ひま","free time, leisure",noun,"Time & Dates",100,"暇に会いましょう。","Let's meet free time."
-106,"二日","ふつか","two days; second day of the month",noun,"Time & Dates",100,"二日に会いましょう。","Let's meet two days."
-107,"毎朝","まいあさ","every morning",noun,"Time & Dates",100,"毎朝に会いましょう。","Let's meet every morning."
-108,"毎月","まいげつ; まいつき","every month, monthly",noun,"Time & Dates",100,"毎月に会いましょう。","Let's meet every month."
-109,"毎週","まいしゅう","every week",noun,"Time & Dates",100,"毎週に会いましょう。","Let's meet every week."
-110,"毎日","まいにち","every day",noun,"Time & Dates",100,"毎日に会いましょう。","Let's meet every day."
-111,"毎年","まいねん; まいとし","every year, yearly, annually",noun,"Time & Dates",100,"毎年に会いましょう。","Let's meet every year."
-112,"毎晩","まいばん","every night",noun,"Time & Dates",100,"毎晩に会いましょう。","Let's meet every night."
-113,"前","まえ","before, in front",noun,"Time & Dates",100,"前に会いましょう。","Let's meet before."
-114,"三日","みっか","three days, third day of the month",noun,"Time & Dates",100,"三日に会いましょう。","Let's meet three days."
-115,"六日","むいか","six days; sixth day of month",noun,"Time & Dates",100,"六日に会いましょう。","Let's meet six days."
-116,"木曜日","もくようび",Thursday,noun,"Time & Dates",100,"木曜日に会いましょう。","Let's meet Thursday."
-117,"休み","やすみ","holiday; day off; absence",noun,"Time & Dates",100,"休みに会いましょう。","Let's meet holiday."
-118,"夕方","ゆうがた","late afternoon (typically just before dinner time), evening",adverb,"Time & Dates",100,"夕方に会いましょう。","Let's meet late afternoon (typically just before dinner time)."
-119,"夕飯","ゆうはん","dinner, supper, evening meal",noun,"Time & Dates",100,"夕飯に会いましょう。","Let's meet dinner."
-120,"昨夜","ゆうべ","last night",noun,"Time & Dates",100,"昨夜に会いましょう。","Let's meet last night."
-121,"八日","ようか","eight days; eighth day of the month",noun,"Time & Dates",100,"八日に会いましょう。","Let's meet eight days."
-122,"よく","よく","frequently, often (much); well, skillfully",adverb,"Time & Dates",100,"よくに会いましょう。","Let's meet frequently."
-123,"四日","よっか","four days; fourth day of the month",noun,"Time & Dates",100,"四日に会いましょう。","Let's meet four days."
-124,"夜","よる","evening, night",noun,"Time & Dates",100,"夜に会いましょう。","Let's meet evening."
-125,"来月","らいげつ","next month",noun,"Time & Dates",100,"来月に会いましょう。","Let's meet next month."
-126,"来週","らいしゅう","next week",noun,"Time & Dates",100,"来週に会いましょう。","Let's meet next week."
-127,"来年","らいねん","next year",noun,"Time & Dates",100,"来年に会いましょう。","Let's meet next year."
-128,"～月","～がつ","month of year",expression,"Time & Dates",100,"～月に会いましょう。","Let's meet month of year."
-129,"～ころ; ～ごろ","～ころ; ～ごろ","about, toward, approximately (time)",expression,"Time & Dates",100,"～ころ; ～ごろに会いましょう。","Let's meet about."
-130,"～時","～じ","~ o'clock (time)",expression,"Time & Dates",100,"～時に会いましょう。","Let's meet ~ oclock (time)."
-131,"～ずつ","～ずつ","at a time",expression,"Time & Dates",100,"～ずつに会いましょう。","Let's meet at a time."
-132,"～日","～にち","~ day of the month, for ~ days",expression,"Time & Dates",100,"～日に会いましょう。","Let's meet ~ day of the month."
-133,"あなた","あなた",you,noun,"People & Family",100,"あの人はあなたです。","That person is the you."
-134,"兄","あに","(my) older brother (humble)",noun,"People & Family",100,"あの人は兄です。","That person is the (my) older brother (humble)."
-135,"姉","あね","(my) older sister (humble)",noun,"People & Family",100,"あの人は姉です。","That person is the (my) older sister (humble)."
-136,"ありがとう","ありがとう","Thank you",noun,"People & Family",100,"あの人はありがとうです。","That person is the Thank you."
-137,"ありがとうございます","ありがとうございます","Thank you (polite)",noun,"People & Family",100,"あの人はありがとうございますです。","That person is the Thank you (polite)."
-138,"いかが","いかが","how, in what way",noun,"People & Family",100,"あの人はいかがです。","That person is the how."
-139,"医者","いしゃ","doctor; physician",noun,"People & Family",100,"あの人は医者です。","That person is the doctor."
-140,"妹","いもうと","younger sister (humble)",noun,"People & Family",100,"あの人は妹です。","That person is the younger sister (humble)."
-141,"お母さん","おかあさん","mother (formal)",noun,"People & Family",100,"あの人はお母さんです。","That person is the mother (formal)."
-142,"おじいさん","おじいさん","grandfather, male senior citizen",noun,"People & Family",100,"あの人はおじいさんです。","That person is the grandfather."
-143,"伯父; 叔父さん","おじさん","uncle, middle-aged man",noun,"People & Family",100,"あの人は伯父; 叔父さんです。","That person is the uncle."
-144,"お父さん","おとうさん","father (formal)",noun,"People & Family",100,"あの人はお父さんです。","That person is the father (formal)."
-145,"弟","おとうと","younger brother",noun,"People & Family",100,"あの人は弟です。","That person is the younger brother."
-146,"男","おとこ","man, male",noun,"People & Family",100,"あの人は男です。","That person is the man."
-147,"男の子","おとこのこ",boy,noun,"People & Family",100,"あの人は男の子です。","That person is the boy."
-148,"同じ","おなじ","same, identical",noun,"People & Family",100,"あの人は同じです。","That person is the same."
-149,"お兄さん","おにいさん","(someone else's) older brother (formal)",noun,"People & Family",100,"あの人はお兄さんです。","That person is the (someone elses) older brother (formal)."
-150,"お姉さん","おねえさん","older sister (formal)",noun,"People & Family",100,"あの人はお姉さんです。","That person is the older sister (formal)."
-151,"おばあさん","おばあさん","grandmother, female senior-citizen",noun,"People & Family",100,"あの人はおばあさんです。","That person is the grandmother."
-152,"伯母さん; 叔母さん","おばさん",aunt,noun,"People & Family",100,"あの人は伯母さん; 叔母さんです。","That person is the aunt."
-153,"女","おんな","woman, female",noun,"People & Family",100,"あの人は女です。","That person is the woman."
-154,"女の子","おんなのこ",girl,noun,"People & Family",100,"あの人は女の子です。","That person is the girl."
-155,"家族","かぞく","family, members of a family",noun,"People & Family",100,"あの人は家族です。","That person is the family."
-156,"家庭","かてい","home; family",noun,"People & Family",100,"あの人は家庭です。","That person is the home."
-157,"学生","がくせい",student,noun,"People & Family",100,"あの人は学生です。","That person is the student."
-158,"こちら","こちら","this person (polite); this way (polite)",noun,"People & Family",100,"あの人はこちらです。","That person is the this person (polite)."
-159,"こっち","こっち","this person; this direction; this side",noun,"People & Family",100,"あの人はこっちです。","That person is the this person."
-160,"子供","こども",child(ren),noun,"People & Family",100,"あの人は子供です。","That person is the child(ren)."
-161,"質問","しつもん","question, inquiry",noun,"People & Family",100,"あの人は質問です。","That person is the question."
-162,"生徒","せいと","student; pupil",noun,"People & Family",100,"あの人は生徒です。","That person is the student."
-163,"先生","せんせい","teacher, professor; master; doctor",noun,"People & Family",100,"あの人は先生です。","That person is the teacher."
-164,"誰","だれ",who,noun,"People & Family",100,"あの人は誰です。","That person is the who."
-165,"父","ちち","(my) father",noun,"People & Family",100,"あの人は父です。","That person is the (my) father."
-166,"友達","ともだち",friend,noun,"People & Family",100,"あの人は友達です。","That person is the friend."
-167,"どう","どう","how, in what way",noun,"People & Family",100,"あの人はどうです。","That person is the how."
-168,"どういたしまして","どういたしまして","you're welcome",noun,"People & Family",100,"あの人はどういたしましてです。","That person is the youre welcome."
-169,"どうも","どうも","Thank you; somehow; no matter how hard one may try",noun,"People & Family",100,"あの人はどうもです。","That person is the Thank you."
-170,"どなた","どなた",who,noun,"People & Family",100,"あの人はどなたです。","That person is the who."
-171,"はじめまして","はじめまして","How do you do?",noun,"People & Family",100,"あの人ははじめましてです。","That person is the How do you do?."
-172,"母","はは","(my) mother",noun,"People & Family",100,"あの人は母です。","That person is the (my) mother."
-173,"人","ひと","man, person",noun,"People & Family",100,"あの人は人です。","That person is the man."
-174,"一人","ひとり","one person",noun,"People & Family",100,"あの人は一人です。","That person is the one person."
-175,"皆さん","みなさん","all of you, everyone",noun,"People & Family",100,"あの人は皆さんです。","That person is the all of you."
-176,"留学生","りゅうがくせい","international student",noun,"People & Family",100,"あの人は留学生です。","That person is the international student."
-177,"両親","りょうしん","parents (lit., both parents)",noun,"People & Family",100,"あの人は両親です。","That person is the parents (lit.."
-178,"足; 脚","あし","foot; leg",noun,"Body Parts",100,"足; 脚が痛いです。","My foot hurts."
-179,"頭","あたま",head,noun,"Body Parts",100,"頭が痛いです。","My head hurts."
-180,"いってきます","いってきます","Ill go and come back",noun,"Body Parts",100,"いってきますが痛いです。","My Ill go and come back hurts."
-181,"後ろ","うしろ","back, behind, rear",noun,"Body Parts",100,"後ろが痛いです。","My back hurts."
-182,"お腹","おなか",stomach,noun,"Body Parts",100,"お腹が痛いです。","My stomach hurts."
-183,"顔","かお","face (body part)",noun,"Body Parts",100,"顔が痛いです。","My face (body part) hurts."
-184,"体","からだ","body; health",noun,"Body Parts",100,"体が痛いです。","My body hurts."
-185,"口","くち","job opening; mouth",noun,"Body Parts",100,"口が痛いです。","My job opening hurts."
-186,"声","こえ",voice,noun,"Body Parts",100,"声が痛いです。","My voice hurts."
-187,"手","て",hand,noun,"Body Parts",100,"手が痛いです。","My hand hurts."
-188,"歯","は",tooth,noun,"Body Parts",100,"歯が痛いです。","My tooth hurts."
-189,"鼻","はな",nose,noun,"Body Parts",100,"鼻が痛いです。","My nose hurts."
-190,"左","ひだり","left hand side",noun,"Body Parts",100,"左が痛いです。","My left hand side hurts."
-191,"右","みぎ","right hand side",noun,"Body Parts",100,"右が痛いです。","My right hand side hurts."
-192,"耳","みみ",ear,noun,"Body Parts",100,"耳が痛いです。","My ear hurts."
-193,"目","め",eye(s),noun,"Body Parts",100,"目が痛いです。","My eye(s) hurts."
-194,"眼鏡","めがね","eye glasses",noun,"Body Parts",100,"眼鏡が痛いです。","My eye glasses hurts."
-195,"上着","うわぎ","coat, jacket",noun,Clothing,100,"新しい上着を買いました。","I bought new coat."
-196,"傘","かさ","umbrella, parasol",noun,Clothing,100,"新しい傘を買いました。","I bought new umbrella."
-197,"かばん","かばん","bag, basket",noun,Clothing,100,"新しいかばんを買いました。","I bought new bag."
-198,"靴","くつ","shoes, footwear",noun,Clothing,100,"新しい靴を買いました。","I bought new shoes."
-199,"靴下","くつした",socks,noun,Clothing,100,"新しい靴下を買いました。","I bought new socks."
-200,"服","ふく",clothes,noun,Clothing,100,"新しい服を買いました。","I bought new clothes."
-201,"帽子","ぼうし","hat; cap",noun,Clothing,100,"新しい帽子を買いました。","I bought new hat."
-202,"洋服","ようふく","Western-style clothes",noun,Clothing,100,"新しい洋服を買いました。","I bought new Western-style clothes."
-203,"コート","コート","coat; court (e.g., tennis)",noun,Clothing,100,"新しいコートを買いました。","I bought new coat."
-204,"シャツ","シャツ",shirt,noun,Clothing,100,"新しいシャツを買いました。","I bought new shirt."
-205,"スカート","スカート",skirt,noun,Clothing,100,"新しいスカートを買いました。","I bought new skirt."
-206,"ワイシャツ","ワイシャツ","shirt (lit: white shirt), business shirt",noun,Clothing,100,"新しいワイシャツを買いました。","I bought new shirt (lit: white shirt)."
-207,"朝御飯","あさごはん",breakfast,noun,"Food & Drink",100,"朝御飯が好きです。","I like breakfast."
-208,"飴","あめ","(hard) candy",noun,"Food & Drink",100,"飴が好きです。","I like (hard) candy."
-209,"お酒","おさけ","sake; alcohol",noun,"Food & Drink",100,"お酒が好きです。","I like sake."
-210,"お茶","おちゃ","(green) tea",noun,"Food & Drink",100,"お茶が好きです。","I like (green) tea."
-211,"お弁当","おべんとう","a boxed lunch",noun,"Food & Drink",100,"お弁当が好きです。","I like a boxed lunch."
-212,"牛肉","ぎゅうにく",beef,noun,"Food & Drink",100,"牛肉が好きです。","I like beef."
-213,"果物","くだもの",fruit,noun,"Food & Drink",100,"果物が好きです。","I like fruit."
-214,"紅茶","こうちゃ","black tea",noun,"Food & Drink",100,"紅茶が好きです。","I like black tea."
-215,"御飯","ごはん","rice (cooked); meal",noun,"Food & Drink",100,"御飯が好きです。","I like rice (cooked)."
-216,"砂糖","さとう",sugar,noun,"Food & Drink",100,"砂糖が好きです。","I like sugar."
-217,"塩","しお",salt,noun,"Food & Drink",100,"塩が好きです。","I like salt."
-218,"茶碗","ちゃわん","rice bowl",noun,"Food & Drink",100,"茶碗が好きです。","I like rice bowl."
-219,"鶏肉","とりにく","chicken meat",noun,"Food & Drink",100,"鶏肉が好きです。","I like chicken meat."
-220,"肉","にく",meat,noun,"Food & Drink",100,"肉が好きです。","I like meat."
-221,"飲み物","のみもの","drink, beverage",noun,"Food & Drink",100,"飲み物が好きです。","I like drink."
-222,"昼御飯","ひるごはん","lunch, midday meal",noun,"Food & Drink",100,"昼御飯が好きです。","I like lunch."
-223,"豚肉","ぶたにく",pork,noun,"Food & Drink",100,"豚肉が好きです。","I like pork."
-224,"野菜","やさい",vegetable,noun,"Food & Drink",100,"野菜が好きです。","I like vegetable."
-225,"カレー","カレー","curry (abbr. for curry and rice)",noun,"Food & Drink",100,"カレーが好きです。","I like curry (abbr. for curry and rice)."
-226,"コーヒー","コーヒー",coffee,noun,"Food & Drink",100,"コーヒーが好きです。","I like coffee."
-227,"パン","パン",bread,noun,"Food & Drink",100,"パンが好きです。","I like bread."
-228,"あそこ","あそこ","there, over there, that place",noun,"Places & Directions",100,"あそこに行きます。","I will go to the there."
-229,"あっち","あっち","over there",noun,"Places & Directions",100,"あっちに行きます。","I will go to the over there."
-230,"あの","あの","that over there; like that, that way; um...",noun,"Places & Directions",100,"あのに行きます。","I will go to the that over there."
-231,"あれ","あれ","that one (over there)",noun,"Places & Directions",100,"あれに行きます。","I will go to the that one (over there)."
-232,"家","いえ","house, home",noun,"Places & Directions",100,"家に行きます。","I will go to the house."
-233,"入口","いりぐち",entrance,noun,"Places & Directions",100,"入口に行きます。","I will go to the entrance."
-234,"上","うえ","above (up, top, etc.), over, on top of",noun,"Places & Directions",100,"上に行きます。","I will go to the above (up."
-235,"うち","うち","home; house; my place",noun,"Places & Directions",100,"うちに行きます。","I will go to the home."
-236,"駅","えき",station,noun,"Places & Directions",100,"駅に行きます。","I will go to the station."
-237,"外国","がいこく","foreign country; abroad",noun,"Places & Directions",100,"外国に行きます。","I will go to the foreign country."
-238,"北","きた",north,noun,"Places & Directions",100,"北に行きます。","I will go to the north."
-239,"銀行","ぎんこう",bank,noun,"Places & Directions",100,"銀行に行きます。","I will go to the bank."
-240,"国","くに","country; place of origin",noun,"Places & Directions",100,"国に行きます。","I will go to the country."
-241,"公園","こうえん","a park",noun,"Places & Directions",100,"公園に行きます。","I will go to a park."
-242,"ここ","ここ","here, this place",noun,"Places & Directions",100,"ここに行きます。","I will go to the here."
-243,"そこ","そこ","that place, there; bottom, sole",noun,"Places & Directions",100,"そこに行きます。","I will go to the that place."
-244,"そちら","そちら","over there",noun,"Places & Directions",100,"そちらに行きます。","I will go to the over there."
-245,"そっち","そっち","over there",noun,"Places & Directions",100,"そっちに行きます。","I will go to the over there."
-246,"外","そと","outside, exterior",noun,"Places & Directions",100,"外に行きます。","I will go to the outside."
-247,"そば","そば","near, close, beside; Japanese traditional buckwheat noodle",noun,"Places & Directions",100,"そばに行きます。","I will go to the near."
-248,"ただいま","ただいま","Im home",noun,"Places & Directions",100,"ただいまに行きます。","I will go to the Im home."
-249,"丁度","ちょうど","just, right, exactly",adverb,"Places & Directions",100,"丁度に行きます。","I will go to the just."
-250,"出口","でぐち","an exit",noun,"Places & Directions",100,"出口に行きます。","I will go to an exit."
-251,"戸","と","door (Japanese style)",noun,"Places & Directions",100,"戸に行きます。","I will go to the door (Japanese style)."
-252,"隣","となり","next to, next door to",noun,"Places & Directions",100,"隣に行きます。","I will go to the next to."
-253,"どこ","どこ","where, what place",noun,"Places & Directions",100,"どこに行きます。","I will go to the where."
-254,"どちら","どちら","which (one) (way); where (polite)",noun,"Places & Directions",100,"どちらに行きます。","I will go to the which (one) (way)."
-255,"中","なか","inside, middle, among",noun,"Places & Directions",100,"中に行きます。","I will go to the inside."
-256,"西","にし",west,noun,"Places & Directions",100,"西に行きます。","I will go to the west."
-257,"東","ひがし",east,noun,"Places & Directions",100,"東に行きます。","I will go to the east."
-258,"病院","びょういん",hospital,noun,"Places & Directions",100,"病院に行きます。","I will go to the hospital."
-259,"部屋","へや","a room",noun,"Places & Directions",100,"部屋に行きます。","I will go to a room."
-260,"町","まち","town; city",noun,"Places & Directions",100,"町に行きます。","I will go to the town."
-261,"窓","まど",window,noun,"Places & Directions",100,"窓に行きます。","I will go to the window."
-262,"店","みせ","store, shop",noun,"Places & Directions",100,"店に行きます。","I will go to the store."
-263,"南","みなみ",South,noun,"Places & Directions",100,"南に行きます。","I will go to the South."
-264,"向こう","むこう","beyond, over there",noun,"Places & Directions",100,"向こうに行きます。","I will go to the beyond."
-265,"アパート","アパート","apartment (abbr.)",noun,"Places & Directions",100,"アパートに行きます。","I will go to the apartment (abbr.)."
-266,"デパート","デパート","(abbr.) department store",noun,"Places & Directions",100,"デパートに行きます。","I will go to the (abbr.) department store."
-267,"トイレ","トイレ","bathroom; toilet",noun,"Places & Directions",100,"トイレに行きます。","I will go to the bathroom."
-268,"ドア","ドア","door (Western style)",noun,"Places & Directions",100,"ドアに行きます。","I will go to the door (Western style)."
-269,"ホテル","ホテル",hotel,noun,"Places & Directions",100,"ホテルに行きます。","I will go to the hotel."
-270,"レストラン","レストラン",restaurant,noun,"Places & Directions",100,"レストランに行きます。","I will go to the restaurant."
-271,"～前","～まえ","in front of ~",expression,"Places & Directions",100,"～前に行きます。","I will go to the in front of ~."
-272,"～屋","～や","~ shop",expression,"Places & Directions",100,"～屋に行きます。","I will go to the ~ shop."
-273,"鉛筆","えんぴつ",pencil,noun,"School & Work",100,"これはわたしの鉛筆です。","This is my pencil."
-274,"会社","かいしゃ","company, corporation",noun,"School & Work",100,"これはわたしの会社です。","This is my company."
-275,"角","かど","corner (e.g., desk, pavement)",noun,"School & Work",100,"これはわたしの角です。","This is my corner (e.g.."
-276,"紙","かみ",paper,noun,"School & Work",100,"これはわたしの紙です。","This is my paper."
-277,"学校","がっこう","a school",noun,"School & Work",100,"これはわたしの学校です。","This is my a school."
-278,"雑誌","ざっし","magazine, journal",noun,"School & Work",100,"これはわたしの雑誌です。","This is my magazine."
-279,"仕事","しごと","work, job, occupation, employment",noun,"School & Work",100,"これはわたしの仕事です。","This is my work."
-280,"宿題","しゅくだい",homework,noun,"School & Work",100,"これはわたしの宿題です。","This is my homework."
-281,"新聞","しんぶん",newspaper,noun,"School & Work",100,"これはわたしの新聞です。","This is my newspaper."
-282,"辞書","じしょ",dictionary,noun,"School & Work",100,"これはわたしの辞書です。","This is my dictionary."
-283,"字引","じびき",dictionary,noun,"School & Work",100,"これはわたしの字引です。","This is my dictionary."
-284,"授業","じゅぎょう","a class (of school)",noun,"School & Work",100,"これはわたしの授業です。","This is my a class (of school)."
-285,"大学","だいがく","college; university",noun,"School & Work",100,"これはわたしの大学です。","This is my college."
-286,"机","つくえ",desk,noun,"School & Work",100,"これはわたしの机です。","This is my desk."
-287,"図書館","としょかん",library,noun,"School & Work",100,"これはわたしの図書館です。","This is my library."
-288,"勉強","べんきょう (する)",study,noun,"School & Work",100,"これはわたしの勉強です。","This is my study."
-289,"本","ほん",book,noun,"School & Work",100,"これはわたしの本です。","This is my book."
-290,"郵便局","ゆうびんきょく","post office",noun,"School & Work",100,"これはわたしの郵便局です。","This is my post office."
-291,"クラス","クラス","a class",noun,"School & Work",100,"これはわたしのクラスです。","This is my a class."
-292,"テスト","テスト",test,noun,"School & Work",100,"これはわたしのテストです。","This is my test."
-293,"雨","あめ",rain,noun,"Nature & Animals",100,"それは雨ですね。","That is rain."
-294,"犬","いぬ",dog,noun,"Nature & Animals",100,"それは犬ですね。","That is dog."
-295,"海","うみ","sea, beach",noun,"Nature & Animals",100,"それは海ですね。","That is sea."
-296,"風","かぜ","wind, breeze",noun,"Nature & Animals",100,"それは風ですね。","That is wind."
-297,"花瓶","かびん","(flower) vase",noun,"Nature & Animals",100,"それは花瓶ですね。","That is (flower) vase."
-298,"川; 河","かわ",river,noun,"Nature & Animals",100,"それは川; 河ですね。","That is river."
-299,"木","き","tree, wood, timber",noun,"Nature & Animals",100,"それは木ですね。","That is tree."
-300,"曇り","くもり","cloudiness, cloudy weather",noun,"Nature & Animals",100,"それは曇りですね。","That is cloudiness."
-301,"魚","さかな",fish,noun,"Nature & Animals",100,"それは魚ですね。","That is fish."
-302,"空","そら",sky,noun,"Nature & Animals",100,"それは空ですね。","That is sky."
-303,"天気","てんき",weather,noun,"Nature & Animals",100,"それは天気ですね。","That is weather."
-304,"鳥","とり","chicken (lit., bird)",noun,"Nature & Animals",100,"それは鳥ですね。","That is chicken (lit.."
-305,"動物","どうぶつ",animal,noun,"Nature & Animals",100,"それは動物ですね。","That is animal."
-306,"猫","ねこ",cat,noun,"Nature & Animals",100,"それは猫ですね。","That is cat."
-307,"花","はな",flower,noun,"Nature & Animals",100,"それは花ですね。","That is flower."
-308,"晴れ","はれ","clear (sunny) weather",noun,"Nature & Animals",100,"それは晴れですね。","That is clear (sunny) weather."
-309,"水","みず",water,noun,"Nature & Animals",100,"それは水ですね。","That is water."
-310,"山","やま",mountain,noun,"Nature & Animals",100,"それは山ですね。","That is mountain."
-311,"雪","ゆき",snow,noun,"Nature & Animals",100,"それは雪ですね。","That is snow."
-312,"ああ","ああ","Ah!, Oh!",noun,"Things & Objects",100,"これはああです。","This is the Ah!."
-313,"アイスクリーム","あいすくりーむ","ice cream",noun,"Things & Objects",100,"これはアイスクリームです。","This is the ice cream."
-314,"青","あお",blue,noun,"Things & Objects",100,"これは青です。","This is the blue."
-315,"赤","あか",red,noun,"Things & Objects",100,"これは赤です。","This is the red."
-316,"秋","あき","fall (season)",noun,"Things & Objects",100,"これは秋です。","This is the fall (season)."
-317,"あちら","あちら","this way (polite)",noun,"Things & Objects",100,"これはあちらです。","This is the this way (polite)."
-318,"後","あと","afterwards (later); in the future; the rest; since then",noun,"Things & Objects",100,"これは後です。","This is the afterwards (later)."
-319,"いくつ","いくつ","how many, how old",noun,"Things & Objects",100,"これはいくつです。","This is the how many."
-320,"いくら","いくら","how much, how many",noun,"Things & Objects",100,"これはいくらです。","This is the how much."
-321,"池","いけ",pond,noun,"Things & Objects",100,"これは池です。","This is the pond."
-322,"椅子","いす",chair,noun,"Things & Objects",100,"これは椅子です。","This is the chair."
-323,"一番","いちばん","best (most), first, number one",noun,"Things & Objects",100,"これは一番です。","This is the best (most)."
-324,"一緒","いっしょ",together,noun,"Things & Objects",100,"これは一緒です。","This is the together."
-325,"いつ","いつ",when,noun,"Things & Objects",100,"これはいつです。","This is the when."
-326,"五つ","いつつ","five things",noun,"Things & Objects",100,"これは五つです。","This is the five things."
-327,"意味","いみ","meaning, significance",noun,"Things & Objects",100,"これは意味です。","This is the meaning."
-328,"嫌","いや","disagreeable, detestable, unpleasant",noun,"Things & Objects",100,"これは嫌です。","This is the disagreeable."
-329,"色","いろ",color,noun,"Things & Objects",100,"これは色です。","This is the color."
-330,"色々","いろいろ",various,noun,"Things & Objects",100,"これは色々です。","This is the various."
-331,"インターネット","いんたーねっと",internet,noun,"Things & Objects",100,"これはインターネットです。","This is the internet."
-332,"歌","うた","a song",noun,"Things & Objects",100,"これは歌です。","This is a song."
-333,"絵","え","a painting; a picture; a drawing",noun,"Things & Objects",100,"これは絵です。","This is a painting."
-334,"エアコン","えあこん","air conditioner",noun,"Things & Objects",100,"これはエアコンです。","This is the air conditioner."
-335,"映画","えいが","movie, film",noun,"Things & Objects",100,"これは映画です。","This is the movie."
-336,"映画館","えいがかん","movie theater, cinema",noun,"Things & Objects",100,"これは映画館です。","This is the movie theater."
-337,"英語","えいご","English (language)",noun,"Things & Objects",100,"これは英語です。","This is the English (language)."
-338,"大きな","おおきな",big,noun,"Things & Objects",100,"これは大きなです。","This is the big."
-339,"お菓子","おかし","confections, sweets, snack",noun,"Things & Objects",100,"これはお菓子です。","This is the confections."
-340,"お金","おかね",money,noun,"Things & Objects",100,"これはお金です。","This is the money."
-341,"奥さん","おくさん","(someone else's) wife (hon.)",noun,"Things & Objects",100,"これは奥さんです。","This is the (someone elses) wife (hon.)."
-342,"お皿","おさら","plate, dish",noun,"Things & Objects",100,"これはお皿です。","This is the plate."
-343,"大人","おとな",adult,noun,"Things & Objects",100,"これは大人です。","This is the adult."
-344,"お風呂","おふろ","a bath",noun,"Things & Objects",100,"これはお風呂です。","This is a bath."
-345,"おまわりさん","おまわりさん","policeman (friendly term)",noun,"Things & Objects",100,"これはおまわりさんです。","This is the policeman (friendly term)."
-346,"おめでとう","おめでとう",congratulations,noun,"Things & Objects",100,"これはおめでとうです。","This is the congratulations."
-347,"音楽","おんがく",Music,noun,"Things & Objects",100,"これは音楽です。","This is the Music."
-348,"階段","かいだん",stairs,noun,"Things & Objects",100,"これは階段です。","This is the stairs."
-349,"買い物","かいもの",shopping,noun,"Things & Objects",100,"これは買い物です。","This is the shopping."
-350,"鍵","かぎ","a lock; a key",noun,"Things & Objects",100,"これは鍵です。","This is a lock."
-351,"風邪","かぜ","cold, flu",noun,"Things & Objects",100,"これは風邪です。","This is the cold."
-352,"片仮名","かたかな",katakana,noun,"Things & Objects",100,"これは片仮名です。","This is the katakana."
-353,"漢字","かんじ","kanji; Chinese character",noun,"Things & Objects",100,"これは漢字です。","This is the kanji."
-354,"外国人","がいこくじん",foreigner,noun,"Things & Objects",100,"これは外国人です。","This is the foreigner."
-355,"黄色","きいろ",yellow,noun,"Things & Objects",100,"これは黄色です。","This is the yellow."
-356,"喫茶店","きっさてん","café",noun,"Things & Objects",100,"これは喫茶店です。","This is the café."
-357,"切手","きって","postal (postage) stamps",noun,"Things & Objects",100,"これは切手です。","This is the postal (postage) stamps."
-358,"切符","きっぷ","a ticket",noun,"Things & Objects",100,"これは切符です。","This is a ticket."
-359,"教室","きょうしつ",classroom,noun,"Things & Objects",100,"これは教室です。","This is the classroom."
-360,"兄弟","きょうだい","siblings (humble), brothers and sisters",noun,"Things & Objects",100,"これは兄弟です。","This is the siblings (humble)."
-361,"綺麗","きれい","pretty, clean, tidy",noun,"Things & Objects",100,"これは綺麗です。","This is the pretty."
-362,"牛乳","ぎゅうにゅう",milk,noun,"Things & Objects",100,"これは牛乳です。","This is the milk."
-363,"薬","くすり",medicine,noun,"Things & Objects",100,"これは薬です。","This is the medicine."
-364,"車","くるま","car, vehicle",noun,"Things & Objects",100,"これは車です。","This is the car."
-365,"黒","くろ",black,noun,"Things & Objects",100,"これは黒です。","This is the black."
-366,"警官","けいかん","police officer",noun,"Things & Objects",100,"これは警官です。","This is the police officer."
-367,"結婚","けっこん (する)","marriage (get married)",noun,"Things & Objects",100,"これは結婚です。","This is the marriage (get married)."
-368,"元気","げんき","health(y), energetic",noun,"Things & Objects",100,"これは元気です。","This is the health(y)."
-369,"交差点","こうさてん",intersection,noun,"Things & Objects",100,"これは交差点です。","This is the intersection."
-370,"交番","こうばん","police box",noun,"Things & Objects",100,"これは交番です。","This is the police box."
-371,"九つ","ここのつ","nine things",noun,"Things & Objects",100,"これは九つです。","This is the nine things."
-372,"言葉","ことば","language; word(s); expression(s)",noun,"Things & Objects",100,"これは言葉です。","This is the language."
-373,"この","この",this,noun,"Things & Objects",100,"これはこのです。","This is the this."
-374,"これ","これ","this one",noun,"Things & Objects",100,"これはこれです。","This is the this one."
-375,"こんな","こんな","such, like this",noun,"Things & Objects",100,"これはこんなです。","This is the such."
-376,"財布","さいふ",wallet,noun,"Things & Objects",100,"これは財布です。","This is the wallet."
-377,"先","さき","future; recent, previous",noun,"Things & Objects",100,"これは先です。","This is the future."
-378,"作文","さくぶん","essay; composition",noun,"Things & Objects",100,"これは作文です。","This is the essay."
-379,"さようなら","さようなら",Goodbye,noun,"Things & Objects",100,"これはさようならです。","This is the Goodbye."
-380,"散歩","さんぽ (する)","walk, stroll",noun,"Things & Objects",100,"これは散歩です。","This is the walk."
-381,"しかし","しかし","however; but",noun,"Things & Objects",100,"これはしかしです。","This is the however."
-382,"静か","しずか","quiet, calm",noun,"Things & Objects",100,"これは静かです。","This is the quiet."
-383,"下","した","under, below, beneath",noun,"Things & Objects",100,"これは下です。","This is the under."
-384,"写真","しゃしん","a picture; a photograph",noun,"Things & Objects",100,"これは写真です。","This is a picture."
-385,"醤油","しょうゆ","soy sauce",noun,"Things & Objects",100,"これは醤油です。","This is the soy sauce."
-386,"食堂","しょくどう","cafeteria, dining hall",noun,"Things & Objects",100,"これは食堂です。","This is the cafeteria."
-387,"白","しろ",white,noun,"Things & Objects",100,"これは白です。","This is the white."
-388,"自転車","じてんしゃ",bicycle,noun,"Things & Objects",100,"これは自転車です。","This is the bicycle."
-389,"自動車","じどうしゃ",automobile,noun,"Things & Objects",100,"これは自動車です。","This is the automobile."
-390,"自分","じぶん","myself, oneself",noun,"Things & Objects",100,"これは自分です。","This is the myself."
-391,"じゃ; じゃあ","じゃ; じゃあ","well, well then",noun,"Things & Objects",100,"これはじゃ; じゃあです。","This is the well."
-392,"上手","じょうず","be good at, skillful",noun,"Things & Objects",100,"これは上手です。","This is the be good at."
-393,"丈夫","じょうぶ","strong, solid, durable",noun,"Things & Objects",100,"これは丈夫です。","This is the strong."
-394,"好き","すき","liking, fondness, love",noun,"Things & Objects",100,"これは好きです。","This is the liking."
-395,"すぐに","すぐに","immediately, soon",adverb,"Things & Objects",100,"これはすぐにです。","This is the immediately."
-396,"少し","すこし","little, few",noun,"Things & Objects",100,"これは少しです。","This is the little."
-397,"スマホ","すまほ",smartphone,noun,"Things & Objects",100,"これはスマホです。","This is the smartphone."
-398,"スマートフォン","すまーとふぉん",smartphone,noun,"Things & Objects",100,"これはスマートフォンです。","This is the smartphone."
-399,"スーパー","すーぱー",supermarket,noun,"Things & Objects",100,"これはスーパーです。","This is the supermarket."
-400,"背","せい","(one's) height, stature",noun,"Things & Objects",100,"これは背です。","This is the (ones) height."
-401,"石鹸","せっけん",soap,noun,"Things & Objects",100,"これは石鹸です。","This is the soap."
-402,"背広","せびろ","men's suit",noun,"Things & Objects",100,"これは背広です。","This is the mens suit."
-403,"洗濯","せんたく","washing, laundry",noun,"Things & Objects",100,"これは洗濯です。","This is the washing."
-404,"全部","ぜんぶ","all, entire, whole",noun,"Things & Objects",100,"これは全部です。","This is the all."
-405,"そうして; そして","そうして; そして","and, like that",noun,"Things & Objects",100,"これはそうして; そしてです。","This is the and."
-406,"掃除","そうじ (する)","cleaning, sweeping",noun,"Things & Objects",100,"これは掃除です。","This is the cleaning."
-407,"その","その",that,noun,"Things & Objects",100,"これはそのです。","This is the that."
-408,"それ","それ","that one",noun,"Things & Objects",100,"これはそれです。","This is the that one."
-409,"それでは","それでは","in that situation, well then...",noun,"Things & Objects",100,"これはそれではです。","This is the in that situation."
-410,"大使館","たいしかん",embassy,noun,"Things & Objects",100,"これは大使館です。","This is the embassy."
-411,"大切","たいせつ",important,noun,"Things & Objects",100,"これは大切です。","This is the important."
-412,"大変","たいへん","very; difficult, hard",adverb,"Things & Objects",100,"これは大変です。","This is the very."
-413,"沢山","たくさん","many, much",noun,"Things & Objects",100,"これは沢山です。","This is the many."
-414,"たて","たて","length, height",noun,"Things & Objects",100,"これはたてです。","This is the length."
-415,"建物","たてもの",building,noun,"Things & Objects",100,"これは建物です。","This is the building."
-416,"たばこ","たばこ","tobacco, cigarettes",noun,"Things & Objects",100,"これはたばこです。","This is the tobacco."
-417,"多分","たぶん","perhaps, probably, maybe",noun,"Things & Objects",100,"これは多分です。","This is the perhaps."
-418,"食べ物","たべもの",food,noun,"Things & Objects",100,"これは食べ物です。","This is the food."
-419,"卵","たまご",egg,noun,"Things & Objects",100,"これは卵です。","This is the egg."
-420,"誕生日","たんじょうび",birthday,noun,"Things & Objects",100,"これは誕生日です。","This is the birthday."
-421,"大好き","だいすき","very like-able, like very much",adverb,"Things & Objects",100,"これは大好きです。","This is the very like-able."
-422,"台所","だいどころ",kitchen,noun,"Things & Objects",100,"これは台所です。","This is the kitchen."
-423,"誰か","だれか",someone,noun,"Things & Objects",100,"これは誰かです。","This is the someone."
-424,"段々","だんだん","gradually, by degrees",noun,"Things & Objects",100,"これは段々です。","This is the gradually."
-425,"小さな","ちいさな","small, little",noun,"Things & Objects",100,"これは小さなです。","This is the small."
-426,"近く","ちかく","nearby; in the neighborhood",noun,"Things & Objects",100,"これは近くです。","This is the nearby."
-427,"地下鉄","ちかてつ","underground train, subway",noun,"Things & Objects",100,"これは地下鉄です。","This is the underground train."
-428,"地図","ちず","a map",noun,"Things & Objects",100,"これは地図です。","This is a map."
-429,"茶色","ちゃいろ",brown,noun,"Things & Objects",100,"これは茶色です。","This is the brown."
-430,"ちょっと","ちょっと","a little, somewhat; just a little, somewhat",adverb,"Things & Objects",100,"これはちょっとです。","This is a little."
-431,"次","つぎ",next,noun,"Things & Objects",100,"これは次です。","This is the next."
-432,"手紙","てがみ",letter,noun,"Things & Objects",100,"これは手紙です。","This is the letter."
-433,"では","では","then, well, so",noun,"Things & Objects",100,"これはではです。","This is the then."
-434,"でも","でも","but, however",noun,"Things & Objects",100,"これはでもです。","This is the but."
-435,"電気","でんき","electricity, (electric) light",noun,"Things & Objects",100,"これは電気です。","This is the electricity."
-436,"電車","でんしゃ","electric train",noun,"Things & Objects",100,"これは電車です。","This is the electric train."
-437,"電話","でんわ","a telephone",noun,"Things & Objects",100,"これは電話です。","This is a telephone."
-438,"時計","とけい","a watch; a clock",noun,"Things & Objects",100,"これは時計です。","This is a watch."
-439,"所","ところ",place,noun,"Things & Objects",100,"これは所です。","This is the place."
-440,"とても","とても","very (much), greatly, exceedingly",adverb,"Things & Objects",100,"これはとてもです。","This is the very (much)."
-441,"どうして","どうして","why, for what reason",noun,"Things & Objects",100,"これはどうしてです。","This is the why."
-442,"どっち","どっち","which one, which way",noun,"Things & Objects",100,"これはどっちです。","This is the which one."
-443,"どの","どの",which,noun,"Things & Objects",100,"これはどのです。","This is the which."
-444,"どれ","どれ","which one",noun,"Things & Objects",100,"これはどれです。","This is the which one."
-445,"どんな","どんな","what, what kind of",noun,"Things & Objects",100,"これはどんなです。","This is the what."
-446,"なぜ","なぜ","why (same as どうして)",noun,"Things & Objects",100,"これはなぜです。","This is the why (same as どうして)."
-447,"夏","なつ",summer,noun,"Things & Objects",100,"これは夏です。","This is the summer."
-448,"夏休み","なつやすみ","summer vacation",noun,"Things & Objects",100,"これは夏休みです。","This is the summer vacation."
-449,"七つ","ななつ","seven things",noun,"Things & Objects",100,"これは七つです。","This is the seven things."
-450,"名前","なまえ",name,noun,"Things & Objects",100,"これは名前です。","This is the name."
-451,"何","なん; なに",what,noun,"Things & Objects",100,"これは何です。","This is the what."
-452,"何～","なん～","what sort of ~",noun,"Things & Objects",100,"これは何～です。","This is the what sort of ~."
-453,"にぎやか","にぎやか","bustling, busy",noun,"Things & Objects",100,"これはにぎやかです。","This is the bustling."
-454,"荷物","にもつ","luggage; baggage",noun,"Things & Objects",100,"これは荷物です。","This is the luggage."
-455,"庭","にわ",garden,noun,"Things & Objects",100,"これは庭です。","This is the garden."
-456,"灰皿","はいざら",ashtray,noun,"Things & Objects",100,"これは灰皿です。","This is the ashtray."
-457,"葉書","はがき",postcard,noun,"Things & Objects",100,"これは葉書です。","This is the postcard."
-458,"箱","はこ",box,noun,"Things & Objects",100,"これは箱です。","This is the box."
-459,"橋","はし",bridge,noun,"Things & Objects",100,"これは橋です。","This is the bridge."
-460,"箸","はし",chopsticks,noun,"Things & Objects",100,"これは箸です。","This is the chopsticks."
-461,"始まる","はじまる","(something) begins",noun,"Things & Objects",100,"これは始まるです。","This is the (something) begins."
-462,"初め; 始め","はじめ","beginning, start",noun,"Things & Objects",100,"これは初め; 始めです。","This is the beginning."
-463,"二十歳","はたち","20 years old",noun,"Things & Objects",100,"これは二十歳です。","This is the 20 years old."
-464,"話","はなし","talk (chat), story",noun,"Things & Objects",100,"これは話です。","This is the talk (chat)."
-465,"春","はる",spring,noun,"Things & Objects",100,"これは春です。","This is the spring."
-466,"ハンバーガー","はんばーがー",hamburger,noun,"Things & Objects",100,"これはハンバーガーです。","This is the hamburger."
-467,"半分","はんぶん",half,noun,"Things & Objects",100,"これは半分です。","This is the half."
-468,"番号","ばんごう","number, series of digits",noun,"Things & Objects",100,"これは番号です。","This is the number."
-469,"パソコン","ぱそこん","personal computer",noun,"Things & Objects",100,"これはパソコンです。","This is the personal computer."
-470,"飛行機","ひこうき",airplane,noun,"Things & Objects",100,"これは飛行機です。","This is the airplane."
-471,"一つ","ひとつ","one thing",noun,"Things & Objects",100,"これは一つです。","This is the one thing."
-472,"平仮名","ひらがな",hiragana,noun,"Things & Objects",100,"これは平仮名です。","This is the hiragana."
-473,"病気","びょうき","illness; sickness",noun,"Things & Objects",100,"これは病気です。","This is the illness."
-474,"封筒","ふうとう",envelope,noun,"Things & Objects",100,"これは封筒です。","This is the envelope."
-475,"二つ","ふたつ","two things",noun,"Things & Objects",100,"これは二つです。","This is the two things."
-476,"二人","ふたり","two people",noun,"Things & Objects",100,"これは二人です。","This is the two people."
-477,"冬","ふゆ",winter,noun,"Things & Objects",100,"これは冬です。","This is the winter."
-478,"文章","ぶんしょう","sentence, text",noun,"Things & Objects",100,"これは文章です。","This is the sentence."
-479,"下手","へた","unskillful, poor",noun,"Things & Objects",100,"これは下手です。","This is the unskillful."
-480,"辺","へん","area, vicinity",noun,"Things & Objects",100,"これは辺です。","This is the area."
-481,"便利","べんり","convenient, handy",noun,"Things & Objects",100,"これは便利です。","This is the convenient."
-482,"本棚","ほんだな",bookshelf,noun,"Things & Objects",100,"これは本棚です。","This is the bookshelf."
-483,"本当","ほんとう","real, true",noun,"Things & Objects",100,"これは本当です。","This is the real."
-484,"また","また","and; furthermore",noun,"Things & Objects",100,"これはまたです。","This is the and."
-485,"まだ","まだ","yet, still, besides",adverb,"Things & Objects",100,"これはまだです。","This is the yet."
-486,"まっすぐ","まっすぐ","straight (ahead), direct",noun,"Things & Objects",100,"これはまっすぐです。","This is the straight (ahead)."
-487,"万年筆","まんねんひつ","fountain pen",noun,"Things & Objects",100,"これは万年筆です。","This is the fountain pen."
-488,"道","みち","road, street; way, directions",noun,"Things & Objects",100,"これは道です。","This is the road."
-489,"三つ","みっつ","three things",noun,"Things & Objects",100,"これは三つです。","This is the three things."
-490,"緑","みどり",green,noun,"Things & Objects",100,"これは緑です。","This is the green."
-491,"みんな","みんな","all, everyone, everybody",noun,"Things & Objects",100,"これはみんなです。","This is the all."
-492,"六つ","むっつ","six things",noun,"Things & Objects",100,"これは六つです。","This is the six things."
-493,"村","むら",village,noun,"Things & Objects",100,"これは村です。","This is the village."
-494,"もう","もう","already; again; more",adverb,"Things & Objects",100,"これはもうです。","This is the already."
-495,"もっと","もっと",more,noun,"Things & Objects",100,"これはもっとです。","This is the more."
-496,"物","もの","thing (concrete object)",noun,"Things & Objects",100,"これは物です。","This is the thing (concrete object)."
-497,"門","もん",gate,noun,"Things & Objects",100,"これは門です。","This is the gate."
-498,"問題","もんだい","a problem",noun,"Things & Objects",100,"これは問題です。","This is a problem."
-499,"八百屋","やおや",greengrocer,noun,"Things & Objects",100,"これは八百屋です。","This is the greengrocer."
-500,"八つ","やっつ","eight things",noun,"Things & Objects",100,"これは八つです。","This is the eight things."
-501,"有名","ゆうめい",famous,noun,"Things & Objects",100,"これは有名です。","This is the famous."
-502,"ゆっくりと","ゆっくりと","slowly, at ease",noun,"Things & Objects",100,"これはゆっくりとです。","This is the slowly."
-503,"横","よこ","beside; side; width",noun,"Things & Objects",100,"これは横です。","This is the beside."
-504,"四つ","よっつ","four things",noun,"Things & Objects",100,"これは四つです。","This is the four things."
-505,"りっぱ","りっぱ","splendid, fine",noun,"Things & Objects",100,"これはりっぱです。","This is the splendid."
-506,"料理","りょうり","cooking; cuisine",noun,"Things & Objects",100,"これは料理です。","This is the cooking."
-507,"旅行","りょこう","travel, trip",noun,"Things & Objects",100,"これは旅行です。","This is the travel."
-508,"冷蔵庫","れいぞうこ",refrigerator,noun,"Things & Objects",100,"これは冷蔵庫です。","This is the refrigerator."
-509,"練習","れんしゅう (する)","(to) practice",noun,"Things & Objects",100,"これは練習です。","This is the (to) practice."
-510,"廊下","ろうか",corridor,noun,"Things & Objects",100,"これは廊下です。","This is the corridor."
-511,"エレベーター","エレベーター",elevator,noun,"Things & Objects",100,"これはエレベーターです。","This is the elevator."
-512,"カップ","カップ",cup,noun,"Things & Objects",100,"これはカップです。","This is the cup."
-513,"カメラ","カメラ",camera,noun,"Things & Objects",100,"これはカメラです。","This is the camera."
-514,"カレンダー","カレンダー",calendar,noun,"Things & Objects",100,"これはカレンダーです。","This is the calendar."
-515,"キロ; キログラム","キロ; キログラム","(abbr.) kilo (kilogram)",noun,"Things & Objects",100,"これはキロ; キログラムです。","This is the (abbr.) kilo (kilogram)."
-516,"キロ; キロメートル","キロ; キロメートル","(abbr.) kilo (kilometer)",noun,"Things & Objects",100,"これはキロ; キロメートルです。","This is the (abbr.) kilo (kilometer)."
-517,"ギター","ギター",guitar,noun,"Things & Objects",100,"これはギターです。","This is the guitar."
-518,"グラム","グラム",gram,noun,"Things & Objects",100,"これはグラムです。","This is the gram."
-519,"コップ","コップ","a tumbler; a glass",noun,"Things & Objects",100,"これはコップです。","This is a tumbler."
-520,"シャワー","シャワー",shower,noun,"Things & Objects",100,"これはシャワーです。","This is the shower."
-521,"ストーブ","ストーブ","heater (lit: stove)",noun,"Things & Objects",100,"これはストーブです。","This is the heater (lit: stove)."
-522,"スプーン","スプーン",spoon,noun,"Things & Objects",100,"これはスプーンです。","This is the spoon."
-523,"スポーツ","スポーツ",sport(s),noun,"Things & Objects",100,"これはスポーツです。","This is the sport(s)."
-524,"ズボン","ズボン",trousers,noun,"Things & Objects",100,"これはズボンです。","This is the trousers."
-525,"セーター","セーター",sweater,noun,"Things & Objects",100,"これはセーターです。","This is the sweater."
-526,"ゼロ","ゼロ",zero,noun,"Things & Objects",100,"これはゼロです。","This is the zero."
-527,"タクシー","タクシー",taxi,noun,"Things & Objects",100,"これはタクシーです。","This is the taxi."
-528,"テレビ","テレビ","television, TV",noun,"Things & Objects",100,"これはテレビです。","This is the television."
-529,"テーブル","テーブル",table,noun,"Things & Objects",100,"これはテーブルです。","This is the table."
-530,"テープ","テープ",tape,noun,"Things & Objects",100,"これはテープです。","This is the tape."
-531,"テープレコーダー","テープレコーダー","tape recorder",noun,"Things & Objects",100,"これはテープレコーダーです。","This is the tape recorder."
-532,"ナイフ","ナイフ",knife,noun,"Things & Objects",100,"これはナイフです。","This is the knife."
-533,"ニュース","ニュース",news,noun,"Things & Objects",100,"これはニュースです。","This is the news."
-534,"ネクタイ","ネクタイ","tie, necktie",noun,"Things & Objects",100,"これはネクタイです。","This is the tie."
-535,"ハンカチ","ハンカチ",handkerchief,noun,"Things & Objects",100,"これはハンカチです。","This is the handkerchief."
-536,"バス","バス","bus; bath; bass",noun,"Things & Objects",100,"これはバスです。","This is the bus."
-537,"バター","バター",butter,noun,"Things & Objects",100,"これはバターです。","This is the butter."
-538,"パーティー","パーティー","a party",noun,"Things & Objects",100,"これはパーティーです。","This is a party."
-539,"フィルム","フィルム","film (roll of)",noun,"Things & Objects",100,"これはフィルムです。","This is the film (roll of)."
-540,"フォーク","フォーク",fork,noun,"Things & Objects",100,"これはフォークです。","This is the fork."
-541,"プール","プール","swimming pool",noun,"Things & Objects",100,"これはプールです。","This is the swimming pool."
-542,"ベッド","ベッド",bed,noun,"Things & Objects",100,"これはベッドです。","This is the bed."
-543,"ペット","ペット",pet,noun,"Things & Objects",100,"これはペットです。","This is the pet."
-544,"ペン","ペン",pen,noun,"Things & Objects",100,"これはペンです。","This is the pen."
-545,"ページ","ページ","a page",noun,"Things & Objects",100,"これはページです。","This is a page."
-546,"ボタン","ボタン",button,noun,"Things & Objects",100,"これはボタンです。","This is the button."
-547,"ボールペン","ボールペン","ball-point pen",noun,"Things & Objects",100,"これはボールペンです。","This is the ball-point pen."
-548,"ポケット","ポケット",pocket,noun,"Things & Objects",100,"これはポケットです。","This is the pocket."
-549,"ポスト","ポスト","mailbox; post, position",noun,"Things & Objects",100,"これはポストです。","This is the mailbox."
-550,"マッチ","マッチ",match,noun,"Things & Objects",100,"これはマッチです。","This is the match."
-551,"メートル","メートル",meter,noun,"Things & Objects",100,"これはメートルです。","This is the meter."
-552,"ラジオ","ラジオ",radio,noun,"Things & Objects",100,"これはラジオです。","This is the radio."
-553,"ラジオカセ","ラジオカセ","radio cassette player",noun,"Things & Objects",100,"これはラジオカセです。","This is the radio cassette player."
-554,"レコード","レコード",record,noun,"Things & Objects",100,"これはレコードです。","This is the record."
-555,"青い","あおい",blue,adjective,Adjectives,100,"それは青いですね。","That is blue."
-556,"赤い","あかい",red,adjective,Adjectives,100,"それは赤いですね。","That is red."
-557,"暖かい","あたたかい",warm,adjective,Adjectives,100,"それは暖かいですね。","That is warm."
-558,"新しい","あたらしい",new,adjective,Adjectives,100,"それは新しいですね。","That is new."
-559,"熱い","あつい","hot (objects)",adjective,Adjectives,100,"それは熱いですね。","That is hot (objects)."
-560,"厚い","あつい","kind, warm(hearted), thick, deep",adjective,Adjectives,100,"それは厚いですね。","That is kind."
-561,"危ない","あぶない","dangerous, critical",adjective,Adjectives,100,"それは危ないですね。","That is dangerous."
-562,"甘い","あまい","generous, sweet",adjective,Adjectives,100,"それは甘いですね。","That is generous."
-563,"いい; よい","いい; よい",good,adjective,Adjectives,100,"それはいい; よいですね。","That is good."
-564,"忙しい","いそがしい","busy (people, days)",adjective,Adjectives,100,"それは忙しいですね。","That is busy (people."
-565,"痛い","いたい","hurt; painful; sore",adjective,Adjectives,100,"それは痛いですね。","That is hurt."
-566,"いってらっしゃい","いってらっしゃい","Please go and come back",adjective,Adjectives,100,"それはいってらっしゃいですね。","That is Please go and come back."
-567,"薄い","うすい","thin, weak",adjective,Adjectives,100,"それは薄いですね。","That is thin."
-568,"うるさい","うるさい","noisy; annoying",adjective,Adjectives,100,"それはうるさいですね。","That is noisy."
-569,"美味しい","おいしい","delicious, tasty",adjective,Adjectives,100,"それは美味しいですね。","That is delicious."
-570,"多い","おおい","many; there are a lot",adjective,Adjectives,100,"それは多いですね。","That is many."
-571,"大きい","おおきい","big, large",adjective,Adjectives,100,"それは大きいですね。","That is big."
-572,"おかえりなさい","おかえりなさい","Welcome home",adjective,Adjectives,100,"それはおかえりなさいですね。","That is Welcome home."
-573,"重い","おもい","heavy; serious",adjective,Adjectives,100,"それは重いですね。","That is heavy."
-574,"面白い","おもしろい","interesting, amusing",adjective,Adjectives,100,"それは面白いですね。","That is interesting."
-575,"おやすみなさい","おやすみなさい","Good night",adjective,Adjectives,100,"それはおやすみなさいですね。","That is Good night."
-576,"辛い","からい","hot and spicy; salty",adjective,Adjectives,100,"それは辛いですね。","That is hot and spicy."
-577,"軽い","かるい","light, non-serious, minor",adjective,Adjectives,100,"それは軽いですね。","That is light."
-578,"可愛い","かわいい","cute, adorable",adjective,Adjectives,100,"それは可愛いですね。","That is cute."
-579,"黄色い","きいろい",yellow,adjective,Adjectives,100,"それは黄色いですね。","That is yellow."
-580,"汚い","きたない","dirty, unclean, filthy",adjective,Adjectives,100,"それは汚いですね。","That is dirty."
-581,"嫌い","きらい",dislike,adjective,Adjectives,100,"それは嫌いですね。","That is dislike."
-582,"下さい","ください","(with te-form verb) please do for me",adjective,Adjectives,100,"それは下さいですね。","That is (with te-form verb) please do for me."
-583,"暗い","くらい","dark, gloomy",adjective,Adjectives,100,"それは暗いですね。","That is dark."
-584,"黒い","くろい","black; dark",adjective,Adjectives,100,"それは黒いですね。","That is black."
-585,"ごめんなさい","ごめんなさい","I'm sorry",adjective,Adjectives,100,"それはごめんなさいですね。","That is Im sorry."
-586,"白い","しろい",white,adjective,Adjectives,100,"それは白いですね。","That is white."
-587,"少ない","すくない","a little; a few",adjective,Adjectives,100,"それは少ないですね。","That is a little."
-588,"狭い","せまい","narrow; not spacious",adjective,Adjectives,100,"それは狭いですね。","That is narrow."
-589,"高い","たかい","tall, high; expensive",adjective,Adjectives,100,"それは高いですね。","That is tall."
-590,"楽しい","たのしい","enjoyable, fun",adjective,Adjectives,100,"それは楽しいですね。","That is enjoyable."
-591,"小さい","ちいさい","small, little",adjective,Adjectives,100,"それは小さいですね。","That is small."
-592,"近い","ちかい","near, close by, short",adjective,Adjectives,100,"それは近いですね。","That is near."
-593,"つまらない","つまらない","boring, dull; insignificant",adjective,Adjectives,100,"それはつまらないですね。","That is boring."
-594,"冷たい","つめたい","cold (things, people)",adjective,Adjectives,100,"それは冷たいですね。","That is cold (things."
-595,"強い","つよい","strong, powerful",adjective,Adjectives,100,"それは強いですね。","That is strong."
-596,"遠い","とおい","far (away), distant",adjective,Adjectives,100,"それは遠いですね。","That is far (away)."
-597,"ない","ない","there isn't, doesn't have",adjective,Adjectives,100,"それはないですね。","That is there isnt."
-598,"長い","ながい","long, lengthy",adjective,Adjectives,100,"それは長いですね。","That is long."
-599,"温い","ぬるい",lukewarm,adjective,Adjectives,100,"それは温いですね。","That is lukewarm."
-600,"早い","はやい",early,adjective,Adjectives,100,"それは早いですね。","That is early."
-601,"速い","はやい","fast, quick",adjective,Adjectives,100,"それは速いですね。","That is fast."
-602,"低い","ひくい","short, low",adjective,Adjectives,100,"それは低いですね。","That is short."
-603,"広い","ひろい","spacious; wide; broad",adjective,Adjectives,100,"それは広いですね。","That is spacious."
-604,"太い","ふとい","fat, thick",adjective,Adjectives,100,"それは太いですね。","That is fat."
-605,"細い","ほそい","thin, slender, fine",adjective,Adjectives,100,"それは細いですね。","That is thin."
-606,"丸い; 円い","まるい","round, circular",adjective,Adjectives,100,"それは丸い; 円いですね。","That is round."
-607,"短い","みじかい","short (length)",adjective,Adjectives,100,"それは短いですね。","That is short (length)."
-608,"難しい","むずかしい",difficult,adjective,Adjectives,100,"それは難しいですね。","That is difficult."
-609,"易しい","やさしい","easy, plain, simple",adjective,Adjectives,100,"それは易しいですね。","That is easy."
-610,"安い","やすい","inexpensive; cheap (things)",adjective,Adjectives,100,"それは安いですね。","That is inexpensive."
-611,"弱い","よわい",weak,adjective,Adjectives,100,"それは弱いですね。","That is weak."
-612,"若い","わかい",young,adjective,Adjectives,100,"それは若いですね。","That is young."
-613,"悪い","わるい","bad, sinful; inferior",adjective,Adjectives,100,"それは悪いですね。","That is bad."
-614,"～くらい; ぐらい","～くらい; ぐらい","approximate (quantity)",adjective,Adjectives,100,"それは～くらい; ぐらいですね。","That is approximate (quantity)."
-615,"会う","あう","to meet, to see",verb,Verbs,100,"毎日会う。","I meet every day."
-616,"明るい","あかるい","bright (in reference to personality or weather); cheerful",verb,Verbs,100,"毎日明るい。","I bright (in reference to personality or weather) every day."
-617,"開く","あく","to open, to become open",verb,Verbs,100,"毎日開く。","I open every day."
-618,"開ける","あける","to open (v.t.)",verb,Verbs,100,"毎日開ける。","I open (v.t.) every day."
-619,"上げる","あげる","to raise, to lift",verb,Verbs,100,"毎日上げる。","I raise every day."
-620,"遊ぶ","あそぶ","to play; to spend time pleasantly; to hang out",verb,Verbs,100,"毎日遊ぶ。","I play every day."
-621,"暑い","あつい","hot (in reference to weather), warm",verb,Verbs,100,"毎日暑い。","I hot (in reference to weather) every day."
-622,"浴びる","あびる","to bathe, to shower",verb,Verbs,100,"毎日浴びる。","I bathe every day."
-623,"洗う","あらう","to wash",verb,Verbs,100,"毎日洗う。","I wash every day."
-624,"在る","ある","to be, to have",verb,Verbs,100,"毎日在る。","I be every day."
-625,"有る","ある","to be, to have",verb,Verbs,100,"毎日有る。","I be every day."
-626,"歩く","あるく","to walk",verb,Verbs,100,"毎日歩く。","I walk every day."
-627,"言う","いう","to say",verb,Verbs,100,"毎日言う。","I say every day."
-628,"行く","いく; ゆく","to go",verb,Verbs,100,"毎日行く。","I go every day."
-629,"居る","いる","(humble) to be (animate), to exist",verb,Verbs,100,"毎日居る。","I (humble) to be (animate) every day."
-630,"要る","いる","to need",verb,Verbs,100,"毎日要る。","I need every day."
-631,"入れる","いれる","to put in",verb,Verbs,100,"毎日入れる。","I put in every day."
-632,"歌う","うたう","to sing",verb,Verbs,100,"毎日歌う。","I sing every day."
-633,"生まれる","うまれる","to be born",verb,Verbs,100,"毎日生まれる。","I be born every day."
-634,"売る","うる","to sell (v.t.)",verb,Verbs,100,"毎日売る。","I sell (v.t.) every day."
-635,"起きる","おきる","to get up (e.g., from sleeping); to happen",verb,Verbs,100,"毎日起きる。","I get up (e.g. every day."
-636,"置く","おく","to put; to lay; to place",verb,Verbs,100,"毎日置く。","I put every day."
-637,"教える","おしえる","to teach, to inform, to instruct",verb,Verbs,100,"毎日教える。","I teach every day."
-638,"押す","おす","to push, to press, to stamp (e.g., a passport)",verb,Verbs,100,"毎日押す。","I push every day."
-639,"遅い","おそい","slow; (to be) late",verb,Verbs,100,"毎日遅い。","I slow every day."
-640,"お手洗い","おてあらい","toilet, restroom, bathroom (lit., a place to wash one's hands)",verb,Verbs,100,"毎日お手洗い。","I toilet every day."
-641,"覚える","おぼえる","to learn, to commit to memory, to remember, to memorize",verb,Verbs,100,"毎日覚える。","I learn every day."
-642,"泳ぐ","およぐ","to swim",verb,Verbs,100,"毎日泳ぐ。","I swim every day."
-643,"降りる","おりる","to get off",verb,Verbs,100,"毎日降りる。","I get off every day."
-644,"終る","おわる","to finish, to close",verb,Verbs,100,"毎日終る。","I finish every day."
-645,"買う","かう","to buy",verb,Verbs,100,"毎日買う。","I buy every day."
-646,"返す","かえす","to return something",verb,Verbs,100,"毎日返す。","I return something every day."
-647,"帰る","かえる","to go back, to go home, to return",verb,Verbs,100,"毎日帰る。","I go back every day."
-648,"書く","かく","to write",verb,Verbs,100,"毎日書く。","I write every day."
-649,"掛ける","かける","to put on (e.g., glasses); to hang (e.g., on a wall)",verb,Verbs,100,"毎日掛ける。","I put on (e.g. every day."
-650,"かける","かける","to dial/call (e.g., phone); to sit down",verb,Verbs,100,"毎日かける。","I dial/call (e.g. every day."
-651,"貸す","かす","to lend",verb,Verbs,100,"毎日貸す。","I lend every day."
-652,"かぶる","かぶる","to wear, to put on (e.g., a hat on the head)",verb,Verbs,100,"毎日かぶる。","I wear every day."
-653,"借りる","かりる","to borrow, to owe",verb,Verbs,100,"毎日借りる。","I borrow every day."
-654,"消える","きえる","to vanish, to disappear",verb,Verbs,100,"毎日消える。","I vanish every day."
-655,"聞く","きく","to hear, to listen, to ask",verb,Verbs,100,"毎日聞く。","I hear every day."
-656,"切る","きる","to cut; to hang up (a phone)",verb,Verbs,100,"毎日切る。","I cut every day."
-657,"着る","きる","to put on (clothes above your waist); to wear",verb,Verbs,100,"毎日着る。","I put on (clothes above your waist) every day."
-658,"曇る","くもる","to become cloudy, to become dim",verb,Verbs,100,"毎日曇る。","I become cloudy every day."
-659,"来る","くる","to come",verb,Verbs,100,"毎日来る。","I come every day."
-660,"消す","けす","to erase, to delete, to turn off power",verb,Verbs,100,"毎日消す。","I erase every day."
-661,"玄関","げんかん","entrance (to a house or a building)",verb,Verbs,100,"毎日玄関。","I entrance (to a house or a building) every day."
-662,"答える","こたえる","to answer, to reply",verb,Verbs,100,"毎日答える。","I answer every day."
-663,"困る","こまる","to be bothered, to have difficulty",verb,Verbs,100,"毎日困る。","I be bothered every day."
-664,"咲く","さく","to bloom",verb,Verbs,100,"毎日咲く。","I bloom every day."
-665,"差す","さす","to raise (stretch out) hands, to raise (e.g., umbrella)",verb,Verbs,100,"毎日差す。","I raise (stretch out) hands every day."
-666,"寒い","さむい","cold (in reference to weather)",verb,Verbs,100,"毎日寒い。","I cold (in reference to weather) every day."
-667,"死ぬ","しぬ","to die",verb,Verbs,100,"毎日死ぬ。","I die every day."
-668,"閉まる","しまる","to close, to be closed",verb,Verbs,100,"毎日閉まる。","I close every day."
-669,"閉める","しめる","to close, to shut",verb,Verbs,100,"毎日閉める。","I close every day."
-670,"締める","しめる","to tie, to fasten, to tighten",verb,Verbs,100,"毎日締める。","I tie every day."
-671,"知る","しる","to know, to understand",verb,Verbs,100,"毎日知る。","I know every day."
-672,"吸う","すう","to breathe in, to suck",verb,Verbs,100,"毎日吸う。","I breathe in every day."
-673,"涼しい","すずしい","cool, refreshing (in reference to weather)",verb,Verbs,100,"毎日涼しい。","I cool every day."
-674,"住む","すむ","to reside, to live in",verb,Verbs,100,"毎日住む。","I reside every day."
-675,"する","する","to do, to try; to wear small items (e.g., necktie, watch, etc.)",verb,Verbs,100,"毎日する。","I do every day."
-676,"座る","すわる","to sit",verb,Verbs,100,"毎日座る。","I sit every day."
-677,"そう; そうです","そう; そうです","yes; appears, to be the case",verb,Verbs,100,"毎日そう; そうです。","I yes every day."
-678,"立つ","たつ","to stand up",verb,Verbs,100,"毎日立つ。","I stand up every day."
-679,"頼む","たのむ","to request, to ask (a favor)",verb,Verbs,100,"毎日頼む。","I request every day."
-680,"食べる","たべる","to eat",verb,Verbs,100,"毎日食べる。","I eat every day."
-681,"大丈夫","だいじょうぶ","It's ok (all right); No need to worry; Everything is under control",verb,Verbs,100,"毎日大丈夫。","I Its ok (all right) every day."
-682,"出す","だす","to take (something) out; to hand in (something)",verb,Verbs,100,"毎日出す。","I take (something) out every day."
-683,"違う","ちがう","to be different; to differ; wrong",verb,Verbs,100,"毎日違う。","I be different every day."
-684,"使う","つかう","to use",verb,Verbs,100,"毎日使う。","I use every day."
-685,"疲れる","つかれる","to get (become) tired; to become fatigued",verb,Verbs,100,"毎日疲れる。","I get (become) tired every day."
-686,"着く","つく","to arrive at, to reach",verb,Verbs,100,"毎日着く。","I arrive at every day."
-687,"作る","つくる","to make, to create",verb,Verbs,100,"毎日作る。","I make every day."
-688,"つける","つける","to turn on (e.g., a light); to take",verb,Verbs,100,"毎日つける。","I turn on (e.g. every day."
-689,"勤める","つとめる","to work (for)",verb,Verbs,100,"毎日勤める。","I work (for) every day."
-690,"出かける","でかける","to go out; to depart",verb,Verbs,100,"毎日出かける。","I go out every day."
-691,"できる","できる","to be able to (to accomplish)",verb,Verbs,100,"毎日できる。","I be able to (to accomplish) every day."
-692,"出る","でる","to appear, to leave",verb,Verbs,100,"毎日出る。","I appear every day."
-693,"飛ぶ","とぶ","to fly, to hop",verb,Verbs,100,"毎日飛ぶ。","I fly every day."
-694,"止まる","とまる","to come to a halt",verb,Verbs,100,"毎日止まる。","I come to a halt every day."
-695,"取る","とる","to take (a class); to get (a grade)",verb,Verbs,100,"毎日取る。","I take (a class) every day."
-696,"撮る","とる","to take (a photo), to make (a film)",verb,Verbs,100,"毎日撮る。","I take (a photo) every day."
-697,"鳴く","なく","to make sound (animal)",verb,Verbs,100,"毎日鳴く。","I make sound (animal) every day."
-698,"無くす","なくす","to lose something",verb,Verbs,100,"毎日無くす。","I lose something every day."
-699,"習う","ならう","to learn",verb,Verbs,100,"毎日習う。","I learn every day."
-700,"並ぶ","ならぶ","to line up, to stand in a line (v.i.)",verb,Verbs,100,"毎日並ぶ。","I line up every day."
-701,"並べる","ならべる","to put (things) side by side; to line up",verb,Verbs,100,"毎日並べる。","I put (things) side by side every day."
-702,"なる","なる","to become",verb,Verbs,100,"毎日なる。","I become every day."
-703,"脱ぐ","ぬぐ","to take off (clothes)",verb,Verbs,100,"毎日脱ぐ。","I take off (clothes) every day."
-704,"寝る","ねる","to sleep; to go to sleep; to go to bed",verb,Verbs,100,"毎日寝る。","I sleep every day."
-705,"登る","のぼる","to climb",verb,Verbs,100,"毎日登る。","I climb every day."
-706,"飲む","のむ","to drink",verb,Verbs,100,"毎日飲む。","I drink every day."
-707,"乗る","のる","to get on, to ride in, to board",verb,Verbs,100,"毎日乗る。","I get on every day."
-708,"入る","はいる","to enter, to contain, to hold",verb,Verbs,100,"毎日入る。","I enter every day."
-709,"はく","はく","to put on (items below your waist)",verb,Verbs,100,"毎日はく。","I put on (items below your waist) every day."
-710,"走る","はしる","to run",verb,Verbs,100,"毎日走る。","I run every day."
-711,"働く","はたらく","to work",verb,Verbs,100,"毎日働く。","I work every day."
-712,"話す","はなす","to speak",verb,Verbs,100,"毎日話す。","I speak every day."
-713,"貼る","はる","to post; to paste; to attach",verb,Verbs,100,"毎日貼る。","I post every day."
-714,"晴れる","はれる","to be sunny",verb,Verbs,100,"毎日晴れる。","I be sunny every day."
-715,"引く","ひく","to pull, to draw; subtract",verb,Verbs,100,"毎日引く。","I pull every day."
-716,"弾く","ひく","to play (a string instrument or piano)",verb,Verbs,100,"毎日弾く。","I play (a string instrument or piano) every day."
-717,"吹く","ふく","to blow (wind, etc.)",verb,Verbs,100,"毎日吹く。","I blow (wind every day."
-718,"降る","ふる","to precipitate, to fall (e.g., rain, snow, etc.)",verb,Verbs,100,"毎日降る。","I precipitate every day."
-719,"古い","ふるい","old (in reference to objects, not people), aged, ancient",verb,Verbs,100,"毎日古い。","I old (in reference to objects every day."
-720,"欲しい","ほしい","to want, in need of",verb,Verbs,100,"毎日欲しい。","I want every day."
-721,"曲る","まがる","to turn, to bend",verb,Verbs,100,"毎日曲る。","I turn every day."
-722,"まずい","まずい","terrible (in reference to food), unappetizing, unpleasant (taste)",verb,Verbs,100,"毎日まずい。","I terrible (in reference to food) every day."
-723,"待つ","まつ","to wait",verb,Verbs,100,"毎日待つ。","I wait every day."
-724,"磨く","みがく","to brush (teeth); to polish",verb,Verbs,100,"毎日磨く。","I brush (teeth) every day."
-725,"見せる","みせる","to show, to display",verb,Verbs,100,"毎日見せる。","I show every day."
-726,"見る","みる","to see, to look",verb,Verbs,100,"毎日見る。","I see every day."
-727,"持つ","もつ","to hold, to carry; to possess",verb,Verbs,100,"毎日持つ。","I hold every day."
-728,"休む","やすむ","to rest, to have a break, to get time off",verb,Verbs,100,"毎日休む。","I rest every day."
-729,"やる","やる","to do; to give (to pets, parents, siblings, etc.)",verb,Verbs,100,"毎日やる。","I do every day."
-730,"呼ぶ","よぶ","to call (one's name); to invite",verb,Verbs,100,"毎日呼ぶ。","I call (ones name) every day."
-731,"読む","よむ","to read",verb,Verbs,100,"毎日読む。","I read every day."
-732,"よろしくおねがいします","よろしくおねがいします","Nice to meet you",verb,Verbs,100,"毎日よろしくおねがいします。","I Nice to meet you every day."
-733,"分かる","わかる","to understand",verb,Verbs,100,"毎日分かる。","I understand every day."
-734,"忘れる","わすれる","to forget",verb,Verbs,100,"毎日忘れる。","I forget every day."
-735,"渡す","わたす","to hand (something) over (v.t.); to get across",verb,Verbs,100,"毎日渡す。","I hand (something) over (v.t.) every day."
-736,"渡る","わたる","to cross over, to go across",verb,Verbs,100,"毎日渡る。","I cross over every day."
-737,"コピーする","コピーする","to copy",verb,Verbs,100,"毎日コピーする。","I copy every day."
-738,"～すぎ","～すぎ","past; to exceed, ~ too much",verb,Verbs,100,"毎日～すぎ。","I past every day."
+japanese,reading,english,type,category,importance,example_jp,example_en,romaji
+駅,えき,... station,word,Places & Directions,100,めぐろ駅から あるいて ３ぷんぐらいです。,It's about 3 minutes walk from Meguro station.,meguro eki kara aruite ３pungurai desu
+円,えん,... yen,word,Numbers & Counters,1,"これは 10,000円です。","This is 10,000 yen.","kore wa 10,000 en desu"
+かい,かい,... floor,word,Numbers & Counters,1,わたしの へやは 2かいです。,My room is on the second floor.,watashino heya wa 2kai desu
+日間,かかん,for ... day(s),word,Time & Dates,1,いちに、ふつか(かん)、みっかかん,"・・・  One, two, three days",ichi ni futsuka(kan) mikkakan
+か月,かげつ,(for) ... month(s),word,Time & Dates,1,いっか月、にか月、さんか月,"・・・ One month, two months, three months ...",i kagetsu ni kagetsu san kagetsu
+月,がつ,... month,word,Time & Dates,1,1月、2月、3月,"・・・  January, February, March ...",1 gatsu 2 gatsu 3 gatsu
+がります,がります,(third person) wants to ...  [「〜たい」のstem]＋[てform of がります]＋ います,word,People & Family,1,こどもたちは ディズニーランドにいきたがっています。,Children want to go to Disneyland.,kodomotachi wa deizuniirandoniikitagattei masu
+がわ,がわ,... side,word,Places & Directions,1,ひだりがわを あるきます。,Walk on the left side.,hidarigawa o aruki masu
+キロ,キロ,... km = キロメートル,word,Numbers & Counters,1,10キロぐらい はしりました。,I ran about 10 km.,10kirogurai hashirimashita
+くらい/ぐらい,くらい/ぐらい,about ...,word,Numbers & Counters,1,2じかんぐらい べんきょうしました。,I studied for about 2 hours.,2jikangurai benkyoushimashita
+グラム,グラム,... gram,word,Things & Objects,100,1グラム、2グラム、3グラム,"・・・  1 gram, 2 gram, 3 gram ...",1guramu 2guramu 3guramu
+こ,こ,counter for small object,word,Numbers & Counters,1,いっこ、にこ、さんこ,"・・・  1, 2, 3 (small objects) ...",ikko niko sanko
+語,ご,... language,word,School & Work,1,にほん語、えい語、ちゅうごく語,"・・・ Japanese, English, Chinese ...",nihon go ei go chuugoku go
+ごろ,ごろ,around ... (for time),word,Numbers & Counters,1,2じごろに そちらに いきます。,I will go there around 2 o'clock.,2jigoro ni sochira ni iki masu
+さい,さい,... year(s) old,word,Time & Dates,1,いっさい、にさい、さんさい,"・・・ 1 year old, 2 years old, 3 years old ...",issai nisai sansai
+さつ,さつ,counter for book,word,Numbers & Counters,1,いっさつ、にさつ、さんさつ,"・・・ 1 book, 2 books, 3 books ...",issatsu nisatsu sansatsu
+さん,さん,"Mr., Mrs., Miss",word,Other,1,すずきさん、さとうさん,"・・・  Mr. Suzuki, Ms. Sato",suzukisan satousan
+時,じ,... o'clock,word,Time & Dates,1,いま 3時です。,It's 3 o'clock now.,ima 3 ji desu
+時間,じかん,... hour(s),word,Time & Dates,100,1時間、2時間、3時間,"・・・1 hour, 2 hours, 3 hours ...",1 jikan 2 jikan 3 jikan
+週間,しゅうかん,(for) ... week(s),word,Time & Dates,1,1週間、2週間、3週間,"・・・  1 week, 2 weeks, 3 weeks ...",1 shuukan 2 shuukan 3 shuukan
+人,じん,"...an, ...ese",word,Other,1,にほん人、アメリカ人、ドイツ人,"・・・ Japanese, American, German ...",nihon jin ameri ka jin doitsu jin
+すぎ,すぎ,"past, over",word,Time & Dates,1,2じすぎに とうきょうに つきます。,I will arrive in Tokyo after 2 o'clock.,2jisugi ni toukyou ni tsuki masu
+ずつ,ずつ,... each,word,Numbers & Counters,1,これと これを ２つずつ ください。,Please give me two of this and two of this.,kore to kore o ２tsuzutsu kudasai
+先生,せんせい,teacher,word,People & Family,100,すずき先生は どこに いますか。,Where is Teacher Suzuki?,suzuki sensei ha doko ni i masu ka
+だい,だい,counter for machine,word,Numbers & Counters,1,いちだい、にだい、さんだい,"・・・ one, two three (machines)",ichidai nidai sandai
+たち,たち,"...s, ... and others",word,Other,1,わたしたち、こどもたち、あのひとたち。,"We, Children, Those people",watashitachi kodomotachi anohitotachi
+中,ちゅう,"be in middle of ..., (during) in ...",word,Places & Directions,1,いま かいぎ中です。,I'm in a meeting now.,ima kaigi chuu desu
+つ,つ,counter for object,word,Numbers & Counters,1,コーヒーを 3つ ください。,Please give me three coffees.,koohii o 3tsu kudasai
+日,にち,"...st, ...nd, ...th",word,Time & Dates,1,きょうは 12日です。,Today is the 12th.,kyou wa 12 nichi desu
+人,にん,counter for person,word,Numbers & Counters,1,ひとり、ふたり、さん人、よ人、ご人,"・・・  one, two three, four, five (person)",hitori futari san nin yo nin go nin
+年,ねん,... years,word,Time & Dates,1,"2030年, 2040年, 2050年",,"2030 nen , 2040 nen , 2050 nen"
+はい/ばい/ぱい,はい/ばい/ぱい,cups of ...,word,Greetings & Expressions,1,いっぱい、にはい、さんばい,"・・・ one, two three (cup of ...)",ippai nihai sanbai
+半,はん,half,word,Numbers & Counters,100,いま 9じ半です。,It's 9:30 now.,ima 9ji han desu
+ひき/びき/ぴき,ひき/びき/ぴき,counter for animal,word,Numbers & Counters,1,いっぴき、にひき、さんびき,"・・・ one (animal), two (animals), three (animals)",ippiki nihiki sanbiki
+分,ふん/ぷん,... minute(s),word,Time & Dates,1,いっぷん、にふん、さんぷん,"・・・ 1 minute, 2 minutes, 3 minutes",ippun nifun sanpun
+ページ,ページ,... page,word,Things & Objects,100,13ページを みてください。,Please look at page 13.,13peeji o mitekudasai
+本,ほん/ぼん/ぽん,counter for long object,word,Numbers & Counters,1,かさが 3本 あります。,I have three umbrellas.,kasa ga 3 hon/bon/pon ari masu
+まい,まい,counter for thin object,word,Numbers & Counters,1,かみを １まい ください。,Please give me a piece of paper.,kami o １mai kudasai
+前,まえ,... ago,word,Time & Dates,100,2ねん前に にほんに きました。,I came to Japan two years ago. before ...,2nen mae ni nihon ni kimashita
+メートル,メートル,... meter,word,Things & Objects,100,１メートル、1.5メートル、２メートル,"1 meter, 1.5 meters, 2 meters",１meetoru 1.5meetoru ２meetoru
+や,や,"... store, ... shop",word,Places & Directions,1,すしや、さかなや、にくや、ケーキや,"...  Sushi shop, Fish shop, Butcher shop, Cake shop ...",sushiya sakanaya nikuya keekiya
+会います,あいます,"see (a person), meet",word,People & Family,1,ともだちに/と 会います。,I will see my friend.,tomodachini/ to ai masu
+あおい,あおい,blue [i-adj.],word,Adjectives,1,あおいボールペン。,Blue ballpoint pen,aoiboorupen
+赤,あか,red [noun],word,Colors,100,赤で かきます。,Write in red.,a ka de kaki masu
+赤い,あかい,red [i-adj.],word,Colors,100,赤いボールペン,Red ballpoint pen,akai boorupen
+あがります,あがります,go up,word,Places & Directions,1,エレベーターで 15かいに あがります。,Take the elevator to the 15th floor.,erebeetaa de 15kai ni agari masu
+あかるい,あかるい,"bright, light [i-adj.]",word,Adjectives,1,このへやは あかるいです。,The room is bright.,konoheya wa akarui desu
+あき,あき,"autumn, fall",word,Time & Dates,1,あきが すきです。,I like autumn.,aki ga suki desu
+あきます,あきます,open,word,Things & Objects,1,ドアが あきます。,The door opens.,doa ga aki masu
+あけます,あけます,open,word,Things & Objects,1,わたしは ドアをあけます。,I open the door.,watashi wa doawoake masu
+あげます,あげます,give,word,Verbs,1,ははの たんじょうびに プレゼントを あげました。,I gave a present on my mother's birthday.,hahano tanjoubi ni purezento o agemashita
+朝,あさ,morning,word,Time & Dates,100,あしたの 朝は 6じに おきます。,I will get up at 6 o'clock tomorrow morning.,ashitano asa ha 6ji ni oki masu
+朝ごはん,あさごはん,breakfast,word,Food & Drink,1,もう 朝ごはんを たべましたか。,Have you eaten breakfast yet?,mou asagohan wo tabemashita ka
+あさって,あさって,the day after tomorrow,word,Time & Dates,1,あさっては にほんごの テストです。,The day after tomorrow will be a Japanese test.,asatte wa nihongono tesuto desu
+足,あし,"leg, foot",word,Body Parts,1,かのじょは足が ながいです。,She has long legs.,kanojo wa ashi ga nagai desu
+あした,あした,tomorrow,word,Time & Dates,1,では、また あした。,See you tomorrow.,de wa mata ashita
+あそこ,あそこ,over there,word,Places & Directions,100,あそこで バスに のります。,Get on the bus over there.,asoko de basu ni nori masu
+あそびます,あそびます,play,word,Verbs,1,こどもは よく こうえんで あそびます。,Children often play in the park.,kodomo wa yoku kouen de asobi masu
+あたたかい,あたたかい,warm [i-adj.],word,Adjectives,1,きょうは きのうより あたたかいです。,Today is warmer than yesterday.,kyou wa kinouyori atatakai desu
+あたま,あたま,head,word,Body Parts,1,かれは とても あたまが いいです。,He is very smart.,kare wa tote mo atama ga ii desu
+新しい,あたらしい,new [i-adj.],word,Adjectives,100,新しい コンピュータを かいました。,I bought a new computer.,atarashii konpuuta o kaimashita
+あちら,あちら,over there 「あそこ」の more polite,word,Things & Objects,100,いりぐちは あちらです。,The entrance is over there.,iriguchi wa achira desu
+あつい,あつい,thick [i-adj.],word,Adjectives,1,このほんは あついです。,This book is thick.,konohon wa atsui desu
+後(で),あと(で),after,word,Time & Dates,1,あさごはんの 後で さんぽをします。,I will take a walk after breakfast.,asagohanno de sanpowoshi masu
+あに,あに,(my) older brother,word,People & Family,1,あには イギリスに います。,My brother is in England.,ani wa igirisu ni i masu
+あね,あね,(my) older sister,word,People & Family,1,あねは フランスに います。,My sister is in France.,ane wa furansu ni i masu
+あの,あの,that ...,word,Places & Directions,100,あのひとは だれですか。,Who is that person?,anohito wa dare desu ka
+アパート,アパート,apartment,word,Places & Directions,100,わたしは ふるいアパートにすんでいます。,I live in an old apartment.,watashi wa furuiapaatonisundei masu
+あびます,あびます,take (a shower),word,Verbs,1,あさ シャワーを あびます。,Take a shower in the morning.,asa shawaa o abi masu
+あぶない,あぶない,dangerous [i-adj.],word,Adjectives,1,ここは あぶないですよ。,It's dangerous here.,koko wa abunai desu yo
+あまい,あまい,sweet [i-adj.],word,Adjectives,1,このケーキは とても あまいです。,This cake is very sweet.,konokeeki wa tote mo amai desu
+あまり,あまり,not much ...,word,Greetings & Expressions,1,あまり ほんを よみません。,I don't read many books.,amari hon o yomimasen
+雨,あめ,rain,word,Nature & Animals,100,ごごは たぶん 雨が ふります。,It will probably rain in the afternoon.,gogo wa tabun ame ga furi masu
+アメリカ,アメリカ,The United States of America,word,Numbers & Counters,1,あには アメリカに いきました。,My brother went to America.,ani wa amerika ni ikimashita
+あらいます,あらいます,wash,word,Verbs,1,ここで てを あらいます。,Wash your hands here.,koko de te o arai masu
+あります,あります,have [possession],word,Verbs,1,わたしは きょう じかんが あります。,I have time today.,watashi wa kyou jikan ga ari masu
+歩きます,あるきます,walk,word,Verbs,1,きのうは オフィスから うちまで あるきました。,I walked from the office to my house yesterday.,kinou wa ofuisukara uchima de arukimashita
+あれ,あれ,that (one),word,Places & Directions,100,あれは なんですか。,What is that?,are wa nan desu ka
+いい,いい,good [i-adj.],word,Adjectives,1,この アプリは とても いいです。,This app is very nice.,kono apuri wa tote mo ii desu
+言います,いいます,"say, tell",word,Verbs,1,もういちど 言います。,I will say it again.,mouichido ii masu
+家,いえ,house,word,Places & Directions,100,家の なかは あたたかいです。,The inside of the house is warm.,ie no naka wa atatakai desu
+行きます,いきます,go,word,Verbs,1,じてんしゃで がっこうに 行きます。,I go to school by bicycle.,jitensha de gakkou ni iki masu
+いくつ,いくつ,"how many, how old",word,Things & Objects,100,れいぞうこの なかに たまごが いくつ ありますか。,How many eggs are there in the fridge?,reizoukono naka ni tamago ga ikutsu ari masu ka
+いくら,いくら,how much,word,Things & Objects,100,これは いくらですか。,How much is this?,kore wa ikura desu ka
+いけ,いけ,pond,word,Places & Directions,1,いけの なかに きれいな さかなが います。,There are beautiful fish in the pond.,ikeno naka ni kireina sakana ga i masu
+いしゃ,いしゃ,doctor = おいしゃさん。,word,School & Work,1,ちちは いしゃです。,My father is a doctor.,chichi wa isha desu
+いす,いす,chair,word,Things & Objects,1,このいすは たかかったです。,This chair was expensive.,konoisu wa takakatta desu
+いそがしい,いそがしい,busy [i-adj.],word,Adjectives,1,このごろ まいにち いそがしいです。,I'm busy these days.,konogoro mainichi isogashii desu
+いたい,いたい,be painful [i-adj.],word,Adjectives,1,きょうは すこし あたまが いたいです。,I have a slight headache today.,kyou wa sukoshi atama ga itai desu
+一,いち,one,word,Numbers & Counters,100,いち、に、さん、し、ご,"・・・one, two, three, four, five...",ichi ni san shi go
+一ど,いちど,once,word,Numbers & Counters,1,もう一ど いってください。,Say that once more please.,mou ichido ittekudasai
+一日,いちにち,one day,word,Time & Dates,100,きのうは 一日 うちに いました。,I was at home all day yesterday.,kinou wa ichinichi uchi ni imashita
+一ばん,いちばん,the best,word,Adjectives,1,一ばん いいものを えらびます。,Choose the best one.,ichiban iimono o erabi masu
+いつ,いつ,when,word,Things & Objects,100,いつ とうきょうに いきますか。,When are you going to Tokyo?,itsu toukyou ni iki masu ka
+五日,いつか,"the fifth day of the month, five days",word,Time & Dates,100,きょうは 五日です。,Today is the 5th.,kyou wa itsu ka desu
+いっしょ(に),いっしょ(に),together,word,Other,1,ともだちと いっしょに がっこうに いきます。,I will go to school with my friends.,tomodachi to issho ni gakkou ni iki masu
+五つ,いつつ,five,word,Numbers & Counters,100,りんごは 五つ 400えんです。,Five apples cost 400 yen.,ringo wa itsutsu 400en desu
+いつも,いつも,always,word,Time & Dates,100,いつも けいたいでんわをもっています。,I always have a mobile phone.,itsu mo keitaidenwawomottei masu
+今,いま,now,word,Time & Dates,100,今 なんじですか。,What time is it now?,ima nanji desu ka
+います,います,be (existence),word,Verbs,1,わたしは いま いえに います。,I'm at home now. have (family),watashi wa ima ie ni i masu
+いみ,いみ,meaning,word,School & Work,1,おなじ いみのぶんは どれですか。,Which sentences have the same meaning?,onaji iminobun wa dore desu ka
+いもうと,いもうと,(my) younger sister,word,People & Family,1,いもうとは いま いえに いません。,My sister isn't at home right now.,imouto wa ima ie ni imasen
+いもうとさん,いもうとさん,(someone's) younger sister,word,People & Family,1,いもうとさんは どこに いますか。,Where is your sister?,imoutosan wa doko ni i masu ka
+いや,いや,"hateful, not likable, unpleasant [na-adj.]",word,Adjectives,1,いやな しごとも あります。,There are also unpleasant jobs.,iyana shigoto mo ari masu
+入口,いりぐち,entrance,word,Places & Directions,100,入口は どこですか。,Where is the entrance?,iriguchi ha doko desu ka
+いります,いります,"be necessary, must have, need",word,Verbs,1,ふくろは  いりません。,I do not need a bag.,fukuro wa irimasen
+入れます,いれます,put in,word,Verbs,1,コーヒーに クリームを 入れますか。,Would you like to add cream to your coffee?,koohii ni kuriimu o ire masu ka
+いろ,いろ,color,word,Other,1,どんな いろが すきですか。,What kind of color do you like?,donna iro ga suki desu ka
+いろいろ,いろいろ,various [na-adj.],word,Adjectives,1,この ビルの なかには いろいろな みせが あります。,There are various shops in this building.,kono biruno nakani wa iroirona mise ga ari masu
+上,うえ,"on, above, top",word,Places & Directions,100,めがねは つくえの 上に あります。,The glasses are on the desk.,megane wa tsukueno ue ni ari masu
+後ろ,うしろ,"back, behind",word,Places & Directions,100,モニターの 後ろに スイッチが あります。,There is a switch on the back of the monitor.,monitaano ushiro ni suicchi ga ari masu
+うすい,うすい,thin [i-adj.],word,Adjectives,1,このほんは うすいです。,This book is thin.,konohon wa usui desu
+うた,うた,song,word,Leisure & Sports,1,これは いい うたですね。,This is a good song.,kore wa ii uta desu ne
+うたいます,うたいます,sing,word,Verbs,1,カラオケで にほんごの うたを うたいました。,I sang a Japanese song at karaoke.,karaoke de nihongono uta o utaimashita
+うち,うち,home,word,Places & Directions,100,うちは どこですか。,Where is your home?,uchi wa doko desu ka
+生まれます,うまれます,be born,word,Verbs,1,せんげつ あかちゃんが 生まれました。,"Last month, a baby was born.",sengetsu akachan ga maremashita
+うみ,うみ,sea,word,Places & Directions,1,やまより うみが すきです。,I like the sea better than the mountains.,yamayori umi ga suki desu
+うります,うります,sell,word,Verbs,1,Amazonで うっています。,It is sold on Amazon.,Amazon de uttei masu
+うるさい,うるさい,loud [i-adj.],word,Adjectives,100,ちかてつの なかは うるさいです。,It's noisy in the subway.,chikatetsuno naka wa urusai desu
+うれしい,うれしい,"happy, pleased [i-adj.]",word,Adjectives,1,とても うれしいです。,I am very happy.,tote mo ureshii desu
+うわぎ,うわぎ,"coat, jacket, outerwear",word,Clothing,1,みせに うわぎを わすれました。,I forgot my jacket at the store.,mise ni uwagi o wasuremashita
+え,え,"drawing, picture, painting",word,Leisure & Sports,1,かのじょは えが じょうずです。,She is good at painting.,kanojo wa e ga jouzu desu
+エアコン,エアコン,air conditioner,word,Things & Objects,1,わたしの うちには エアコンが ５だい あります。,There are 5 air conditioners in my house.,watashino uchini wa eakon ga ５dai ari masu
+えいが,えいが,movie,word,Leisure & Sports,1,きのう ともだちと えいがを みました。,I watched a movie with my friends yesterday.,kinou tomodachi to eiga o mimashita
+えいがかん,えいがかん,movie theater,word,Food & Drink,1,あたらしい えいがかんに いきました。,I went to a new movie theater.,atarashii eigakan ni ikimashita
+えいご,えいご,English,word,School & Work,1,えいごで はなしても いいですか。,May I speak in English?,eigo de hanashite mo ii desu ka
+えらびます,えらびます,choose,word,Verbs,1,いちばん いいものを えらびます。,Choose the best one.,ichiban iimono o erabi masu
+エレベーター,エレベーター,"elevator, lift",word,Things & Objects,100,エレベーターは どこに ありますか。,Where is the elevator?,erebeetaa wa doko ni ari masu ka
+えんぴつ,えんぴつ,pencil,word,Things & Objects,1,えんぴつで かいても いいですか。,Can I write it in pencil?,enpitsu de kaite mo ii desu ka
+お,お,[polite prefix],word,Other,1,おくに。おかね。おしごと。おでんわ。,Country. Money. Job. Phone.,oku ni okane oshigo to odenwa
+おいしい,おいしい,"delicious, good, tasty [i-adj.]",word,Adjectives,1,このみせの ラーメンは おいしいです。,The ramen in this shop is delicious.,konomiseno raamen wa oishii desu
+おいでになります,おいでになります,"come, go, be [respect]",word,Verbs,1,あしたは なんじに おいでになりますか。,What time will you come tomorrow?,ashita wa nanji ni oideninari masu ka
+多い,おおい,a lot of [i-adj.],word,Adjectives,100,このホテルは へやが 多いです。,This hotel has many rooms.,konohoteru wa heya ga ooi desu
+大きい,おおきい,big [i-adj.],word,Adjectives,100,大きい くるまを かいたいです。,I want to buy a big car.,ookii kuruma o kaitai desu
+大きな,おおきな,big 大きな[noun] = 大きい[noun],word,Things & Objects,100,大きな ショッピングモールにいきました。,I went to a big shopping mall.,ookina shoppingumooruniikimashita
+おおぜい,おおぜい,"many (people), a great number of (people)",word,People & Family,1,えきの まえに ひとが おおぜい います。,There are a lot of people in front of the station.,ekino mae ni hito ga oozei i masu
+お母さん,おかあさん,(someone's) mother,word,People & Family,100,かれの お母さんは にほんじんです。,His mom is Japanese.,kareno okaasan ha nihonjin desu
+おかし,おかし,"confectionery, cake, candy, sweets",word,Food & Drink,1,にほんの おかしが すきです。,I like Japanese sweets.,nihonno okashi ga suki desu
+お金,おかね,money,word,Things & Objects,100,お金は たいせつです。,Money is important.,okane ha taisetsu desu
+おきます,おきます,get up (Group 2 verb),word,Verbs,1,まいにち 7じに おきます。,It wakes up at 7 o'clock every day.,mainichi 7ji ni oki masu
+おくさん,おくさん,(someone's) wife,word,People & Family,1,かれの おくさんは とても きれいです。,His wife is very pretty.,kareno okusan wa tote mo kirei desu
+お国,おくに,country = くに。,word,Places & Directions,1,お国は どちらですか。,Where is your country?,oku ni ha dochira desu ka
+おくります,おくります,send,word,Verbs,1,メールで データを おくります。,We will send you the data by email.,meeru de deeta o okuri masu
+おさけ,おさけ,"liquor, (alcoholic) drink, sake",word,Food & Drink,1,ときどき おさけを のみます。,I drink alcohol sometimes.,tokidoki osake o nomi masu
+おさら,おさら,plate = さら。,word,Food & Drink,1,おおきい おさらを 5まい かいました。,I bought 5 large plates.,ookii osara o 5mai kaimashita
+おじさん,おじさん,uncle,word,People & Family,1,おじさんは いつ にほんに きますか。,When will your uncle come to Japan?,ojisan wa itsu nihon ni ki masu ka
+おじいさん,おじいさん,grandfather,word,People & Family,100,かれの おじいさんは いま カナダに います。,His grandfather is now in Canada.,kareno ojiisan wa ima kanada ni i masu
+おしえます,おしえます,"teach, tell",word,Numbers & Counters,1,ともだちに えいごを おしえます。,I will teach English to my friends.,tomodachi ni eigo o oshie masu
+おそい,おそい,late [i-adj.],word,Adjectives,1,きょうは おそいですね。,"You are late today, aren't you?",kyou wa osoi desu ne
+おそく,おそく,late [noun],word,Greetings & Expressions,1,きのうは おそくまで しごとを しました。,I worked late yesterday.,kinou wa osokuma de shigoto o shimashita
+おちゃ,おちゃ,tea,word,Food & Drink,1,おちゃを のみませんか。,Would you like to have a cup of tea?,ocha o nomimasen ka
+おてあらい,おてあらい,"lavatory, toilet",word,Other,1,おてあらいは どこですか。,Where is the restroom?,otearai wa doko desu ka
+お父さん,おとうさん,(someone's) father,word,People & Family,100,お父さんは なんさいですか。,How old is your father?,otousan ha nansai desu ka
+おとうと,おとうと,(my) younger brother,word,People & Family,1,おとうとは がくせいです。,My younger brother is a student.,otouto wa gakusei desu
+おとうとさん,おとうとさん,(someone's) younger brother,word,People & Family,1,おとうとさんは なんさいですか。,How old is your younger brother?,otoutosan wa nansai desu ka
+男,おとこ,male,word,People & Family,100,男のひとが 5にん います。,There are 5 men.,otoko nohito ga 5nin i masu
+男の子,おとこのこ,boy,word,People & Family,100,男の子が 3にん います。,There are 3 boys.,otokonoko ga 3nin i masu
+おととい,おととい,the day before yesterday,word,Time & Dates,1,おととい ともだちに あいました。,I met my friend the day before yesterday.,ototoi tomodachi ni aimashita
+おととし,おととし,the year before last,word,Time & Dates,100,おととし にほんに きました。,I came here two years ago.,ototoshi nihon ni kimashita
+大人,おとな,adult,word,Things & Objects,100,"大人は 1,000えん、こどもは 500えんです。","Adults are 1,000 yen and children are 500 yen.","otona ha 1,000en kodomo wa 500en desu"
+おなか,おなか,stomach,word,Body Parts,1,おなかが すきました。,I'm hungry.,onaka ga sukimashita
+おなじ,おなじ,same,word,Adjectives,1,おなじ いみの ぶんは どれですか。,Which sentences have the same meaning?,onaji imino bun wa dore desu ka
+おにいさん,おにいさん,(someone's) older brother,word,People & Family,1,おにいさんは にほんに いますか。,Is your brother in Japan?,oniisan wa nihon ni i masu ka
+おにぎり,おにぎり,rice ball,word,Food & Drink,1,コンビニで おにぎりを ふたつ かいました。,I bought two rice balls at a convenience store.,konbini de onigiri o futatsu kaimashita
+おねえさん,おねえさん,(someone's) older sister,word,People & Family,1,おねえさんは なにを していますか。,What is your sister doing?,oneesan wa nani o shitei masu ka
+おばさん,おばさん,aunt,word,People & Family,1,おばさんは いつ にほんに きますか。,When will your aunt come to Japan?,obasan wa itsu nihon ni ki masu ka
+おばあさん,おばあさん,grandmother,word,People & Family,100,おばあさんは なんさいですか。,How old is your grandmother?,obaasan wa nansai desu ka
+おべんとう,おべんとう,lunch box,word,Food & Drink,1,おべんとうを つくります。,I will make a lunch box.,obentou o tsukuri masu
+おぼえます,おぼえます,memorize,word,Verbs,1,アプリで あたらしい ことばを おぼえます。,Learn new words in the app.,apuri de atarashii kotoba o oboe masu
+お店,おみせ,shop = みせ。,word,Places & Directions,1,えきの なかの お店で かいました。,I bought it at a shop inside the station.,ekino nakano omise de kaimashita
+おもい,おもい,heavy [i-adj.],word,Adjectives,1,このノートパソコンはおもいです。,This laptop is heavy.,kononootopasokonhaomoi desu
+おもしろい,おもしろい,"fun, funny, interesting [i-adj.]",word,Adjectives,1,おもしろいえいがをみました。,I watched an interesting movie.,omoshiroieigawomimashita
+およぎます,およぎます,swim,word,Verbs,1,まいしゅうまつ 500メートル およぎます。,I swim 500 meters every weekend.,maishuumatsu 500meetoru oyogi masu
+おります,おります,get off,word,Verbs,1,つぎの えきで でんしゃを おります。,Get off the train at the next station.,tsugino eki de densha o ori masu
+おわります,おわります,"end, finish",word,Verbs,1,かいぎは 3じに おわります。,The meeting ends at 3 o'clock.,kaigi wa 3ji ni owari masu
+おんがく,おんがく,music,word,Leisure & Sports,1,おんがくが だいすきです。,I love music.,ongaku ga daisuki desu
+女,おんな,female,word,People & Family,100,わたしのオフィスには女のひとが 6にん います。,There are 6 women in my office.,watashinoofuisuni wa onna nohito ga 6nin i masu
+女の子,おんなのこ,girl,word,People & Family,100,女の子が 3にん います。,There are 3 girls.,onnanoko ga 3nin i masu
+火,か,Tuesday = かようび。,word,Time & Dates,1,3がつ15にち（火,）  March 15th (Tuesday),3gatsu15nichi（ ka
+外国,がいこく,foreign country,word,Places & Directions,100,外国に いきたいです。,I want to go abroad.,gaikoku ni ikitai desu
+外国人,がいこくじん,foreigner,word,Things & Objects,100,うちの かいしゃには外国人が おおぜい います。,There are many foreigners in my company.,uchino kaishani wa gaikokujin ga oozei i masu
+会社,かいしゃ,company,word,School & Work,100,うちから 会社まで 40ぷんぐらいです。,It's about 40 from our house to the company.,uchikara kaisha ma de 40pungurai desu
+かいだん,かいだん,stairs,word,Places & Directions,1,かいだんで いきましょう。,Let's go up the stairs.,kaidan de iki mashou
+かいとうようし,かいとうようし,answer sheet,word,School & Work,1,これは テストの かいとうようしです。,This is the test answer sheet.,kore wa tesutono kaitouyoushi desu
+買います,かいます,buy,word,Verbs,1,おいしい パンを 買いました。,I bought some delicious bread.,oishii pan o imashita
+買いもの,かいもの,shopping,word,Places & Directions,1,くるまで 買いものに いきます。,I'm going shopping by car.,kuruma de kaimono ni iki masu
+かえします,かえします,return (object),word,Things & Objects,1,としょかんに ほんを かえします。,Return the book to the library.,toshokan ni hon o kaeshi masu
+かえります,かえります,"return, go back",word,Places & Directions,1,タクシーで うちに かえります。,I'll take a taxi home.,takushii de uchi ni kaeri masu
+かお,かお,face,word,Body Parts,1,あのひとの かおを おぼえていますか。,Do you remember that person's face?,anohitono kao o oboetei masu ka
+かかります,かかります,"take (time, money)",word,Time & Dates,1,えきまで あるいて 10ぷん かかります。,It takes 10 minutes on foot to the station.,ekima de aruite 10pun kakari masu
+かぎ,かぎ,key,word,Things & Objects,1,うちに くるまの かぎを わすれました。,I forgot my car key at home.,uchi ni kurumano kagi o wasuremashita
+書きます,かきます,write,word,Verbs,1,えきまでの ちずを 書きましょうか。,Shall I write a map to the station?,ekimadeno chizu o ki mashou ka
+学生,がくせい,student,word,People & Family,100,いもうとは まだ 学生です。,My sister is still a student.,imouto wa mada gakusei desu
+かけます,かけます,wear,word,Clothing,1,めがねを かけます。,I wear glasses.,megane o kake masu
+かさ,かさ,umbrella,word,Things & Objects,1,かさが ありますか。,Do you have an umbrella?,kasa ga ari masu ka
+かします,かします,lend,word,Verbs,1,ペンを かしてください。,Please lend a pen.,pen o kashitekudasai
+かぜ,かぜ,wind,word,Nature & Animals,1,きょうは とても かぜが つよいです。,It's very windy today.,kyou wa tote mo kaze ga tsuyoi desu
+かぞく,かぞく,family,word,People & Family,1,わたしの かぞくも とうきょうに すんでいます。,My family also lives in Tokyo.,watashino kazoku mo toukyou ni sundei masu
+かた,かた,person (respect),word,People & Family,1,かいしゃのかたと はなしました。,I talked to a person from the company.,kaishanokata to hanashimashita
+カタカナ,カタカナ,katakana,word,School & Work,1,カタカナは むずかしくないです。,Katakana is not difficult.,katakana wa muzukashikunai desu
+学校,がっこう,school,word,School & Work,100,あるいて 学校に いきます。,I will walk to school.,aruite gakkou ni iki masu
+かど,かど,corner,word,Places & Directions,1,つぎの かどを みぎに まがります。,Turn right at the next corner.,tsugino kado o migi ni magari masu
+かない,かない,(my) wife,word,People & Family,1,かないは いま うちに います。,My wife is at home now.,kanai wa ima uchi ni i masu
+かばん,かばん,bag,word,Clothing,100,かばんの なかに PCが あります。,There is a PC in the bag.,kabanno naka ni PC ga ari masu
+かびん,かびん,vase,word,Things & Objects,1,テーブルの うえに かびんが あります。,There is a vase on the table.,teeburuno ue ni kabin ga ari masu
+かぶります,かぶります,put on,word,Verbs,1,ぼうしを かぶります。,Put on a hat.,boushi o kaburi masu
+紙,かみ,paper,word,School & Work,100,紙を 1まい ください。,Please give me a piece of paper.,kami wo 1mai kudasai
+カメラ,カメラ,camera,word,Things & Objects,100,あたらしい カメラを かいたいです。,I want to buy a new camera.,atarashii kamera o kaitai desu
+火よう日,かようび,Tuesday,word,Time & Dates,1,きょうは 火よう日です。,Today is Tuesday.,kyou wa kayoubi desu
+からい,からい,"hot, spicy [i-adj.]",word,Adjectives,1,からい たべものは だいじょうぶですか。,Is spicy food okay?,karai tabemono wa daijoubu desu ka
+からだ,からだ,body,word,Body Parts,1,スポーツは からだに いいです。,Sports are good for you.,supootsu wa karada ni ii desu
+かります,かります,borrow,word,Verbs,1,ともだちに かさを かりました。,I borrowed an umbrella from my friend.,tomodachi ni kasa o karimashita
+かるい,かるい,"light, not heavy [i-adj.]",word,Adjectives,1,このバッグは かるいです。,This bag is light.,konobaggu wa karui desu
+カレンダー,カレンダー,calendar,word,Things & Objects,100,これは きょねんの カレンダーです。,This is last year's calendar.,kore wa kyonenno karendaa desu
+川,かわ,river,word,Nature & Animals,1,おおきい川が あります。,There is a big river.,ookii kawa ga ari masu
+かわいい,かわいい,"pretty, sweet, cute [i-adj.]",word,Adjectives,1,こどもは かわいいです。,Children are cute.,kodomo wa kawaii desu
+かんがえます,かんがえます,"consider, think",word,Verbs,1,いいアイデアを かんがえました。,I came up with a good idea.,iiaidea o kangaemashita
+かんじ,かんじ,kanji,word,School & Work,1,かんじの べんきょうを しています。,I'm studying kanji.,kanjino benkyou o shitei masu
+かんたん,かんたん,easy [na-adj.],word,Adjectives,1,このもんだいは かんたんです。,This question is easy.,konomondai wa kantan desu
+木,き,tree,word,Nature & Animals,100,にわに おおきい 木が あります。,There is a big tree in the garden.,niwa ni ookii ki ga ari masu
+きいろい,きいろい,yellow [i-adj.],word,Adjectives,1,きいろい マーカーで チェックします。,Check with the yellow marker.,kiiroi maakaa de chiekkushi masu
+きえます,きえます,"go out, go off",word,Verbs,1,でんきが きえました。,The electricity has gone out.,denki ga kiemashita
+聞きます,ききます,"ask, hear, listen",word,Verbs,1,イヤホンで おんがくを 聞きます。,Listen to music with earphones.,iyahon de ongaku o kiki masu
+北,きた,north,word,Places & Directions,100,北は どちらですか。,Which direction is north?,kita ha dochira desu ka
+ギター,ギター,guitar,word,Things & Objects,100,ギターの れんしゅうを しています。,I'm practicing the guitar.,gitaano renshuu o shitei masu
+きたない,きたない,dirty [i-adj.],word,Adjectives,1,このビルの トイレは きたないです。,The toilet in this building is dirty.,konobiruno toire wa kitanai desu
+きっさてん,きっさてん,coffee shop,word,Food & Drink,1,えきのまえに ふるい きっさてんが あります。,There is an old coffee shop in front of the station.,ekinomae ni furui kissaten ga ari masu
+きって,きって,stamp,word,Things & Objects,1,ゆうびんきょくで きってを かいました。,I bought a stamp at the post office.,yuubinkyoku de kitte o kaimashita
+きっぷ,きっぷ,ticket,word,Things & Objects,1,これは しんかんせんの きっぷです。,This is a Shinkansen ticket.,kore wa shinkansenno kippu desu
+きのう,きのう,yesterday,word,Time & Dates,1,きのう たくさん にほんごの べんきょうをしました。,I studied a lot of Japanese yesterday.,kinou takusan nihongono benkyouwoshimashita
+きます,きます,"put on, wear",word,Clothing,1,さむいですから、セーターをきます。,"It's cold, so I'll wear a sweater.",samui desu kara seetaawoki masu
+九,きゅう,nine,word,Numbers & Counters,100,ほんを 九さつ かりました。,I borrowed nine books.,hon o kyuu satsu karimashita
+ぎゅうにく,ぎゅうにく,beef,word,Food & Drink,1,にほんで ぎゅうにくは たかいです。,Beef is expensive in Japan.,nihon de gyuuniku wa takai desu
+ぎゅうにゅう,ぎゅうにゅう,milk,word,Food & Drink,1,まいあさ ぎゅうにゅうを のみます。,I drink milk every morning.,maiasa gyuunyuu o nomi masu
+今日,きょう,today,word,Time & Dates,100,今日は いい てんきですね。,"It's nice weather today, isn't it?",kyou ha ii tenki desu ne
+きょうしつ,きょうしつ,classroom,word,Places & Directions,1,せんせいは きょうしつに います。,The teacher is in the classroom.,sensei wa kyoushitsu ni i masu
+きょうだい,きょうだい,brothers and sisters; siblings,word,People & Family,1,きょうだいが いますか。,Do you have any siblings?,kyoudai ga i masu ka
+きょうと,きょうと,Kyoto [name of city],word,Places & Directions,1,おととし きょうとに いきました。,I went to Kyoto two years ago.,ototoshi kyouto ni ikimashita
+きょねん,きょねん,last year,word,Time & Dates,1,きょねん にほんごの べんきょうをはじめました。,"Last year, I started studying Japanese.",kyonen nihongono benkyouwohajimemashita
+きらい,きらい,"hateful, unpleasant, not likable [na-adj.]",word,Adjectives,1,なっとうが きらいです。,I hate natto.,nattou ga kirai desu
+きります,きります,cut,word,Verbs,1,やさいを きります。,Cut the vegetables.,yasai o kiri masu
+きれい,きれい,"beautiful, clean [na-adj.]",word,Adjectives,1,このへやは きれいです。,This room is clean.,konoheya wa kirei desu
+金,きん,Friday = きんようび。,word,Time & Dates,1,2がつ26にち（金,）  February 26th (Friday),2gatsu26nichi（ kin
+銀行,ぎんこう,bank,word,Places & Directions,100,あとで 銀行に いきます。,I will go to the bank later.,ato de ginkou ni iki masu
+金よう日,きんようび,Friday,word,Time & Dates,1,金よう日に あいましょう。,Let's meet on Friday.,kinyoubi ni ai mashou
+九,く,nine,word,Numbers & Counters,1,いま 九じです。,It's nine o'clock now.,ima ku ji desu
+くすり,くすり,medicine,word,Other,1,しょくじの あとで くすりを のみます。,Take medicine after meals.,shokujino ato de kusuri o nomi masu
+くだもの,くだもの,fruit,word,Food & Drink,1,よく くだものを たべます。,I often eat fruits.,yoku kudamono o tabe masu
+口,くち,mouth,word,School & Work,100,かれは 口が おおきいです。,He has a big mouth.,kare wa kuchi ga ookii desu
+くつ,くつ,shoes,word,Clothing,1,くつの サイズは いくつですか。,What is the size of your shoes?,kutsuno saizu wa ikutsu desu ka
+くつ下,くつした,socks,word,Clothing,1,しろい くつ下を かいました。,I bought white socks.,shiroi kutsushita wo kaimashita
+国,くに,country,word,Places & Directions,100,あした 国に かえります。,"Tomorrow, I will return to my country.",ashita ku ni ni kaeri masu
+くもり,くもり,cloudy weather,word,Food & Drink,1,きょうは くもりです。,It's cloudy today.,kyou wa kumori desu
+くらい,くらい,dark [i-adj.],word,Adjectives,1,このへやは くらいです。,This room is dark.,konoheya wa kurai desu
+クラス,クラス,class,word,School & Work,100,しゅうまつは ヨガの クラスに いきます。,I go to yoga classes on weekends.,shuumatsu wa yogano kurasu ni iki masu
+車,くるま,car,word,Things & Objects,100,きょうは 車が おおいですね。,There are many cars today.,kyou wa kuruma ga ooi desu ne
+くろ,くろ,black [noun],word,Greetings & Expressions,1,くろで かきます。,Write in black.,kuro de kaki masu
+くろい,くろい,black [i-adj.],word,Adjectives,1,くろい バッグが 3つ あります。,There are three black bags.,kuroi baggu ga 3tsu ari masu
+くろく,くろく,black [adv.],word,Other,1,くろく なりました。,It turned black.,kuroku narimashita
+ケーキ,ケーキ,cake,word,Food & Drink,1,このケーキを 4つ ください。,Please give me four of these cakes.,konokeeki o 4tsu kudasai
+今朝,けさ,this morning,word,Time & Dates,100,今朝は ６じに おきました。,I got up at 6 o'clock this morning.,kesa ha ６ji ni okimashita
+けしゴム,けしゴム,eraser,word,School & Work,1,けしゴムを かしてください。,Please lend me an eraser.,keshigomu o kashitekudasai
+けします,けします,"switch off, turn off, erase",word,Verbs,1,でんきを けします。,Turn off the light.,denki o keshi masu
+月,げつ,Monday = げつようび。,word,Time & Dates,1,4がつ22にち（月,）  April 22nd (Monday),4gatsu22nichi（ getsu
+けっこんします,けっこんします,get married,word,Verbs,1,2がつ15にちに けっこんしました。,I got married on February 15th.,2gatsu15nichi ni kekkonshimashita
+月よう日,げつようび,Monday,word,Time & Dates,1,月よう日は いつも いそがしいです。,I'm always busy on Mondays.,getsuyoubi ha itsu mo isogashii desu
+げんかん,げんかん,"front door, front entrance",word,Things & Objects,1,げんかんで くつを ぬぎます。,Take off your shoes at the entrance.,genkan de kutsu o nugi masu
+げんき,げんき,fine [na-adj.],word,Adjectives,1,おげんきですか。,How are you?,ogenki desu ka
+こうえん,こうえん,park,word,Places & Directions,1,うちの ちかくに こうえんが あります。,There is a park near my house.,uchino chikaku ni kouen ga ari masu
+こうばん,こうばん,police box,word,Things & Objects,1,えきの まえに こうばんが あります。,There is a police box in front of the station.,ekino mae ni kouban ga ari masu
+こえ,こえ,voice,word,Body Parts,1,いい こえですね。,You have a good voice.,ii koe desu ne
+コート,コート,coat,word,Clothing,100,さむいから、コートをきます。,"It's cold, so I'll wear a coat.",samuikara kootowoki masu
+コーヒー,コーヒー,coffee,word,Food & Drink,100,コーヒーを 2はい のみました。,I drank two cups of coffee.,koohii o 2hai nomimashita
+ここ,ここ,here,word,Places & Directions,100,ここは あついです。,It's hot here.,koko wa atsui desu
+午後,ごご,"afternoon, p.m.",word,Time & Dates,100,あしたの 午後は うちに います。,I'll be at home tomorrow afternoon.,ashitano gogo ha uchi ni i masu
+九日,ここのか,"ninth day of the month, nine days",word,Time & Dates,100,きょうは 九日です。,Today is the 9th.,kyou wa kokono ka desu
+九つ,ここのつ,nine,word,Numbers & Counters,100,ふくろの なかに りんごが 九つ あります。,There are nine apples in the bag.,fukurono naka ni ringo ga kokonotsu ari masu
+ごしゅじん,ごしゅじん,(someone's) husband,word,People & Family,1,ごしゅじんは いま どこに いますか。,Where is your husband now?,goshujin wa ima doko ni i masu ka
+午前,ごぜん,a.m.,word,Time & Dates,100,いま 午前 11じです。,It's 11am now.,ima gozen 11ji desu
+こたえ,こたえ,answer,word,School & Work,1,ここに こたえを かいてください。,Please write your answer here.,koko ni kotae o kaitekudasai
+こたえかた,こたえかた,how to answer,word,School & Work,1,こたえかたが わかりません。,I don't know how to answer.,kotaekata ga wakarimasen
+こたえます,こたえます,answer,word,Verbs,1,もんだいに こたえてください。,Please answer the question.,mondai ni kotaetekudasai
+こちら,こちら,"this side, this place, this one",word,People & Family,100,こちらは どなたですか。,Who is this?,kochira wa donata desu ka
+コップ,コップ,"glass, drinking cup",word,Things & Objects,100,テーブルの うえに コップが たくさん あります。,There are many cups on the table.,teeburuno ue ni koppu ga takusan ari masu
+今年,ことし,this year,word,Time & Dates,100,今年は くにに かえりません。,I will not return to the country this year.,kotoshi ha kuni ni kaerimasen
+ことば,ことば,"word, language, phrase",word,School & Work,1,たくさん ことばを おぼえました。,I learned a lot of words.,takusan kotoba o oboemashita
+子ども,こども,child,word,People & Family,1,わたしは 子どもが 3にん います。,I have 3 children.,watashi wa kodo mo ga 3nin i masu
+この,この,this ...,word,Things & Objects,100,このカメラは とても かるいです。,This camera is very light.,konokamera wa tote mo karui desu
+ごはん,ごはん,"rice, meal",word,Food & Drink,1,あさ 8じに ごはんを たべました。,I ate at 8 am.,asa 8ji ni gohan o tabemashita
+コピー,コピー,copy,word,Things & Objects,1,コピーをもらってもいいですか。,May I get a copy?,kopiiwomorattemoii desu ka
+コピーします,コピーします,make a copy,word,Verbs,1,5ページから10ページまで コピーしてください。,Please copy pages 5 to 10.,5peejikara10peejima de kopiishitekudasai
+こまります,こまります,be in trouble,word,Verbs,1,スマホを わすれましたから、こまりました。,I was in trouble because I forgot my smartphone.,sumaho o wasuremashitakara komarimashita
+これ,これ,this (one),word,Things & Objects,100,これを ２つと、それを ３つ ください。,Please give me two of these and three of them.,kore o ２tsu to sore o ３tsu kudasai
+今月,こんげつ,this month,word,Time & Dates,100,今月は とても いそがしいです。,This month is very busy.,kongetsu ha tote mo isogashii desu
+今週,こんしゅう,this week,word,Time & Dates,100,今週は あまり いそがしくないです。,I'm not very busy this week.,konshuu ha amari isogashikunai desu
+こんな,こんな,"this sort of, like this [na-adj.]",word,Things & Objects,100,こんな りょうりが すきです。,I like this kind of food.,konna ryouri ga suki desu
+こんばん,こんばん,tonight,word,Time & Dates,1,こんばん 9じに うちに かえります。,I'll be back home tonight at 9 o'clock.,konban 9ji ni uchi ni kaeri masu
+さいご,さいご,"end, last time",word,Time & Dates,1,レッスンの さいごに しゅくだいを あげます。,I will give you homework at the end of the lesson.,ressunno saigo ni shukudai o age masu
+魚,さかな,fish,word,Food & Drink,100,にくより 魚のりょうりが すきです。,I like fish dishes better than meat.,nikuyori sakana noryouri ga suki desu
+先,さき,"former, earlier",word,Things & Objects,100,お先に どうぞ。,After you.,o saki ni douzo
+さきます,さきます,bloom,word,Verbs,1,はるには いろいろなはながさきます。,Various flowers bloom in spring.,haruni wa iroironahanagasaki masu
+さくぶん,さくぶん,composition,word,School & Work,1,さくぶんは いい れんしゅうです。,Writing is a good practice.,sakubun wa ii renshuu desu
+さします,さします,put up (umbrella),word,Places & Directions,1,あめでしたが、かさをさしませんでした。,"It was raining, but I didn't hold my umbrella.",ame deshita ga kasawosashimasen deshita
+サッカー,サッカー,"soccer, football",word,Leisure & Sports,1,あしたは サッカーの しあいが あります。,Tomorrow there is a soccer game.,ashita wa sakkaano shiai ga ari masu
+ざっし,ざっし,magazine,word,Things & Objects,1,このざっしの しゃしんは きれいです。,The photos in this magazine are beautiful.,konozasshino shashin wa kirei desu
+さとう,さとう,sugar,word,Food & Drink,1,コーヒーに さとうを いれますか。,Would you like to add sugar to your coffee?,koohii ni satou o ire masu ka
+さむい,さむい,cold (weather) [i-adj.],word,Adjectives,1,きょうは きのうより さむいです。,It's colder today than yesterday.,kyou wa kinouyori samui desu
+さらいねん,さらいねん,the year after next,word,Time & Dates,1,たぶん さらいねん にほに いきます。,Maybe I will go to Japan the year after next.,tabun sarainen niho ni iki masu
+さんぽ,さんぽ,walk,word,Other,1,ちちと ははは さんぽが すきです。,My father and mother like walking.,chichi to haha wa sanpo ga suki desu
+さんぽ(を)します,さんぽ(を)します,take a walk,word,Verbs,1,けさ ははと さんぽをしました。,I took a walk with my mother this morning.,kesa haha to sanpowoshimashita
+四,し,four = よん。,word,Numbers & Counters,100,いち、に、さん、四、ご,"…  one, two, three, four, five ...",ichi ni san shi go
+しお,しお,salt,word,Other,1,しおを すこし いれてください。,Please add a little salt.,shio o sukoshi iretekudasai
+しかし,しかし,"but, however (formal, written language)",word,Things & Objects,100,べんきょうしました。しかし、わすれました。,I studied. But I forgot.,benkyoushimashita shikashi wasuremashita
+しごと,しごと,work,word,School & Work,1,どんな しごとを していますか。,What kind of work do you do?,donna shigoto o shitei masu ka
+じしょ,じしょ,dictionary,word,School & Work,1,じしょで しらべました。,I looked it up in the dictionary.,jisho de shirabemashita
+しずか,しずか,quiet [na-adj.],word,Adjectives,1,このカフェは しずかです。,This cafe is quiet.,konokafue wa shizuka desu
+下,した,"under, below",word,Things & Objects,100,テーブルの 下に コンセントが あります。,There is an outlet under the table.,teeburuno shita ni konsento ga ari masu
+しつもん,しつもん,question,word,School & Work,1,しつもんが あります。,I have a question.,shitsumon ga ari masu
+じてんしゃ,じてんしゃ,bicycle,word,Other,1,じてんしゃで がっこうに いきます。,I go to school by bicycle.,jitensha de gakkou ni iki masu
+じどうしゃ,じどうしゃ,car,word,Other,1,じどうしゃが 5だい あります。,There are 5 cars.,jidousha ga 5dai ari masu
+しにます,しにます,die,word,Verbs,1,ペットが しにました。,The pet has died.,petto ga shinimashita
+じぶん,じぶん,oneself,word,Other,1,じぶんで つくりました。,I made it myself.,jibun de tsukurimashita
+します,します,do,word,Verbs,1,あしたは なにを しますか。,What are you going to do tomorrow?,ashita wa nani o shi masu ka
+しまります,しまります,close (intransitive verb),word,Verbs,1,ドアが しまります。,The door closes.,doa ga shimari masu
+しめます,しめます,close (transitive verb),word,Verbs,1,わたしは ドアを しめます。,I close the door.,watashi wa doa o shime masu
+しゃしん,しゃしん,"photograph, photo, picture",word,Leisure & Sports,1,いっしょに しゃしんを とりましょう。,Let's take a picture together.,issho ni shashin o tori mashou
+シャツ,シャツ,shirt,word,Clothing,100,しろい シャツを かいました。,I bought a white shirt.,shiroi shatsu o kaimashita
+シャワー,シャワー,shower,word,Things & Objects,100,まいあさ シャワーを あびます。,I take a shower every morning.,maiasa shawaa o abi masu
+週,しゅう,week,word,Time & Dates,1,この週とこの週はとうきょうに います。,This week and this week I'm in Tokyo.,kono shuu tokono shuu hatoukyou ni i masu
+十,じゅう,ten,word,Numbers & Counters,100,おとこの ひとが 十にん います。,There are ten men.,otokono hito ga juu nin i masu
+ジュース,ジュース,juice,word,Other,1,オレンジジュースをください。,Please give me orange juice.,orenjijuusuwokudasai
+じゅぎょう,じゅぎょう,"class, lesson",word,School & Work,1,きょうは にほんごの じゅぎょうが あります。,I have a Japanese class today.,kyou wa nihongono jugyou ga ari masu
+しゅくだい,しゅくだい,homework,word,Places & Directions,1,しゅくだいが たくさん あります。,I have a lot of homework.,shukudai ga takusan ari masu
+上手,じょうず,"good, skillful [na-adj.]",word,Things & Objects,100,かのじょは にほんごが じょうずです。,She is good at Japanese.,kanojo wa nihongo ga jouzu desu
+上手に,じょうずに,well [adv.],word,Body Parts,1,とても 上手に できましたね。,You did it very well.,tote mo jouzu ni dekimashitane
+じょうぶ,じょうぶ,"healthy, strong, firm, durable [na-adj.]",word,Adjectives,1,このスーツケースはじょうぶです。,This suitcase is durable.,konosuutsukeesuhajoubu desu
+しょうゆ,しょうゆ,soy sauce,word,Other,1,しょうゆを すこし いれます。,Add a little soy sauce.,shouyu o sukoshi ire masu
+しょくどう,しょくどう,dining room,word,Places & Directions,1,10かいに しょくどうが あります。,There is a dining room on the 10th floor.,10kai ni shokudou ga ari masu
+知ります,しります,,word,Verbs,1,,,
+白い,しろい,white [i-adj.],word,Colors,100,白い はなを かいました。,I bought a white flower.,shiroi hana o kaimashita
+新聞,しんぶん,newspaper,word,School & Work,100,うちで 新聞を よみます。,I read the newspaper at home.,uchi de shinbun wo yomi masu
+水,すい,Wednesday = すいようび。,word,Time & Dates,1,げつと水は やすみです。,Monday and Wednesday are closed.,getsu to sui ha yasumi desu
+すいます,すいます,"breath in, smoke",word,Food & Drink,1,たばこを すいますか。,Do you smoke?,tabako o sui masu ka
+水よう日,すいようび,Wednesday,word,Time & Dates,1,水よう日は うちで しごとを します。,I work at home on Wednesday.,suiyoubi ha uchi de shigoto o shi masu
+スカート,スカート,skirt,word,Clothing,100,ときどき スカートを はきます。,I wear a skirt sometimes.,tokidoki sukaato o haki masu
+すき,すき,like [na-adj.],word,Adjectives,1,わたしは べんきょうが すきです。,I like studying.,watashi wa benkyou ga suki desu
+少ない,すくない,few,word,Adjectives,100,きょうは しゅくだいが すくないです。,I have less homework today.,kyou wa shukudai ga sukunai desu
+すぐに,すぐに,"soon, right away",word,Things & Objects,100,すぐに おわります。,It will end soon.,sugu ni owari masu
+少し,すこし,a little,word,Things & Objects,100,少し じかんを ください。,Please give me some time.,sukoshi jikan o kudasai
+すし,すし,sushi,word,Other,1,きのう すしを たべました。,I ate sushi yesterday.,kinou sushi o tabemashita
+すしや,すしや,sushi restaurant,word,Food & Drink,1,きのうは すしやに いきました。,Yesterday I went to a sushi restaurant.,kinou wa sushiya ni ikimashita
+すずしい,すずしい,cool (weather) [i-adj.],word,Adjectives,1,きょうは きのうより すずしいです。,Today is cooler than yesterday.,kyou wa kinouyori suzushii desu
+ストーブ,ストーブ,"stove, heater",word,Things & Objects,100,これは ふるい ストーブです。,This is an old stove.,kore wa furui sutoobu desu
+スプーン,スプーン,spoon,word,Things & Objects,100,スプーンで カレーを たべます。,Eat curry with a spoon.,supuun de karee o tabe masu
+スポーツ,スポーツ,sports,word,Things & Objects,100,なにか スポーツを していますか。,Do you play any sports?,nani ka supootsu o shitei masu ka
+ズボン,ズボン,"trousers, pants",word,Things & Objects,100,ズボンを はきます。,I wear pants.,zubon o haki masu
+住みます,すみます,"live, inhabit",word,Verbs,1,めぐろに 住んでいます。,I live in Meguro.,meguro ni ndei masu
+スリッパ,スリッパ,slippers,word,Other,1,ここで スリッパを はきます。,I will put on my slippers here.,koko de surippa o haki masu
+すわります,すわります,sit down,word,Places & Directions,1,どうぞ ここに すわって ください。,Please have a seat here.,douzo koko ni suwatte kudasai
+せ,せ,height,word,Other,1,あのひとは とても せが たかいです。,That person is very tall.,anohito wa tote mo se ga takai desu
+せいと,せいと,student,word,School & Work,1,わたしは MLCの せいとです。,I am a MLC student.,watashi wa MLCno seito desu
+セーター,セーター,sweater,word,Things & Objects,100,このセーターは とても あたたかいです。,This sweater is very warm.,konoseetaa wa tote mo atatakai desu
+せっけん,せっけん,soap,word,Things & Objects,1,せっけんで よく てを あらいましょう。,Wash your hands thoroughly with soap.,sekken de yoku te o arai mashou
+せびろ,せびろ,"jacket, suit",word,Clothing,1,あのひとは いつも せびろを きています。,That person is always in a suit.,anohito wa itsu mo sebiro o kitei masu
+せまい,せまい,"narrow, not spacious [i-adj.]",word,Adjectives,1,わたしの へやは せまいです。,My room is small.,watashino heya wa semai desu
+ゼロ,ゼロ,zero,word,Things & Objects,100,これは カロリーゼロです。,This is zero calories.,kore wa karoriizero desu
+千,せん,thousand,word,Numbers & Counters,100,これは 千えんです。,This is a thousand yen.,kore wa sen en desu
+先月,せんげつ,last month,word,Time & Dates,100,先月 ハワイに いきました。,I went to Hawaii last month.,sengetsu hawai ni ikimashita
+先週,せんしゅう,last week,word,Time & Dates,100,先週の きんようびに びょういんに いきました。,I went to the hospital last Friday.,senshuu no kinyoubi ni byouin ni ikimashita
+せんたく,せんたく,"washing, laundry",word,Other,1,まいにち せんたくを します。,I will do the laundry every day.,mainichi sentaku o shi masu
+ぜんぶ,ぜんぶ,all,word,Other,1,しゅくだいは ぜんぶ おわりました。,I've done all my homework.,shukudai wa zenbu owarimashita
+そうじ,そうじ,cleaning,word,Other,1,わたしは そうじが すきです。,I like cleaning.,watashi wa souji ga suki desu
+そうじします,そうじします,clean,word,Verbs,1,これから このへやを そうじします。,I'm going to clean this room.,korekara konoheya o soujishi masu
+そこ,そこ,there,word,Places & Directions,100,かぎは そこに あります。,The key is there.,kagi wa soko ni ari masu
+そして,そして,"and, then",word,Time & Dates,1,ともだちに あいました。そして、すしやにいきました。,I met my friend. Then I went to a sushi restaurant.,tomodachi ni aimashita soshite sushiyaniikimashita
+そちら,そちら,"there, your place",word,Places & Directions,100,あした そちらに いきます。,I will go there tomorrow.,ashita sochira ni iki masu
+外,そと,outside,word,Places & Directions,100,外は すごい あめです。,It's raining a lot outside.,so to ha sugoi ame desu
+その,その,that ...,word,Things & Objects,100,そのひとは とても しんせつでした。,The person was very kind.,sonohito wa tote mo shinsetsu deshita
+そば,そば,nearby,word,Places & Directions,100,オフィスの そばの みせで かいました。,I bought it at a store near my office.,ofuisuno sobano mise de kaimashita
+空,そら,sky,word,Nature & Animals,100,きょうは 空が とても きれいですね。,The sky is very beautiful today.,kyou wa sora ga tote mo kirei desu ne
+それ,それ,that (one),word,Things & Objects,100,それは なんですか。,What is it?,sore wa nan desu ka
+それから,それから,"and then, after that",word,Time & Dates,100,これをください。それから、これもください。,"This one, please. Also, this one, please.",korewokudasai sorekara koremokudasai
+それでは,それでは,"then, well",word,Things & Objects,100,それでは つぎの ページに いきましょう。,Now let's go to the next page.,sorede wa tsugino peeji ni iki mashou
+大学,だいがく,university,word,School & Work,100,大学で にほんごを べんきょうしました。,I studied Japanese at university.,daigaku de nihongo o benkyoushimashita
+たいしかん,たいしかん,embassy,word,Other,1,これから たいしかんに いきます。,I will go to the embassy from now on.,korekara taishikan ni iki masu
+だいじょうぶ,だいじょうぶ,"okay, no problem [na-adj.]",word,Adjectives,1,だいじょうぶですか。,Are you okay?,daijoubu desu ka
+だいすき,だいすき,"be very fond of, like very much [na-adj.]",word,Adjectives,1,チーズケーキが だいすきです。,I love cheesecake.,chiizukeeki ga daisuki desu
+たいせつ,たいせつ,important [na-adj.],word,Adjectives,1,これは とても たいせつです。,This is very important.,kore wa tote mo taisetsu desu
+だいたい,だいたい,almost,word,Other,1,だいたい おなじ いみです。,It has almost the same meaning.,daitai onaji imi desu
+たいてい,たいてい,"mostly, usually",word,Other,1,あさごはんは たいてい パンと コーヒーです。,Breakfast is usually bread and coffee.,asagohan wa taitei pan to koohii desu
+だいどころ,だいどころ,kitchen,word,Other,1,かないと むすめは だいどころに います。,My wife and daughter are in the kitchen.,kanai to musume wa daidokoro ni i masu
+たいへん,たいへん,"serious, hard, difficult [na-adj.]",word,Adjectives,1,かんじの べんきょうは たいへんです。,Studying kanji is hard.,kanjino benkyou wa taihen desu
+高い,たかい,"tall, high [i-adj.]",word,Adjectives,100,あのビルは とても 高いです。,That building is very tall.,anobiru wa tote mo takai desu
+だから,だから,"so, therefore",word,Other,1,あしたは あめです。だから、うちにいます。,It will rain tomorrow. So I will stay home.,ashita wa ame desu dakara uchinii masu
+たくさん,たくさん,"many, much",word,Other,1,きょうは たくさん しゅくだいが あります。,I have a lot of homework today.,kyou wa takusan shukudai ga ari masu
+タクシー,タクシー,taxi,word,Things & Objects,100,タクシーで 行きましょう。,Let's go by taxi.,takushii de ki mashou
+出します,だします,take out,word,Verbs,1,バッグの なかから スマホを 出します。,Take your smartphone out of the bag.,bagguno nakakara sumaho o dashi masu
+ただしい,ただしい,correct [i-adj.],word,Adjectives,1,ただしいぶんは どれですか。,Which is the correct sentence?,tadashiibun wa dore desu ka
+立ちます,たちます,stand up,word,Places & Directions,1,ここに 立ってください。,Please stand here.,koko ni ttekudasai
+たてもの,たてもの,building,word,Places & Directions,1,たかい たてものが たくさん あります。,There are many tall buildings.,takai tatemono ga takusan ari masu
+たのしい,たのしい,"enjoyable, pleasant [i-adj.]",word,Adjectives,1,きのうの パーティーは とても たのしかったです。,Yesterday's party was a lot of fun.,kinouno paateii wa tote mo tanoshikatta desu
+たのみます,たのみます,"ask, request",word,Verbs,1,たなかさんに このしごとを たのみます。,I will ask Mr. Tanaka for this job.,tanakasan ni konoshigoto o tanomi masu
+たばこ,たばこ,"cigarette, tobacco",word,Things & Objects,100,わたしは たばこを すいません。,I don't smoke.,watashi wa tabako o suimasen
+たぶん,たぶん,"probably, perhaps",word,Other,1,たぶん あしたは じかんが あります。,Maybe I have time tomorrow.,tabun ashita wa jikan ga ari masu
+食べもの,たべもの,food,word,Food & Drink,1,コンビニで 食べものとのみものをかいました。,I bought food and drinks at a convenience store.,konbini de tabemono tonomimonowokaimashita
+食べます,たべます,eat,word,Food & Drink,1,よく おすしを 食べます。,I often eat sushi.,yoku osushi o tabe masu
+たまご,たまご,egg,word,Food & Drink,1,たまごを 10こ かいました。,I bought 10 eggs.,tamago o 10ko kaimashita
+だれ,だれ,who,word,Other,1,あのひとは だれですか。,Who is that person.,anohito wa dare desu ka
+たんじょうび,たんじょうび,birthday,word,Time & Dates,1,たんじょうびは いつですか。,When is your birthday.,tanjoubi wa itsu desu ka
+だんだん,だんだん,"gradually, little by little",word,Other,1,だんだん あたたかくなりました。,It's getting warmer and warmer.,dandan atatakakunarimashita
+小さい,ちいさい,small,word,Adjectives,100,小さい さかなが います。,There is a small fish.,chiisai sakana ga i masu
+小さな,ちいさな+[noun],small 小さな+[noun],word,Greetings & Expressions,1,小さな さかなが います。,There is a small fish.,chiisana+[noun] sakana ga i masu
+近い,ちかい,"near, close [i-adj.]",word,Adjectives,100,わたしの うちは えきから 近いです。,My house is close to the station.,watashino uchi wa ekikara chikai desu
+ちがいます,ちがいます,"be different, differ",word,Verbs,1,N5とN4は レベルが ちがいます。,N5 and N4 have different levels.,N5toN4 wa reberu ga chigai masu
+近く,ちかく,neighborhood [noun],word,Things & Objects,100,近くの レストランで ばんごはんを たべました。,I had dinner at a nearby restaurant,chikaku no resutoran de bangohan o tabemashita
+ちかてつ,ちかてつ,subway,word,Other,1,ちかてつは とても べんりです。,The subway is very convenient.,chikatetsu wa tote mo benri desu
+ちず,ちず,map,word,Other,1,ちずを みて チェックしましょう。,Let's check by looking at the map.,chizu o mite chiekkushi mashou
+父,ちち,(my) father,word,People & Family,100,父は エンジニアです。,My father is an engineer.,chichi ha enjinia desu
+ちゃいろ,ちゃいろ,brown,word,Other,1,わたしの さいふは ちゃいろです。,My wallet is brown.,watashino saifu wa chairo desu
+ちゃわん,ちゃわん,(rice) bowl,word,Food & Drink,1,きれいな ちゃわんと おはしを かいました。,I bought a beautiful bowl and chopsticks.,kireina chawan to ohashi o kaimashita
+ちょうど,ちょうど,just,word,Other,1,いま 3じ ちょうどです。,It's just 3 o'clock now.,ima 3ji choudo desu
+ちょっと,ちょっと,a little,word,Things & Objects,100,すみません。ここでちょっと まってください。,Excuse me. Please wait a moment here.,sumimasen kokodechot to mattekudasai
+一日,ついたち,the first day of the month,word,Time & Dates,1,たんじょうびは ３がつ ついたちです。,Birthday is March 1st.,tanjoubi wa ３gatsu tsuitachi desu
+つかいます,つかいます,use,word,Verbs,1,しごとで まいにち にほんごを つかいます。,I use Japanese every day at work.,shigoto de mainichi nihongo o tsukai masu
+つかれます,つかれます,get tired,word,Verbs,1,きょうは とても つかれました。,I'm very tired today.,kyou wa tote mo tsukaremashita
+つぎ,つぎ,next,word,Time & Dates,1,つぎの かどを みぎに まがってください。,Turn right at the next corner.,tsugino kado o migi ni magattekudasai
+つきます,つきます,arrive,word,Verbs,1,3じはんに なりたくうこうに つきます。,I will arrive at Narita Airport at 3:30.,3jihan ni naritakuukou ni tsuki masu
+つくえ,つくえ,desk,word,Things & Objects,1,つくえの うえに ほんが たくさん あります。,There are many books on the desk.,tsukueno ue ni hon ga takusan ari masu
+つくりかた,つくりかた,how to make,word,Other,1,このりょうりの つくりかたを しりたいです。,I want to know how to make this dish.,konoryourino tsukurikata o shiritai desu
+つくります,つくります,make,word,Verbs,1,あたらしいアプリをつくりました。,I made a new app.,atarashiiapuriwotsukurimashita
+つけます,つけます,turn on,word,Verbs,1,このリモコンで エアコンを つけます。,Turn on the air conditioner with this remote control.,konorimokon de eakon o tsuke masu
+つとめます,つとめます,work for,word,School & Work,1,ちいさい ITの かいしゃに つとめています。,I work for a small IT company.,chiisai ITno kaisha ni tsutometei masu
+つまらない,つまらない,"uninteresting, boring [i-adj.]",word,Adjectives,100,このえいがは つまらないです。,This movie is boring.,konoeiga wa tsumaranai desu
+つめたい,つめたい,cold (object) [i-adj.],word,Adjectives,1,つめたいのみのもはいかがですか。,How about a cold drink?,tsumetainominomohaikaga desu ka
+つよい,つよい,strong [i-adj.],word,Adjectives,1,きょうは とても かぜが つよいです。,It's very windy today.,kyou wa tote mo kaze ga tsuyoi desu
+手,て,hand,word,Body Parts,100,手を みせてください。,Please show me your hand.,te wo misetekudasai
+ティッシュペーパー,ティッシュペーパー,tissue,word,Other,1,ティッシュペーパーをいちまい ください。,Please give me a piece of tissue paper.,teisshupeepaawoichimai kudasai
+テープ,テープ,tape,word,Things & Objects,100,ここに テープを はってください。,Please stick the tape here.,koko ni teepu o hattekudasai
+テープレコーダー,テープレコーダー,tape recorder,word,Things & Objects,100,テープレコーダーはいまは ありません。,There is no tape recorder now.,teepurekoodaahaima wa arimasen
+テーブル,テーブル,table,word,Things & Objects,100,このテーブルを つかってもいいですか。,Can I use this table?,konoteeburu o tsukattemoii desu ka
+出かけます,でかけます,go out,word,Verbs,1,きのうは どこにも でかけませんでした。,I didn't go anywhere yesterday.,kinou wa dokoni mo dekakemasen deshita
+手紙,てがみ,letter,word,Things & Objects,100,よくメールは しますが、手紙はかきません。,"I often email, but I don't write letters.",yokumeeru wa shi masu ga tegami hakakimasen
+できます,できます,can,word,Verbs,1,わたしは ちゅうごくごと かんこくごも できます。,I can also speak Chinese and Korean.,watashi wa chuugokugo to kankokugo mo deki masu
+出口,でぐち,exit,word,Places & Directions,100,出口は あちらのドアです。,The exit is that door.,deguchi ha achiranodoa desu
+テスト,テスト,test,word,School & Work,100,あしたは かんじのテストがあります。,Tomorrow I have a kanji test.,ashita wa kanjinotesutogaari masu
+では,では,"then, well then = じゃ。",word,Things & Objects,100,では、きょうの レッスンを おわりましょう。,So let's finish today's lesson.,de wa kyouno ressun o owari mashou
+デパート,デパート,department store,word,Places & Directions,100,デパートに かいものに いきました。,I went shopping at a department store.,depaato ni kaimono ni ikimashita
+出ます,でます,leave,word,Verbs,1,あしたは あさ 7じに うちを 出ます。,I will leave home at 7 am tomorrow.,ashita wa asa 7ji ni uchi o de masu
+でも,でも,but,word,Things & Objects,100,にちようびです。でも、うちでしごとを します。,It's Sunday. But I do work at home.,nichiyoubi desu de mo uchideshigoto o shi masu
+テレビ,テレビ,TV,word,Things & Objects,100,テレビで そのニュースを みました。,I saw the news on TV.,terebi de sononyuusu o mimashita
+天気,てんき,weather,word,Nature & Animals,100,きょうは とても いい天気ですね。,It's a very nice weather today.,kyou wa tote mo ii tenki desu ne
+電気,でんき,electricity,word,Things & Objects,100,電気を つけても いいですか。,Can I turn on the light?,denki wo tsukete mo ii desu ka
+電車,でんしゃ,train,word,Things & Objects,100,電車は すこし こんでいました。,The train was a little crowded.,densha ha sukoshi kondeimashita
+電話,でんわ,telephone,word,Things & Objects,100,きのう ははから 電話が ありました。,I got a call from my mother yesterday.,kinou hahakara denwa ga arimashita
+電話します,でんわします,"call, ring",word,Verbs,1,たまに かぞくに 電話します。,I call my family once in a while.,tama ni kazoku ni denwashi masu
+電話ばんごう,でんわばんごう,telephone number,word,Things & Objects,1,ここに 電話ばんごうをかいてください。,Please write your phone number here.,koko ni denwabangou wokaitekudasai
+と,と,door,word,Things & Objects,1,とが あいています。,The door is open.,to ga aitei masu
+ど,ど,Saturday = どようび。,word,Time & Dates,1,5がつ16にち（ど）に にほんに いきます。,"I will go to Japan on Saturday, May 16th.",5gatsu16nichi（do） ni nihon ni iki masu
+ドア,ドア,door,word,Places & Directions,100,みぎがわのドアがあきます。,The door on the right opens.,migigawanodoagaaki masu
+トイレ,トイレ,"toilet, lavatory",word,Places & Directions,100,トイレを かりても いいですか。,Can I use the toilet?,toire o karite mo ii desu ka
+トイレットペーパー,トイレットペーパー,toilet paper,word,Things & Objects,1,トイレットペーパーがありません！,There is no toilet paper!,toirettopeepaagaarimasen
+どう,どう,how,word,Things & Objects,100,きのうの テストは どうでしたか。,How was your test yesterday?,kinouno tesuto wa dou deshita ka
+とうきょう,とうきょう,Tokyo,word,Other,1,とうきょうは おもしろい ところですね。,"Tokyo is an interesting place, isn't it?",toukyou wa omoshiroi tokoro desu ne
+どうして,どうして,why,word,Things & Objects,100,どうして きのう やすみましたか。,Why did you take a day off yesterday?,doushite kinou yasumimashita ka
+とうふ,とうふ,tofu,word,Other,1,とうふ を たべたことが ありますか。,Have you ever eaten tofu?,toufu wo tabetakoto ga ari masu ka
+どうぶつ,どうぶつ,animal,word,Nature & Animals,1,どうぶつえんに いろいろな どうぶつが います。,There are various animals in the zoo.,doubutsuen ni iroirona doubutsu ga i masu
+十,とお,ten,word,Other,1,ひとつ、ふたつ、みっつ、よっつ、いつつ、むっつ、ななつ、やっつ、ここのつ、十。,"One, two, three, four, five, six, seven, eight, nine, ten.",hitotsu futatsu mittsu yottsu itsutsu muttsu nanatsu yattsu kokonotsu too
+とおい,とおい,far [i-adj.],word,Adjectives,1,えきは ここから すこし とおいです。,The station is a little far from here.,eki wa kokokara sukoshi tooi desu
+とおく,とおく,"distantly, far [noun]",word,Places & Directions,1,りょうしんは とおくに すんでいます。,My parents live far away.,ryoushin wa tooku ni sundei masu
+十日,とおか,"the tenth day of the month, ten days",word,Time & Dates,100,きょうは 十日です。,Today is the 10th.,kyou wa too ka desu
+ときどき,ときどき,sometimes,word,Time & Dates,1,ときどき じぶんで りょうりを つくります。,Sometimes I cook myself.,tokidoki jibun de ryouri o tsukuri masu
+とけい,とけい,"clock, watch",word,Things & Objects,1,ともだちに かわいい とけいを プレゼントしました。,I gave my friend a cute clock as a gift.,tomodachi ni kawaii tokei o purezentoshimashita
+どこ,どこ,where,word,Places & Directions,100,おてあらいは どこですか。,Where is the restroom?,otearai wa doko desu ka
+どこか,どこか,somewhere,word,Other,1,どこかで ランチを たべませんか。,Would you like to have lunch somewhere?,dokoka de ranchi o tabemasen ka
+ところ,ところ,place,word,Places & Directions,1,どんな ところに すみたいですか。,What kind of place do you want to live in?,donna tokoro ni sumitai desu ka
+としょかん,としょかん,library,word,Other,1,わたしは ほとんど としょかんに いきません。,I rarely go to the library.,watashi wa hotondo toshokan ni ikimasen
+どちら,どちら,「どっち which」「どこ where」「どれ which one」のpolite,word,Places & Directions,100,コーヒーとこうちゃ、どちがいいですか。,"Which would you like, coffee or tea?",koohiitokoucha dochigaii desu ka
+とても,とても,very,word,Things & Objects,100,きょうは とても たのしかったです。,I had a lot of fun today.,kyou wa tote mo tanoshikatta desu
+どなた,どなた,だれ。who のpolite,word,People & Family,100,この しゃしんの ひとは どなた ですか。,Who is the person in this photo?,kono shashinno hito wa donata desu ka
+となり,となり,next to,word,Time & Dates,1,となりに すわってもいいですか。,Can I sit next to you?,tonari ni suwattemoii desu ka
+どの,どの,which ...,word,Things & Objects,100,どのアプリを いちばん よく つかいますか。,Which app do you use the most?,donoapuri o ichiban yoku tsukai masu ka
+とびます,とびます,fly,word,Verbs,1,とりが たくさん とんでいます。,A lot of birds are flying.,tori ga takusan tondei masu
+とまります,とまります,stop,word,Verbs,1,このでんしゃは しぶやえきに とまりますか。,Does this train stop at Shibuya Station?,konodensha wa shibuyaeki ni tomari masu ka
+友だち,ともだち,friend,word,People & Family,1,きのうは 友だちと オンラインで はなしました。,I talked online with my friends yesterday.,kinou wa tomodachi to onrain de hanashimashita
+土よう日,どようび,Saturday,word,Time & Dates,1,こんしゅうの 土よう日はやすみです。,This Saturday is closed.,konshuuno doyoubi hayasumi desu
+とり,とり,bird,word,Nature & Animals,1,きの うえに ちいさいとりが たくさん います。,There are many small birds on the tree.,kino ue ni chiisaitori ga takusan i masu
+とりにく,とりにく,chicken,word,Other,1,とりにくを よく たべます。,I often eat chicken.,toriniku o yoku tabe masu
+とります,とります,take (photographs),word,Verbs,1,きょうとで たくさん きれいな しゃしんを とりました。,I took a lot of beautiful pictures in Kyoto.,kyouto de takusan kireina shashin o torimashita
+どれ,どれ,which one,word,Things & Objects,100,おすすめは どれですか。,Which is your recommendation?,osusume wa dore desu ka
+どんな,どんな,what kind of ...,word,Things & Objects,100,どんな ものを たべたいですか。,What kind of food do you want to eat?,donna mono o tabetai desu ka
+ナイフ,ナイフ,knife,word,Things & Objects,100,フォークと ナイフで ステーキを たべます。,I eat steak with a fork and knife.,fuooku to naifu de suteeki o tabe masu
+中,なか,inside,word,Places & Directions,100,ポケットの 中に ティッシュが あります。,There is tissue in my pocket.,pokettono na ka ni teisshu ga ari masu
+長い,ながい,long [i-adj.],word,Adjectives,100,このえいがは とても 長いです。,This movie is very long.,konoeiga wa tote mo nagai desu
+なきます,なきます,"sing, mew, moo, etc.",word,Verbs,1,たくさんの とりが ないています。,Many birds are singing.,takusanno tori ga naitei masu
+なつ,なつ,summer,word,Time & Dates,1,いちねんの なかで なつが いちばん すきです。,I like summer the best of the year.,ichinenno naka de natsu ga ichiban suki desu
+など,など,"and so on, etc.",word,Other,1,バッグの なかに スマホや サイフなどが あります。,"There are smartphones, wallets and other things in the bag.",bagguno naka ni sumahoya saifunado ga ari masu
+七つ,ななつ,seven,word,Numbers & Counters,100,このドーナツを 七つ ください。,"7 of these donuts, please.",konodoonatsu o nanatsu kudasai
+何,なに,what,word,Clothing,1,しゅうまつは 何を しましたか。,What did you do on the weekend?,shuumatsu wa na ni wo shimashita ka
+何か,なにか,something,word,Things & Objects,1,何か つめたい のみものは いかがですか。,How about some cold drink?,nani ka tsumetai nomimono wa ikaga desu ka
+七日,なのか,the seventh day of the month,word,Time & Dates,100,きょうは 七日です。,Today is the 7th.,kyou wa nano ka desu
+名前,なまえ,name,word,Things & Objects,100,こちらに 名前と じゅうしょを かいてください。,Please write your name and address here.,kochira ni namae to juusho o kaitekudasai
+ならいます,ならいます,learn (from somebody),word,Verbs,1,ははに りょうりを ならいました。,I learned cooking from my mother.,haha ni ryouri o naraimashita
+ならびます,ならびます,(someone) line up,word,Places & Directions,1,みせの そとで 30ぷん ならびました。,I lined up outside the store for 30 minutes.,miseno soto de 30pun narabimashita
+ならべます,ならべます,line up (something),word,Things & Objects,1,テーブルの うえに おさらを ５まい ならべます。,I line up five dishes on the table.,teeburuno ue ni osara o ５mai narabe masu
+なります,なります,become,word,Verbs,1,こどもは らいげつ 5さいに なります。,My child will be 5 years old next month.,kodomo wa raigetsu 5sai ni nari masu
+何,なん,what,word,Clothing,1,このスイッチは 何ですか。,What is this switch?,konosuicchi wa nan desu ka
+何時,なんじ,what time,word,Time & Dates,1,あしたは 何時にどこであいましょうか。,What time and where will we meet tomorrow?,ashita wa nanji nidokodeai mashou ka
+何日,なんにち,which day of the month,word,Time & Dates,1,きょうは 何日ですか。,What day is it today?,kyou wa nannichi desu ka
+二,に,two,word,Numbers & Counters,100,三、二、一 スタート！,"Three, two, one start!",ni sutaa to
+にぎやか,にぎやか,lively [na-adj.],word,Things & Objects,100,ここは にぎやなかな レストランですね。,"This is a lively restaurant, isn't it?",koko wa nigiyanakana resutoran desu ne
+にく,にく,meat,word,Food & Drink,1,さかなと にく、どちらがいいですか。,"Which do you prefer, fish or meat?",sakana to niku dochiragaii desu ka
+西,にし,west,word,Places & Directions,100,西は こっちです。,West is this direction.,nishi ha kocchi desu
+日よう日,にちようび,Sunday,word,Time & Dates,1,こんどの 日よう日の おひるごろに あいましょうか。,Shall we meet next Sunday around noon?,kondono nichiyoubi no ohirugoro ni ai mashou ka
+二年,にねん,two years,word,Time & Dates,1,わたしは にほんに きて もう 二年です。,I have been in Japan for two years now.,watashi wa nihon ni kite mou ninen desu
+日本,にほん,Japan,word,Time & Dates,1,１ねんまえから 日本で しごとを しています。,I have been working in Japan for a year.,１nenmaekara nihon de shigoto o shitei masu
+日本語,にほんご,Japanese language,word,Time & Dates,1,はんとしまえから日本語を べんきょうしています。,I have been studying Japanese for half a year.,hantoshimaekara nihongo wo benkyoushitei masu
+にもつ,にもつ,baggage,word,Things & Objects,1,ここに にもつを おいても いいですか。,Can I put my luggage here?,koko ni nimotsu o oite mo ii desu ka
+ニュース,ニュース,news,word,Things & Objects,100,よく インターネットで ニュースを みます。,I often watch the news on the internet.,yoku intaanetto de nyuusu o mi masu
+にわ,にわ,garden,word,Other,1,にわに いぬが 2ひき います。,There are two dogs in the yard.,niwa ni inu ga 2hiki i masu
+ぬぎます,ぬぎます,take off,word,Verbs,1,いつも ここで くつを ぬぎます。,I always take off my shoes here.,itsu mo koko de kutsu o nugi masu
+ぬります,ぬります,paint,word,Verbs,1,テーブルを しろく ぬります。,I paint the table white.,teeburu o shiroku nuri masu
+ネクタイ,ネクタイ,necktie,word,Things & Objects,100,わたしは ネクタイが 30ぽんぐらい あります。,I have about 30 ties.,watashi wa nekutai ga 30pongurai ari masu
+ねます,ねます,"go to bed, sleep",word,Things & Objects,1,いつも 12じごろに ねます。,I always go to bed around 12 o'clock.,itsu mo 12jigoro ni ne masu
+ノート,ノート,notebook,word,School & Work,100,じぶんの ノートに かいてください。,Write it in your notebook.,jibunno nooto ni kaitekudasai
+のぼります,のぼります,"go up, climb",word,Places & Directions,1,なつに ともだちと ふじさんにのぼります。,I will climb Mt. Fuji with my friends this summer.,natsu ni tomodachi to fujisanninobori masu
+飲みます,のみます,drink,word,Food & Drink,1,まいにち コーヒーを ３ばいぐらい 飲みます。,I drink about 3 cups of coffee every day.,mainichi koohii o ３baigurai nomi masu
+飲みもの,のみもの,drinks,word,Food & Drink,1,飲みものは なにが いいですか。,What do you like for a drink?,nomimono ha nani ga ii desu ka
+のります,のります,"get on, ride, take",word,Verbs,1,うちの ちかくから えきまで バスに のります。,I take a bus from near my house to the station.,uchino chikakukara ekima de basu ni nori masu
+は,は,teeth,word,Other,1,きょうは すこし はが いたいです。,I have a slight toothache today.,kyou wa sukoshi ha ga itai desu
+パーティー,パーティー,party,word,Things & Objects,100,こんばん ともだちのうちで パーティーが あります。,I have a party at my friend's house tonight.,konban tomodachinouchi de paateii ga ari masu
+はいざら,はいざら,ashtray,word,Greetings & Expressions,1,すみません。はいざらがありますか。,Excuse me. Do you have an ashtray?,sumimasen haizaragaari masu ka
+入ります,はいります,enter,word,Greetings & Expressions,1,いつも  このいりぐちから なかに 入ります。,I always enter through this entrance.,itsu mo konoiriguchikara naka ni hairi masu
+はがき,はがき,postcard,word,Things & Objects,1,ゆびんきょくで はがきを 10まい かいました。,I bought 10 postcards at the post office.,yubinkyoku de hagaki o 10mai kaimashita
+はきます,はきます,put on,word,Verbs,1,いつも ここで くつを はきます。,I always put on shoes here.,itsu mo koko de kutsu o haki masu
+はこ,はこ,box,word,Things & Objects,1,はこの なかに くるまの かぎが あります。,There is a car key in the box.,hakono naka ni kurumano kagi ga ari masu
+はし/おはし,はし/おはし,chopsticks,word,Food & Drink,1,おはしで おすしを たべます。,I eat sushi with chopsticks.,ohashi de osushi o tabe masu
+はし,はし,bridge,word,Places & Directions,1,あの おおきい はしを あるいて わたります。,I walk across a large bridge.,ano ookii hashi o aruite watari masu
+はじまります,はじまります,"begin, start",word,Nature & Animals,1,らいしゅうから にほんごのレッスンがはじまります。,Japanese lessons will start next week.,raishuukara nihongonoressungahajimari masu
+はじめに,はじめに,at the beginning,word,Other,1,はじめに ひらがなと カタカナを べんきょうしました。,"First, I studied hiragana and katakana.",hajime ni hiragana to katakana o benkyoushimashita
+はじめて,はじめて,for the first time,word,Numbers & Counters,1,きょねん はじめて ふじさんをみました。,I saw Mt. Fuji for the first time last year.,kyonen hajimete fujisanwomimashita
+バス,バス,bus,word,Things & Objects,100,うちから がっこうまでバスで 20ぷんです。,20 minutes by bus from my house to school.,uchikara gakkoumadebasu de 20pun desu
+バス会社,バスがいしゃ,"bus agency, bus company",word,School & Work,1,いもうとは バス会社に つとめています。,My sister works for a bus company.,imouto wa basugaisha ni tsutometei masu
+バスてい,バスてい,bus stop,word,Other,1,このちかくに バスていが ありますか。,Is there a bus stop near here?,konochikaku ni basutei ga ari masu ka
+バスりょこう,バスりょこう,"bus tour, bus trip",word,Other,1,わたしの ちちと ははは バスりょこうが すきです。,My dad and mom love bus trips.,watashino chichi to haha wa basuryokou ga suki desu
+バター,バター,butter,word,Things & Objects,100,パンに バターを ぬります。,I spread butter on bread.,pan ni bataa o nuri masu
+はたち,はたち,twenty years old,word,Time & Dates,1,おとうとは らいげつ はたちに なります。,My brother will be 20 next month.,otouto wa raigetsu hatachi ni nari masu
+はたらきます,はたらきます,work,word,School & Work,1,こんしゅうは しゅうまつも はたらきます。,This week I also work on weekends.,konshuu wa shuumatsu mo hataraki masu
+八,はち,eight,word,Numbers & Counters,100,八人で りょこうに いきました。,I went on a trip with 8 people.,hachi hi to de ryokou ni ikimashita
+二十日,はつか,"the twentieth day of the month, twenty days",word,Time & Dates,100,きょうは 二十日です。,Today is the 20th.,kyou wa hatsu ka desu
+花,はな,flower,word,Nature & Animals,100,きれいな 花を たくさん かいました。,I bought a lot of beautiful flowers.,kireina hana wo takusan kaimashita
+話,はなし,story,word,Things & Objects,100,せんせいから おもしろい話を ききました。,I heard an interesting story from the teacher.,senseikara omoshiroi hanashi wo kikimashita
+話します,はなします,"speak, talk, tell",word,Verbs,1,よく ともだちと にほんごを 話します。,I often speak Japanese with my friends.,yoku tomodachi to nihongo o hanashi masu
+母,はは,(my) mother,word,People & Family,100,ときどき 母に メールします。,I email my mother sometimes.,tokidoki ha wa ni meerushi masu
+はやい,はやい,"quick, fast [i-adj.]",word,Adjectives,1,このコンピュータははやいです。,This computer is fast.,konokonpuutahahayai desu
+はる,はる,spring,word,Time & Dates,1,はなが すきですから、はるがすきです。,I like spring because I like flowers.,hana ga suki desu kara harugasuki desu
+はります,はります,"stick, put something on",word,Things & Objects,1,ふうとうに きってを はります。,I put a stamp on the envelope.,fuutou ni kitte o hari masu
+はれ,はれ,fair weather,word,Food & Drink,1,あしたは たぶん はれです。,It will probably be sunny tomorrow.,ashita wa tabun hare desu
+はれます,はれます,clear up,word,Places & Directions,1,ごごは たぶん はれます。,It will probably be sunny in the afternoon.,gogo wa tabun hare masu
+ばん,ばん,"evening, night",word,Time & Dates,1,あしたのばん ともだちに あいます。,I'll see my friends tomorrow night.,ashitanoban tomodachi ni ai masu
+パン,パン,bread,word,Food & Drink,100,あさは ふつう パンを たべます。,I usually eat bread in the morning.,asa wa futsuu pan o tabe masu
+ハンカチ,ハンカチ,handkerchief,word,Things & Objects,100,ポケットの なかに ハンカチが あります。,There is a handkerchief in my pocket.,pokettono naka ni hankachi ga ari masu
+ばんごう,ばんごう,number,word,Other,1,でんわばんごうはなんばんですか。,What is your phone number?,denwabangouhananban desu ka
+ばんごはん,ばんごはん,dinner,word,Food & Drink,1,こんばんは うちで ばんごはんを たべます。,I'll have dinner at home tonight.,konban wa uchi de bangohan o tabe masu
+半分,はんぶん,half,word,Numbers & Counters,100,きのうのよる 半分だけ しゅくだいを しました。,I did my homework only half last night.,kinounoyoru hanbun dake shukudai o shimashita
+パンや,パンや,bakery,word,Other,1,えきの なかに おいしい パンやが あります。,There is a delicious bakery inside the station.,ekino naka ni oishii panya ga ari masu
+日,ひ,day,word,Time & Dates,1,きょうは とても いい日でした。,Today was a very good day.,kyou wa tote mo ii hi deshita
+東,ひがし,east,word,Places & Directions,100,東は あっちです。,East is that direction.,higashi ha acchi desu
+ひきます,ひきます,play (music instrument),word,Verbs,1,ときどき ギターを ひきます。,I play the guitar sometimes.,tokidoki gitaa o hiki masu
+ひくい,ひくい,low [i-adj.],word,Adjectives,1,いもうとは せが ひくいです。,My sister is short.,imouto wa se ga hikui desu
+ひこうき,ひこうき,airplane,word,Other,1,ひこうきの よやくを しました。,I made a reservation for an airplane.,hikoukino yoyaku o shimashita
+左,ひだり,left,word,Places & Directions,100,つぎの しんごうを 左に まがってください。,Turn left at the next traffic light.,tsugino shingou o hidari ni magattekudasai
+人,ひと,"human, person",word,People & Family,100,こうえんに 人が たくさん います。,There are many people in the park.,kouen ni hi to ga takusan i masu
+一つ,ひとつ,one,word,Numbers & Counters,100,すみません。これを一つ ください。,Excuse me. Please give me this one.,sumimasen kore o hitotsu kudasai
+一月,ひとつき,one month = いっかげつ。,word,Time & Dates,100,にほんに きて 一月です。,It's been a month since I came to Japan.,nihon ni kite hitotsuki desu
+一人,ひとり,one person,word,Numbers & Counters,100,ことしの なつは 一人で りょこうに いきます。,I'm going on a trip alone this summer.,kotoshino natsu wa hitori de ryokou ni iki masu
+ひま,ひま,"free (time), not busy, spare time [na-adj.]",word,Adjectives,1,こんしゅうまつは ひまです。,I'm free this weekend.,konshuumatsu wa hima desu
+百,ひゃく,hundred,word,Numbers & Counters,100,これは どれでも ひとつ 百えんです。,Each one costs 100 yen.,kore wa dorede mo hitotsu hyaku en desu
+びょういん,びょういん,hospital,word,Places & Directions,1,つきに １かい びょういんに いきます。,I go to the hospital once a month.,tsuki ni １kai byouin ni iki masu
+びょうき,びょうき,"illness, disease",word,Places & Directions,1,ははは いま びょうきです。,My mother is sick now.,haha wa ima byouki desu
+ひらがな,ひらがな,Hiragana,word,Other,1,ひらがなで かきます。,I write in hiragana.,hiragana de kaki masu
+昼,ひる,"daytime, noon",word,Time & Dates,100,あしたの 昼は うちに います。,I'll be at home tomorrow noon.,ashitano hiru ha uchi ni i masu
+ビル,ビル,building,word,Places & Directions,1,たかい ビルが たくさん あります。,There are many tall buildings.,takai biru ga takusan ari masu
+昼ごはん,ひるごはん,lunch,word,Food & Drink,1,ともだちと 昼ごはんを たべました。,I ate lunch with my friends.,tomodachi to hirugohan wo tabemashita
+広い,ひろい,"spacious, wide [i-adj.]",word,Adjectives,100,このへやは とても 広いです。,This room is very large.,konoheya wa tote mo hiroi desu
+フィルム,フィルム,film,word,Things & Objects,100,カメラに フィルムを いれます。,I put the film in the camera.,kamera ni fuirumu o ire masu
+ふうとう,ふうとう,envelope,word,Things & Objects,1,ふうとうの なかに チケットを いれます。,I put the ticket in the envelope.,fuutouno naka ni chiketto o ire masu
+プール,プール,swimming pool,word,Things & Objects,100,"きのう プールで 1,000メートル およぎました。","I swam 1,000 meters in the pool yesterday.","kinou puuru de 1,000meetoru oyogimashita"
+フォーク,フォーク,fork,word,Things & Objects,100,フォークとナイフでステーキを たべます。,I eat steak with a fork and knife.,fuookutonaifu desu teeki o tabe masu
+ふきます,ふきます,blow,word,Verbs,1,そとは すごい かぜが ふいています。,There is a terrible wind outside.,soto wa sugoi kaze ga fuitei masu
+ふく,ふく,clothes,word,Clothing,1,あたらしい ふくを たくさん かいました。,I bought a lot of new clothes.,atarashii fuku o takusan kaimashita
+二つ,ふたつ,two,word,Numbers & Counters,100,このパンを 二つ ください。,Please give me two of these breads.,konopan o futatsu kudasai
+ぶたにく,ぶたにく,pork,word,Other,1,わたしは ぶたにくを たべません。,I don't eat pork.,watashi wa butaniku o tabemasen
+二人,ふたり,two people,word,Numbers & Counters,100,わたしは こどもが 二人 います。,I have two children.,watashi wa kodomo ga futari i masu
+二日,ふつか,"the second day of the month, two days",word,Time & Dates,100,きょうは 二日です。,Today is 2nd.,kyou wa futsu ka desu
+ふとい,ふとい,"thick, fat [i-adj.]",word,Adjectives,1,ふといペンで じゅうしょを かきます。,I write my address with a thick pen.,futoipen de juusho o kaki masu
+ふゆ,ふゆ,winter,word,Time & Dates,1,まいとし ふゆに スキーに  いきます。,I go skiing every winter.,maitoshi fuyu ni sukii ni iki masu
+ふります,ふります,"fall, come down",word,Places & Directions,1,たぶん こんばんは あめが ふります。,Maybe it will rain tonight.,tabun konban wa ame ga furi masu
+古い,ふるい,old [i-adj.],word,Verbs,100,これは 古いカメラです。,This is an old camera.,kore wa furui kamera desu
+ふろ,ふろ,bath    「おふろ」more polite,word,Other,1,まいにち おふろに はいります。,I take a bath every day.,mainichi ofuro ni hairi masu
+文,ぶん,sentence,word,Other,1,ながい 文を かいてください。,Please write a long sentence.,nagai bun wo kaitekudasai
+ぶんしょう,ぶんしょう,text,word,Other,1,つぎの ぶんしょうを よんで、しつもんにこたえてください。,Please read the following sentences and answer the questions.,tsugino bunshou o yon de shitsumonnikotaetekudasai
+へた,へた,"poor, unskillful [na-adj.]",word,Adjectives,1,わたしは うたが へたです。,I'm not good at singing.,watashi wa uta ga heta desu
+ベッド,ベッド,bed,word,Things & Objects,100,ベッドの したに ねこが います。,There is a cat under the bed.,beddono shita ni neko ga i masu
+へや,へや,room,word,Places & Directions,1,この へやは ひろいですね。,This room is large.,kono heya wa hiroi desu ne
+へん,へん,"side, part このへん。 = near here",word,Places & Directions,1,このへんにATMが ありますか。,Is there an ATM near here?,konohenniATM ga ari masu ka
+ペン,ペン,pen,word,School & Work,100,ここに なまえを ペンで かいてください。,Please write your name here with a pen.,koko ni namae o pen de kaitekudasai
+べんきょうします,べんきょうします,study,word,School & Work,1,まいにち うちで にほんごを べんきょうします。,I will study Japanese at home every day.,mainichi uchi de nihongo o benkyoushi masu
+べんり,べんり,convenience [na-adj.],word,Adjectives,1,このアプリは とても べんりです。,This app is very useful.,konoapuri wa tote mo benri desu
+ほう,ほう,ＡよりＢのほうが～。B is ... than A.,word,Other,1,ふゆより なつのほうが すきです。,I like summer better than winter.,fuyuyori natsunohou ga suki desu
+ぼうし,ぼうし,"hat, cap",word,Clothing,1,さむいひは ぼうしを かぶります。,I wear a hat on cold days.,samuihi wa boushi o kaburi masu
+ボールペン,ボールペン,ballpoint pen,word,School & Work,100,ボールペンを もっていますか。,Do you have a ballpoint pen?,boorupen o mottei masu ka
+ほか,ほか,"another, other",word,Greetings & Expressions,1,ほかの ひは  どうですか。,How about the other day?,hokano hi wa dou desu ka
+ぼく,ぼく,"I (generally young boys, but some adult use as a style)",word,Other,1,ぼくは 13さいです。,I am 13 years old.,boku wa 13sai desu
+ポケット,ポケット,pocket,word,Things & Objects,100,ポケットの なかに けいたいでんわがあります。,I have a mobile phone in my pocket.,pokettono naka ni keitaidenwagaari masu
+ほしい,ほしい,want (something) [i-adj.],word,Adjectives,1,あたらしいカメラがほしいです。,I want a new camera.,atarashiikameragahoshii desu
+ほそい,ほそい,"thin, fine [i-adj.]",word,Adjectives,1,ほそいペンで イラストを かきます。,Draw an illustration with a thin pen.,hosoipen de irasuto o kaki masu
+ボタン,ボタン,button,word,Things & Objects,100,このシャツは ボタンが ひとつ ありません。,This shirt doesn't have one button.,konoshatsu wa botan ga hitotsu arimasen
+ホテル,ホテル,hotel,word,Places & Directions,100,ホテルで おいしい ひるごはんを たべました。,I had a delicious lunch at the hotel.,hoteru de oishii hirugohan o tabemashita
+本,ほん,book,word,School & Work,100,しゅうに ３さつぐらい 本を よみます。,I read about 3 books a week.,shuu ni ３satsugurai hon wo yomi masu
+ほんだな,ほんだな,bookshelf,word,Other,1,ほんだなに本が 200さつぐらい あります。,There are about 200 books on the bookshelf.,hondana ni hon ga 200satsugurai ari masu
+ほんとう,ほんとう,"really, truth",word,Other,1,ほんとうですか。しりませんでした。,Is it true? I did not know that.,hontou desu ka shirimasen deshita
+ほんや,ほんや,bookshop,word,Places & Directions,1,５かいに おおきい ほんやが あります。,There is a large bookstore on the 5th floor.,５kai ni ookii honya ga ari masu
+毎朝,まいあさ,every morning,word,Time & Dates,100,毎朝 コーヒーを ２はい のみます。,I drink two cups of coffee every morning.,maiasa koohii o ２hai nomi masu
+毎月,まいげつ/まいつき,every month,word,Time & Dates,1,毎月 ホンコンに しゅっちょうします。,I go on a business trip to Hong Kong every month.,maigetsu/maitsuki honkon ni shucchoushi masu
+毎週,まいしゅう,every week,word,Time & Dates,100,毎週 げつようびに ジムに いきます。,I I go to the gym in my neighborhood every week.,maishuu getsuyoubi ni jimu ni iki masu
+毎日,まいにち,every day,word,Time & Dates,100,へいじつは毎日 7じはんに おきます。,I wake up at 7:30am every weekday.,heijitsu wa mainichi 7jihan ni oki masu
+毎年,まいねん/まいとし,every year,word,Time & Dates,1,毎年 ８がつと 12がつに りょこうを します。,I travel every August and December.,mainen/maitoshi ８gatsu to 12gatsu ni ryokou o shi masu
+毎ばん,まいばん,every night,word,Time & Dates,1,毎ばん １じかんぐらい ゲームをします。,I play games for about an hour every night.,maiban １jikangurai geemuwoshi masu
+まがります,まがります,turn,word,Verbs,1,２つめの かどを みぎに まがります。,Turn right at the second corner.,２tsumeno kado o migi ni magari masu
+まずい,まずい,"nasty, bad-tasting",word,Verbs,100,このりょうりは ほんとうに まずいです。,This dish is really bad.,konoryouri wa hontou ni mazui desu
+また,また,again,word,Things & Objects,100,じゃ、また らいしゅう！,"Then, see you next week!",ja mata raishuu
+まだ,まだ,,word,Things & Objects,100,,,
+まち,まち,town,word,Places & Directions,1,わたしたちは このまちが すきです。,We like this town.,watashitachi wa konomachi ga suki desu
+まちます,まちます,wait,word,Verbs,1,ここで  タクシーを まちます。,I'll wait for a taxi here.,koko de takushii o machi masu
+まっすぐ,まっすぐ,straight [na-adj.],word,Things & Objects,100,このみちを 100mぐらい まっすぐ いきます。,Go straight on this road for about 100m.,konomichi o 100mgurai massugu iki masu
+マッチ,マッチ,match,word,Things & Objects,100,たぶん うちに マッチは ありません。,There is probably no match at home.,tabun uchi ni macchi wa arimasen
+まど,まど,window,word,Things & Objects,1,このまどを あけても いいですか。,Is it okay to open this window?,konomado o akete mo ii desu ka
+まるい,まるい,round [i-adj.],word,Adjectives,1,まるいテーブルをかいたいです。,I want to buy a round table.,maruiteeburuwokaitai desu
+万,まん,ten thousand,word,Numbers & Counters,100,このタブレットは 5万えんで かいました。,"I bought this tablet for 50,000 yen.",konotaburetto wa 5 man en de kaimashita
+まんねんひつ,まんねんひつ,fountain pen,word,Things & Objects,1,たかい まんねんひつを ３ぼん もっています。,I have three expensive fountain pens.,takai mannenhitsu o ３bon mottei masu
+みがきます,みがきます,"polish, brush",word,Verbs,1,しょくじのあとで はを みがきます。,I will brush after the meal.,shokujinoato de ha o migaki masu
+右,みぎ,right,word,Places & Directions,100,つぎの かどを 右に まがります。,Turn right at the next corner.,tsugino kado o migi ni magari masu
+みじかい,みじかい,short [i-adj.],word,Adjectives,1,みじかいえいがを３ぼん みました。,I watched 3 short movies.,mijikaieigawo３bon mimashita
+水,みず,water,word,Food & Drink,100,つめたい水を ください。,Please give me cold water.,tsumetai mizu wo kudasai
+店,みせ,store,word,Places & Directions,100,この店の やきとりは さいこうです。,The yakitori in this shop is the best.,kono mise no yakitori wa saikou desu
+見せます,みせます,show,word,Verbs,1,いりぐちで チケットを 見せます。,I will show them the ticket at the entrance.,iriguchi de chiketto o mise masu
+道,みち,way,word,Things & Objects,100,この道を まっすぐ いってください。,Please go straight on this road.,kono michi wo massugu ittekudasai
+三日,みっか,"the third day of month, three days",word,Time & Dates,100,きょうは 三日です。,Today is the 3rd.,kyou wa mik ka desu
+三つ,みっつ,three,word,Numbers & Counters,100,このふくは ポケットが 三つ あります。,This cloth has three pockets.,konofuku wa poketto ga mittsu ari masu
+みなさん,みなさん,everyone,word,People & Family,1,みなさん、こんにちは。,Hello everyone.,minasan konnichi wa
+南,みなみ,south,word,Places & Directions,100,南は こっちです。,South is this direction.,minami ha kocchi desu
+見ます,みます,"look, see, watch",word,Things & Objects,1,よく ネットで えいがを 見ます。,I often watch movies online.,yoku netto de eiga o mi masu
+耳,みみ,ear,word,Body Parts,100,わたしは 耳が ちいさいです。,I have small ears.,watashi wa mimi ga chiisai desu
+みんな,みんな,"everyone, everything",word,People & Family,100,これは みんな 100えんです。,This is all 100 yen.,kore wa minna 100en desu
+六日,むいか,the sixth day of the month,word,Time & Dates,100,きょうは 六日です。,Today is the 6th.,kyou wa mui ka desu
+むこう,むこう,over there,word,Other,1,だんせいの おてあらいは むこうです。,Men's restrooms are over there.,danseino otearai wa mukou desu
+むずかしい,むずかしい,difficult [i-adj.],word,Adjectives,1,このもんだいは とても むずかしいです。,This question is very difficult.,konomondai wa tote mo muzukashii desu
+六つ,むっつ,six,word,Numbers & Counters,100,その ちいさい パンを 六つ ください。,Please give me six of those little breads.,sono chiisai pan o muttsu kudasai
+目,め,eye,word,Body Parts,100,わたしは 目が あまり よくないです。,My eyes are not very good.,watashi wa me ga amari yokunai desu
+めがね,めがね,glasses,word,Clothing,1,ポケットの なかに めがねが あります。,I have glasses in my pocket.,pokettono naka ni megane ga ari masu
+メモ,メモ,memo,word,Other,1,バッグの なかに メモが あります。,There is a note in my bag.,bagguno naka ni memo ga ari masu
+メモします,メモします,make a note,word,Greetings & Expressions,1,メモしてもいいですか。,Can I make a note?,memoshitemoii desu ka
+もう,もう,"already, yet",word,Things & Objects,100,もう おわりました。,It's already over.,mou owarimashita
+木,もく,Thursday = もくようび。,word,Time & Dates,1,5がつ13にち（木,）  May 13th (Thursday).,5gatsu13nichi（ moku
+木よう日,もくようび,Thursday,word,Time & Dates,1,木よう日に どこかで あいませんか。,Would you like to meet somewhere on Thursday?,mokuyoubi ni dokoka de aimasen ka
+もしもし,もしもし,hello (telephone),word,Greetings & Expressions,100,もしもし、さとうですが、…。,"Hello, this is Sato ....",moshimoshi satou desu ga …
+もちろん,もちろん,of course,word,Other,1,はい、もちろん。,Yes of course.,hai mochiron
+もちます,もちます,"have, hold, carry",word,Verbs,1,バッグを もちましょうか。,Shall I carry your bag?,baggu o mochi mashou ka
+もっていきます,もっていきます,take (something) （もってきます。= bring (something)）,word,Things & Objects,1,パーティーに なにを もっていきますか。,What are you going to take to the party?,paateii ni nani o motteiki masu ka
+もっと,もっと,more,word,Things & Objects,100,もっと おおきい こえで はなしてください。,Please speak louder.,mot to ookii koe de hanashitekudasai
+もの,もの,"object, thing",word,Things & Objects,1,いちばん いいものを えらんでください。,Please choose the best one.,ichiban iimono o erandekudasai
+もらいます,もらいます,receive,word,Verbs,1,ともだちに プレゼントを もらいました。,I got a present from my friend.,tomodachi ni purezento o moraimashita
+もん,もん,gate,word,Other,1,あそこの もんから はいってください。,Please enter from the gate over there.,asokono monkara haittekudasai
+もんだい,もんだい,question,word,School & Work,1,これは むずかしいもんだいです。,This is a difficult question.,kore wa muzukashiimondai desu
+もんだいようし,もんだいようし,question sheet,word,School & Work,1,まだ もんだいようしを みないでください。,Don't look at the question paper yet.,mada mondaiyoushi o minaidekudasai
+もんだいれい,もんだいれい,sample question,word,School & Work,1,これは N5のもんだいれいです。,This is an example of an N5 question.,kore wa N5nomondairei desu
+やおや,やおや,vegetable store,word,Things & Objects,1,ちかくの やおやで くだものを かいました。,I bought some fruits at a nearby greengrocer.,chikakuno yaoya de kudamono o kaimashita
+やさい,やさい,vegetable,word,Things & Objects,1,まいにち やさいを たべます。,I eat vegetables every day.,mainichi yasai o tabe masu
+やさしい,やさしい,"easy, kind/nice/sweet/gentle [i-adj.]",word,Adjectives,1,このテストは やさしいです。,This test is easy.,konotesuto wa yasashii desu
+やじるし,やじるし,arrow,word,Other,1,あそこに あかい やじるしが あります。,There is a red arrow over there.,asoko ni akai yajirushi ga ari masu
+安い,やすい,"cheap, inexpensive",word,Adjectives,100,このみせの ランチは 安いですが、おいしいです。,Lunch at this shop is cheap but delicious.,konomiseno ranchi wa yasui desu ga oishii desu
+休み,やすみ,"holiday, vacation",word,Time & Dates,100,あしたは 休みですから、かいものにいきます。,"I'm off tomorrow, so I'm going shopping.",ashita wa yasumi desu kara kaimononiiki masu
+休みます,やすみます,"have a day off, rest, be absent",word,Time & Dates,1,あしたから １しゅうかん 休みます。,I will take a week off from tomorrow.,ashitakara １shuukan yasumi masu
+八つ,やっつ,eight,word,Numbers & Counters,100,このドーナツを 八つ ください。,Please give me eight of these donuts.,konodoonatsu o yattsu kudasai
+山,やま,mountain,word,Places & Directions,100,しゅうまつに たかい やまに のぼりました。,I climbed a high mountain on the weekend.,shuumatsu ni takai yama ni noborimashita
+やります,やります,do,word,Verbs,1,そのしごとは あとで わたしが やります。,I will do the work later.,sonoshigoto wa ato de watashi ga yari masu
+ゆうがた,ゆうがた,early evening,word,Time & Dates,1,なつでも ゆうがたは すずしいです。,"Even in the summer, it is cool in the evening.",natsude mo yuugata wa suzushii desu
+ゆうびんきょく,ゆうびんきょく,post office,word,Places & Directions,1,ゆうびんきょくにはあまり いきません。,I don't go to the post office very often.,yuubinkyokunihaamari ikimasen
+有名,ゆうめい,famous [na-adj.],word,Things & Objects,100,これは すごく有名なアニメです。,This is a very famous anime.,kore wa sugoku yuumei naanime desu
+ゆき,ゆき,snow,word,Nature & Animals,1,ふゆは たくさん ゆきが ふります。,"In winter, there are many snowfalls.",fuyu wa takusan yuki ga furi masu
+ゆっくり(と),ゆっくり(と),slowly,word,Other,1,もうすこし ゆっくり はなしてください。,Please speak a little more slowly.,mousukoshi yukkuri hanashitekudasai
+八日,ようか,"the eight day of the month, eight days",word,Time & Dates,100,きょうは 八日、きんようびです。,"Today is the 8th, Friday.",kyou wa you ka kinyoubi desu
+ようふく,ようふく,(western) clothes,word,Clothing,1,ともだちのたんじょうびにようふくを あげました。,I gave clothes to my friend's birthday.,tomodachinotanjoubiniyoufuku o agemashita
+よく,よく,often,word,Time & Dates,100,よく カフェで しごとを します。,I often work at a nearby cafe.,yoku kafue de shigoto o shi masu
+よこ,よこ,the side,word,Places & Directions,1,テレビの よこに スイッチが あります。,There is a switch next to the TV.,terebino yoko ni suicchi ga ari masu
+四つ,よっつ,four,word,Numbers & Counters,100,アイスコーヒーを 四つ ください。,Please give me four iced coffees.,aisukoohii o yottsu kudasai
+よびます,よびます,"call, invite",word,Verbs,1,おみせの ひとを よびましょう。,Let's call the shop staff.,omiseno hito o yobi mashou
+読みます,よみます,read,word,Verbs,1,むすめは よく ほんを 読みます。,My daughter often reads books.,musume wa yoku hon o yomi masu
+夜,よる,night,word,Time & Dates,100,あしたの夜 カフェで ともだちに あいます。,I'll see my friends at the cafe tomorrow night.,ashitano yoru kafue de tomodachi ni ai masu
+ラーメン,ラーメン,"ramen, noodle",word,Greetings & Expressions,1,ときどき ラーメンを たべます。,I eat ramen sometimes.,tokidoki raamen o tabe masu
+来月,らいげつ,next month,word,Time & Dates,100,たぶん 来月 シンガポールに いきます。,Maybe I'm going to Singapore next month.,tabun raigetsu shingapooru ni iki masu
+来週,らいしゅう,next week,word,Time & Dates,100,来週は とても いそがしいです。,I will be very busy next week.,raishuu ha tote mo isogashii desu
+来年,らいねん,next year,word,Time & Dates,100,来年 けっこんします。,I'm getting married next year.,rainen kekkonshi masu
+ラジオ,ラジオ,radio,word,Things & Objects,100,いまは ほとんど ラジオを ききません。,I rarely listen to the radio now.,ima wa hotondo rajio o kikimasen
+りっぱ,りっぱ,"good, fine, fine-looking, splendid, magnificent [na-adj.]",word,Things & Objects,100,あのひとは とても りっぱなひとです。,That person is a very good person.,anohito wa tote mo rippanahito desu
+りゅうがくせい,りゅうがくせい,student studying abroad,word,School & Work,1,リンダさんは りゅうがくせいです。,Linda is an international student.,rindasan wa ryuugakusei desu
+りょうしん,りょうしん,parents,word,People & Family,1,りょうしんは ハワイに すんでいます。,My parents live in Hawaii.,ryoushin wa hawai ni sundei masu
+りょうり,りょうり,cooking,word,Other,1,よく りょうりを します。,I cook often.,yoku ryouri o shi masu
+りょこうがいしゃ,りょこうがいしゃ,travel agency,word,Other,1,かれは りょこうがいしゃにつとめています。,He works for a travel agency.,kare wa ryokougaishanitsutometei masu
+りょこうします,りょこうします,travel,word,Verbs,1,なつやすみに ともだちと りょこうします。,I travel with friends for summer vacation.,natsuyasumi ni tomodachi to ryokoushi masu
+りんご,りんご,apple,word,Food & Drink,1,ネットで りんごを たくさん かいました。,I bought a lot of apples online.,netto de ringo o takusan kaimashita
+れい,れい,example,word,School & Work,1,もうすこし れいを おしえてください。,Please give me a few more examples.,mousukoshi rei o oshietekudasai
+れいぞうこ,れいぞうこ,refrigerator,word,Other,1,れいぞうこの なかに ビールが たくさん あります。,There is a lot of beer in the fridge.,reizoukono naka ni biiru ga takusan ari masu
+レコード,レコード,record,word,Things & Objects,100,わたしの うちに レコードは ありません。,There are no records in my house.,watashino uchi ni rekoodo wa arimasen
+レストラン,レストラン,restaurant,word,Places & Directions,100,このレストランは とても おいしいです。,This restaurant has really good food.,konoresutoran wa tote mo oishii desu
+れんしゅう,れんしゅう,practice,word,Other,1,れんしゅうは とても たいせつです。,Practice is very important.,renshuu wa tote mo taisetsu desu
+れんしゅうします,れんしゅうします,practice,word,Verbs,1,うちで もっと れんしゅうしてください。,Please practice more at home.,uchi de mot to renshuushitekudasai
+六,ろく,six,word,Numbers & Counters,100,このタブレットは 六まんえんぐらいでした。,"This tablet cost about 60,000 yen.",konotaburetto wa roku manengurai deshita
+六本,ろっぽん,six (long objects),word,Things & Objects,1,コーラを 六本 ください。,Please give me six colas.,koora o roppon kudasai
+ワイシャツ\n(Yシャツ),ワイシャツ\n(Yシャツ),business shirt (white shirt),word,Clothing,1,ワイシャツは あまり きません。,I don't wear shirts very often.,waishatsu wa amari kimasen
+わかい,わかい,young [i-adj.],word,Adjectives,1,ははは ちちより ５さい わかいです。,My mother is 5 years younger than my father.,haha wa chichiyori ５sai wakai desu
+わかります,わかります,"understand, know",word,Greetings & Expressions,1,にほんごが わかりますか。,Do you understand Japanese?,nihongo ga wakari masu ka
+わすれます,わすれます,forget,word,Verbs,1,また パスワードをわすれました。,I forgot my password again.,mata pasuwaadowowasuremashita
+私,わたくし\n(very formal),I,word,Other,1,私は ABC Company の さとうです。,I'm Sato from ABC Company.,watakushi\n(very formal) ha ABC Company no satou desu
+私,わたし,I,word,People & Family,0,私は にほんごを べんきょうしています。,I'm studying Japanese.,watashi ha nihongo o benkyoushitei masu
+わたします,わたします,hand over,word,Verbs,1,これから しゅくだいを わたします。,I will give you homework from now on.,korekara shukudai o watashi masu
+わたります,わたります,cross,word,Verbs,1,おうだんほどうを わたりましょう。,Let's cross the pedestrian crossing.,oudanhodou o watari mashou
+わるい,わるい,bad [i-adj.],word,Adjectives,1,わたしは めが わるいです。,I have bad eyesight.,watashi wa me ga warui desu
+あ,あ,"Ah!, Oh!",word,Other,1,,,
+ああ,ああ,Ah!,word,Things & Objects,100,,,
+あのう,あのう,"Excuse me., Well, Let me see.",word,Greetings & Expressions,1,,,
+ありがとうございます。,ありがとうございます。,Thank you very much.,word,Greetings & Expressions,1,,,
+いいえ。,いいえ。,No,word,Greetings & Expressions,1,,,
+いえ。,いえ。,No,word,Greetings & Expressions,1,,,
+いただきます。,いただきます。,Let's eat! (saying this before having a meal.),word,Greetings & Expressions,1,,,
+いってきます。,いってきます。,"I am going., I am leaving.",word,Greetings & Expressions,1,,,
+いらっしゃいませ。,いらっしゃいませ。,"May I help you? (at restaurant, shop)",word,Greetings & Expressions,1,,,
+うーん,うーん,"Well, Let me see.",word,Other,1,,,
+ええ,ええ,Yes.,word,Greetings & Expressions,100,,,
+えー,えー,"Well, Let me see.",word,Other,1,,,
+えっ,えっ,Oh! = え。,word,Other,1,,,
+おげんきで。,おげんきで。,Take care of yourself.,word,Greetings & Expressions,1,,,
+おねがいします。,おねがいします。,Please.,word,Greetings & Expressions,1,,,
+おはようございます。,おはようございます。,Good morning.,word,Greetings & Expressions,1,,,
+おやすみなさい。,おやすみなさい。,Good night.,word,Greetings & Expressions,1,,,
+ください。,ください。,Please give me.,word,Greetings & Expressions,1,,,
+ごちそうさまでした。,ごちそうさまでした。,I've enjoyed my meal very much. Thank you. (saying this after having a meal.),word,Greetings & Expressions,1,,,
+こちらこそ。,こちらこそ。,"It is me, not you that ...",word,Clothing,1,,,
+ごめんください。,ごめんください。,"Hello!, May I come in?",word,Greetings & Expressions,1,,,
+ごめんなさい。,ごめんなさい。,Sorry.,word,Greetings & Expressions,1,,,
+こんにちは。,こんにちは。,"Good morning., Good afternoon., Hello.",word,Greetings & Expressions,1,,,
+こんばんは。,こんばんは。,Good evening.,word,Greetings & Expressions,1,,,
+さあ…,さあ…,Well ...,word,Other,1,,,
+さようなら。,さようなら。,Goodbye.,word,Greetings & Expressions,1,,,
+しつれいしました。,しつれいしました。,I am sorry. (I am sorry to have been rude.),word,Greetings & Expressions,1,,,
+しつれいします。,しつれいします。,Excuse me.,word,Greetings & Expressions,1,,,
+じゃ,じゃ,"then, well, well then, if so, in the case.",word,Time & Dates,1,,,
+じゃあ,じゃあ,"then, well, well then, if so, in the case.",word,Greetings & Expressions,1,,,
+すみません。,すみません。,Excuse me.,word,Greetings & Expressions,1,,,
+そうしましょう。,そうしましょう。,Let's do it.,word,Other,1,,,
+そうです。,そうです。,That's right.,word,Clothing,1,,,
+そうですか。,そうですか。,I see.,word,Other,1,,,
+そうですね。,そうですね。,"Oh right., Well ...",word,Places & Directions,1,,,
+ただいま。,ただいま。,"I'm home., I'm back.",word,Greetings & Expressions,1,,,
+では、また。,では、また。,"Well then, see you again.",word,Time & Dates,1,,,
+どういたしまして。,どういたしまして。,"You are welcome., Not at all.",word,Greetings & Expressions,1,,,
+どうぞ。,どうぞ。,Please.,word,Greetings & Expressions,1,,,
+どうも。,どうも。,Thanks.,word,Greetings & Expressions,1,,,
+どうもありがとう。,どうもありがとう。,Thanks a lot.,word,Greetings & Expressions,1,,,
+はい。,はい。,Yes.,word,Greetings & Expressions,1,,,
+はじめまして。,はじめまして。,Nice to see you.,word,Greetings & Expressions,1,,,
+よろしく。,よろしく。,(Please favor me.),word,Greetings & Expressions,1,,,
+いいえ,いいえ,"no, not at all",noun,Greetings & Expressions,100,,,
+お～,お～,honorable ~ (honorific),noun,Things & Objects,100,,,
+結構,けっこう,"splendid; enough, tolerably",noun,Things & Objects,100,,,
+こんにちは,こんにちは,Good afternoon,noun,Time & Dates,100,,,
+すみません,すみません,Excuse me; Im sorry,noun,Greetings & Expressions,100,,,
+どうぞ,どうぞ,"please, kindly, by all means",noun,Greetings & Expressions,100,,,
+はい,はい,yes,noun,Greetings & Expressions,100,,,
+～円,～えん,Yen,expression,Greetings & Expressions,100,,,
+～か月,～かげつ,(number of) months,expression,Time & Dates,100,,,
+～がる,～がる,feel,expression,Greetings & Expressions,100,,,
+～側,～がわ,~ side,expression,Greetings & Expressions,100,,,
+～語,～ご,"word, language",expression,Greetings & Expressions,100,,,
+～歳,～さい,~ years old,expression,Time & Dates,100,,,
+～さん,～さん,"Mr. ~, Ms. ~",expression,Greetings & Expressions,100,,,
+～週間,～しゅうかん,~ weeks,expression,Time & Dates,100,,,
+～時間,～じかん,~ hours,expression,Greetings & Expressions,100,,,
+～中,～じゅう,"during, while",expression,Greetings & Expressions,100,,,
+～たち,～たち,plural suffix,expression,Greetings & Expressions,100,,,
+～だけ,～だけ,"only ~, just ~, as ~",expression,Greetings & Expressions,100,,,
+～など,～など,et cetera,expression,Greetings & Expressions,100,,,
+～年,～ねん,~ years,expression,Time & Dates,100,,,
+～番,～ばん,~st; ~th best,expression,Greetings & Expressions,100,,,
+～分,～ふん,~ minutes,expression,Greetings & Expressions,100,,,
+七,しち,seven,noun,Numbers & Counters,100,,,
+～階,～かい,counter for stories (floors) of a building,expression,Greetings & Expressions,100,,,
+～個,～こ,"counter for small items (e.g., fruits, cups)",expression,Greetings & Expressions,100,,,
+～冊,～さつ,counter for books,expression,Greetings & Expressions,100,,,
+～人,～じん,counter for people,expression,Greetings & Expressions,100,,,
+～台,～だい,counter for vehicles; machines,expression,Greetings & Expressions,100,,,
+～度,～ど,counter for occurrences; ~ degree; ~ point,expression,Greetings & Expressions,100,,,
+～杯,～はい,counter for cupfuls,expression,Greetings & Expressions,100,,,
+～匹,～ひき,counter for small animals,expression,Greetings & Expressions,100,,,
+～本,～ほん,counter for long cylindrical things,expression,Greetings & Expressions,100,,,
+～枚,～まい,counter for flat things,expression,Greetings & Expressions,100,,,
+いただきます,いただきます,Thank you for the meal (before eating),noun,Greetings & Expressions,100,,,
+おはよう,おはよう,Good morning,noun,Time & Dates,100,,,
+おはよう ございます,おはよう ございます,Good morning (polite),noun,Time & Dates,100,,,
+かかる,かかる,"it takes (amount of time, money) (v.i.)",noun,Time & Dates,100,,,
+こんばんは,こんばんは,Good evening,noun,Time & Dates,100,,,
+ごちそうさまでした,ごちそうさまでした,Thank you for the meal (after eating),noun,Greetings & Expressions,100,,,
+さあ,さあ,"come now, well",noun,Time & Dates,100,,,
+年,とし,"year, age",noun,Time & Dates,100,,,
+毎月,まいげつ; まいつき,"every month, monthly",noun,Time & Dates,100,,,
+毎年,まいねん; まいとし,"every year, yearly, annually",noun,Time & Dates,100,,,
+夕飯,ゆうはん,"dinner, supper, evening meal",noun,Time & Dates,100,,,
+昨夜,ゆうべ,last night,noun,Time & Dates,100,,,
+四日,よっか,four days; fourth day of the month,noun,Time & Dates,100,,,
+～月,～がつ,month of year,expression,Time & Dates,100,,,
+～ころ; ～ごろ,～ころ; ～ごろ,"about, toward, approximately (time)",expression,Time & Dates,100,,,
+～時,～じ,~ o'clock (time),expression,Time & Dates,100,,,
+～ずつ,～ずつ,at a time,expression,Time & Dates,100,,,
+～日,～にち,"~ day of the month, for ~ days",expression,Time & Dates,100,,,
+あなた,あなた,you,noun,People & Family,100,,,
+ありがとう,ありがとう,Thank you,noun,Greetings & Expressions,100,,,
+ありがとう ございます,ありがとう ございます,Thank you (polite),noun,Greetings & Expressions,100,,,
+いかが,いかが,"how, in what way",noun,Things & Objects,100,,,
+家庭,かてい,home; family,noun,People & Family,100,,,
+こっち,こっち,this person; this direction; this side,noun,People & Family,100,,,
+どういたしまして,どういたしまして,you're welcome,noun,Greetings & Expressions,100,,,
+どうも,どうも,Thank you; somehow; no matter how hard one may try,noun,Greetings & Expressions,100,,,
+はじめまして,はじめまして,How do you do?,noun,People & Family,100,,,
+いってきます,いってきます,Ill go and come back,noun,Places & Directions,100,,,
+ワイシャツ,ワイシャツ,"shirt (lit: white shirt), business shirt",noun,Clothing,100,,,
+紅茶,こうちゃ,black tea,noun,Food & Drink,100,,,
+カレー,カレー,curry (abbr. for curry and rice),noun,Food & Drink,100,,,
+あっち,あっち,over there,noun,Places & Directions,100,,,
+そっち,そっち,over there,noun,Places & Directions,100,,,
+ただいま,ただいま,Im home,noun,Places & Directions,100,,,
+～前,～まえ,in front of ~,expression,Greetings & Expressions,100,,,
+～屋,～や,~ shop,expression,Greetings & Expressions,100,,,
+字引,じびき,dictionary,noun,School & Work,100,,,
+勉強,べんきょう (する),study,noun,School & Work,100,,,
+犬,いぬ,dog,noun,Nature & Animals,100,,,
+猫,ねこ,cat,noun,Nature & Animals,100,,,
+アイスクリーム,あいすくりーむ,ice cream,noun,Things & Objects,100,,,
+青,あお,blue (noun),noun,Colors,100,,,
+後,あと,afterwards (later); in the future; the rest; since then,noun,Things & Objects,100,,,
+一緒,いっしょ,together,noun,Things & Objects,100,,,
+インターネット,いんたーねっと,internet,noun,Things & Objects,100,,,
+エアコン,えあこん,air conditioner,noun,Things & Objects,100,,,
+お風呂,おふろ,a bath,noun,Things & Objects,100,,,
+おまわりさん,おまわりさん,policeman (friendly term),noun,Things & Objects,100,,,
+おめでとう,おめでとう,congratulations,noun,Greetings & Expressions,100,,,
+片仮名,かたかな,katakana,noun,Things & Objects,100,,,
+黄色,きいろ,yellow (noun),noun,Colors,100,,,
+警官,けいかん,police officer,noun,Things & Objects,100,,,
+結婚,けっこん (する),marriage (get married),noun,Things & Objects,100,,,
+交差点,こうさてん,intersection,noun,Things & Objects,100,,,
+財布,さいふ,wallet,noun,Things & Objects,100,,,
+さようなら,さようなら,Goodbye,noun,Greetings & Expressions,100,,,
+散歩,さんぽ (する),"walk, stroll",noun,Things & Objects,100,,,
+白,しろ,white (noun),noun,Colors,100,,,
+じゃ; じゃあ,じゃ; じゃあ,"well, well then",noun,Things & Objects,100,,,
+スマホ,すまほ,smartphone,noun,Things & Objects,100,,,
+スマートフォン,すまーとふぉん,smartphone,noun,Things & Objects,100,,,
+スーパー,すーぱー,supermarket,noun,Things & Objects,100,,,
+背,せい,"(one's) height, stature",noun,Things & Objects,100,,,
+そうして; そして,そうして; そして,"and, like that",noun,Things & Objects,100,,,
+掃除,そうじ (する),"cleaning, sweeping",noun,Things & Objects,100,,,
+たて,たて,"length, height",noun,Things & Objects,100,,,
+誰か,だれか,someone,noun,People & Family,100,,,
+小さな,ちいさな,"small, little (na-adj/pre-noun)",noun,Things & Objects,100,,,
+どっち,どっち,"which one, which way",noun,Things & Objects,100,,,
+なぜ,なぜ,why (same as どうして),noun,Things & Objects,100,,,
+夏休み,なつやすみ,summer vacation,noun,Things & Objects,100,,,
+何,なん; なに,what,noun,Things & Objects,100,,,
+何～,なん～,what sort of ~,noun,Things & Objects,100,,,
+始まる,はじまる,(something) begins,noun,Things & Objects,100,,,
+初め; 始め,はじめ,"beginning, start",noun,Things & Objects,100,,,
+ハンバーガー,はんばーがー,hamburger,noun,Things & Objects,100,,,
+パソコン,ぱそこん,personal computer,noun,Things & Objects,100,,,
+緑,みどり,green,noun,Colors,100,,,
+村,むら,village,noun,Things & Objects,100,,,
+ゆっくりと,ゆっくりと,"slowly, at ease",noun,Things & Objects,100,,,
+旅行,りょこう,"travel, trip",noun,Things & Objects,100,,,
+練習,れんしゅう (する),(to) practice,noun,Things & Objects,100,,,
+廊下,ろうか,corridor,noun,Things & Objects,100,,,
+カップ,カップ,cup,noun,Things & Objects,100,,,
+キロ; キログラム,キロ; キログラム,(abbr.) kilo (kilogram),noun,Things & Objects,100,,,
+キロ; キロメートル,キロ; キロメートル,(abbr.) kilo (kilometer),noun,Things & Objects,100,,,
+ペット,ペット,pet,noun,Things & Objects,100,,,
+ポスト,ポスト,"mailbox; post, position",noun,Things & Objects,100,,,
+ラジオカセ,ラジオカセ,radio cassette player,noun,Things & Objects,100,,,
+いい; よい,いい; よい,good,adjective,Adjectives,100,,,
+いってらっしゃい,いってらっしゃい,Please go and come back,adjective,Adjectives,100,,,
+おかえりなさい,おかえりなさい,Welcome home,adjective,Adjectives,100,,,
+おやすみ なさい,おやすみ なさい,Good night,adjective,Adjectives,100,,,
+下さい,ください,(with te-form verb) please do for me,adjective,Adjectives,100,,,
+ごめん なさい,ごめん なさい,I'm sorry,adjective,Adjectives,100,,,
+ない,ない,"there isn't, doesn't have",adjective,Adjectives,100,,,
+温い,ぬるい,lukewarm,adjective,Adjectives,100,,,
+弱い,よわい,weak,adjective,Adjectives,100,,,
+～くらい; ぐらい,～くらい; ぐらい,approximate (quantity),adjective,Adjectives,100,,,
+会う,あう,"to meet, to see",verb,Verbs,100,,,
+開く,あく,"to open, to become open",verb,Verbs,100,,,
+開ける,あける,to open (v.t.),verb,Verbs,100,,,
+上げる,あげる,"to raise, to lift",verb,Verbs,100,,,
+遊ぶ,あそぶ,to play; to spend time pleasantly; to hang out,verb,Time & Dates,100,,,
+浴びる,あびる,"to bathe, to shower",verb,Verbs,100,,,
+洗う,あらう,to wash,verb,Verbs,100,,,
+在る,ある,"to be, to have",verb,Verbs,100,,,
+歩く,あるく,to walk,verb,Verbs,100,,,
+言う,いう,to say,verb,Verbs,100,,,
+行く,いく; ゆく,to go,verb,Verbs,100,,,
+居る,いる,"(humble) to be (animate), to exist",verb,Verbs,100,,,
+入れる,いれる,to put in,verb,Verbs,100,,,
+歌う,うたう,to sing,verb,Verbs,100,,,
+生まれる,うまれる,to be born,verb,Verbs,100,,,
+売る,うる,to sell (v.t.),verb,Verbs,100,,,
+起きる,おきる,"to get up (e.g., from sleeping); to happen",verb,Verbs,100,,,
+置く,おく,to put; to lay; to place,verb,Verbs,100,,,
+教える,おしえる,"to teach, to inform, to instruct",verb,Verbs,100,,,
+押す,おす,"to push, to press, to stamp (e.g., a passport)",verb,Verbs,100,,,
+覚える,おぼえる,"to learn, to commit to memory, to remember, to memorize",verb,Verbs,100,,,
+泳ぐ,およぐ,to swim,verb,Verbs,100,,,
+降りる,おりる,to get off,verb,Verbs,100,,,
+終る,おわる,"to finish, to close",verb,Verbs,100,,,
+買う,かう,to buy,verb,Verbs,100,,,
+返す,かえす,to return something,verb,Verbs,100,,,
+帰る,かえる,"to go back, to go home, to return",verb,Verbs,100,,,
+書く,かく,to write,verb,Verbs,100,,,
+掛ける,かける,"to put on (e.g., glasses); to hang (e.g., on a wall)",verb,Verbs,100,,,
+貸す,かす,to lend,verb,Verbs,100,,,
+かぶる,かぶる,"to wear, to put on (e.g., a hat on the head)",verb,Verbs,100,,,
+借りる,かりる,"to borrow, to owe",verb,Verbs,100,,,
+消える,きえる,"to vanish, to disappear",verb,Verbs,100,,,
+聞く,きく,"to hear, to listen, to ask",verb,Verbs,100,,,
+着る,きる,to put on (clothes above your waist); to wear,verb,Verbs,100,,,
+曇る,くもる,"to become cloudy, to become dim",verb,Verbs,100,,,
+来る,くる,to come,verb,Verbs,100,,,
+消す,けす,"to erase, to delete, to turn off power",verb,Verbs,100,,,
+答える,こたえる,"to answer, to reply",verb,Verbs,100,,,
+困る,こまる,"to be bothered, to have difficulty",verb,Verbs,100,,,
+咲く,さく,to bloom,verb,Verbs,100,,,
+差す,さす,"to raise (stretch out) hands, to raise (e.g., umbrella)",verb,Verbs,100,,,
+死ぬ,しぬ,to die,verb,Verbs,100,,,
+閉まる,しまる,"to close, to be closed",verb,Verbs,100,,,
+締める,しめる,"to tie, to fasten, to tighten",verb,Verbs,100,,,
+知る,しる,"to know, to understand",verb,Verbs,100,,,
+吸う,すう,"to breathe in, to suck",verb,Verbs,100,,,
+住む,すむ,"to reside, to live in",verb,Verbs,100,,,
+する,する,"to do, to try; to wear small items (e.g., necktie, watch, etc.)",verb,Verbs,100,,,
+座る,すわる,to sit,verb,Verbs,100,,,
+そう; そうです,そう; そうです,"yes; appears, to be the case",verb,Verbs,100,,,
+立つ,たつ,to stand up,verb,Verbs,100,,,
+頼む,たのむ,"to request, to ask (a favor)",verb,Verbs,100,,,
+食べる,たべる,to eat,verb,Verbs,100,,,
+出す,だす,to take (something) out; to hand in (something),verb,Verbs,100,,,
+違う,ちがう,to be different; to differ; wrong,verb,Verbs,100,,,
+使う,つかう,to use,verb,Verbs,100,,,
+疲れる,つかれる,to get (become) tired; to become fatigued,verb,Verbs,100,,,
+着く,つく,"to arrive at, to reach",verb,Verbs,100,,,
+作る,つくる,"to make, to create",verb,Verbs,100,,,
+つける,つける,"to turn on (e.g., a light); to take",verb,Verbs,100,,,
+勤める,つとめる,to work (for),verb,Verbs,100,,,
+出かける,でかける,to go out; to depart,verb,Verbs,100,,,
+できる,できる,to be able to (to accomplish),verb,Verbs,100,,,
+出る,でる,"to appear, to leave",verb,Verbs,100,,,
+飛ぶ,とぶ,"to fly, to hop",verb,Verbs,100,,,
+止まる,とまる,to come to a halt,verb,Verbs,100,,,
+取る,とる,to take (a class); to get (a grade),verb,Verbs,100,,,
+鳴く,なく,to make sound (animal),verb,Verbs,100,,,
+無くす,なくす,to lose something,verb,Verbs,100,,,
+習う,ならう,to learn,verb,Verbs,100,,,
+並ぶ,ならぶ,"to line up, to stand in a line (v.i.)",verb,Verbs,100,,,
+並べる,ならべる,to put (things) side by side; to line up,verb,Verbs,100,,,
+なる,なる,to become,verb,Verbs,100,,,
+脱ぐ,ぬぐ,to take off (clothes),verb,Verbs,100,,,
+寝る,ねる,to sleep; to go to sleep; to go to bed,verb,Verbs,100,,,
+登る,のぼる,to climb,verb,Verbs,100,,,
+飲む,のむ,to drink,verb,Verbs,100,,,
+乗る,のる,"to get on, to ride in, to board",verb,Verbs,100,,,
+入る,はいる,"to enter, to contain, to hold",verb,Verbs,100,,,
+はく,はく,to put on (items below your waist),verb,Verbs,100,,,
+走る,はしる,to run,verb,Verbs,100,,,
+働く,はたらく,to work,verb,Verbs,100,,,
+話す,はなす,to speak,verb,Verbs,100,,,
+晴れる,はれる,to be sunny,verb,Verbs,100,,,
+弾く,ひく,to play (a string instrument or piano),verb,Verbs,100,,,
+降る,ふる,"to precipitate, to fall (e.g., rain, snow, etc.)",verb,Verbs,100,,,
+曲る,まがる,"to turn, to bend",verb,Verbs,100,,,
+待つ,まつ,to wait,verb,Verbs,100,,,
+磨く,みがく,to brush (teeth); to polish,verb,Verbs,100,,,
+見せる,みせる,"to show, to display",verb,Verbs,100,,,
+見る,みる,"to see, to look",verb,Verbs,100,,,
+持つ,もつ,"to hold, to carry; to possess",verb,Verbs,100,,,
+休む,やすむ,"to rest, to have a break, to get time off",verb,Time & Dates,100,,,
+やる,やる,"to do; to give (to pets, parents, siblings, etc.)",verb,Verbs,100,,,
+呼ぶ,よぶ,to call (one's name); to invite,verb,Verbs,100,,,
+読む,よむ,to read,verb,Verbs,100,,,
+よろしく おねがいします,よろしく おねがいします,Nice to meet you,verb,Verbs,100,,,
+分かる,わかる,to understand,verb,Verbs,100,,,
+忘れる,わすれる,to forget,verb,Verbs,100,,,
+渡す,わたす,to hand (something) over (v.t.); to get across,verb,Verbs,100,,,
+渡る,わたる,"to cross over, to go across",verb,Verbs,100,,,
+コピーする,コピーする,to copy,verb,Verbs,100,,,
+～すぎ,～すぎ,"past; to exceed, ~ too much",verb,Verbs,100,,,
+三,さん,three,word,Numbers & Counters,1,あした ３じに あいましょう。,Let's meet at 3 o'clock tomorrow.,ashita ３ji ni ai mashou
+五,ご,five,word,Numbers & Counters,1,てに ゆびが ５ほん あります。,There are five fingers on a hand.,te ni yubi ga ５hon ari masu
