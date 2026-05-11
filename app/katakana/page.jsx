@@ -72,6 +72,7 @@ export default function KatakanaPage() {
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, answered, options]);
 
   function handleAnswer(opt) {

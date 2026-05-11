@@ -39,10 +39,19 @@ export async function POST(request) {
   const insertStmt = db.prepare(`INSERT OR IGNORE INTO user_selections (content_type, content_id) VALUES (?, ?)`);
   const deleteStmt = db.prepare(`DELETE FROM user_selections WHERE content_type = ? AND content_id = ?`);
 
+  const today = new Date().toISOString().split('T')[0];
+  const updateSrsStmt = db.prepare(`
+    UPDATE srs_cards 
+    SET next_review_date = ? 
+    WHERE content_type = ? AND content_id = ?
+  `);
+
   db.transaction(() => {
     for (const id of ids) {
       if (selected) {
         insertStmt.run(content_type, id);
+        // Force the card to be due today so it appears in the Review list immediately
+        updateSrsStmt.run(today, content_type, id);
       } else {
         deleteStmt.run(content_type, id);
       }

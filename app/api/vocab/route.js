@@ -19,9 +19,9 @@ export function GET(request) {
   const params = [];
 
   if (search) {
-    query += ' AND (v.japanese LIKE ? OR v.reading LIKE ? OR v.english LIKE ?)';
+    query += ' AND (v.japanese LIKE ? OR v.reading LIKE ? OR v.english LIKE ? OR v.romaji LIKE ?)';
     const like = `%${search}%`;
-    params.push(like, like, like);
+    params.push(like, like, like, like);
   }
   if (type) {
     query += ' AND v.type = ?';
@@ -31,7 +31,7 @@ export function GET(request) {
     query += ' AND v.category = ?';
     params.push(category);
   }
-  query += ' ORDER BY v.importance ASC, v.id ASC';
+  query += ' ORDER BY v.sort_order ASC, v.importance ASC, v.id ASC';
 
   const rows = db.prepare(query).all(...params);
   return NextResponse.json(rows);

@@ -51,57 +51,94 @@ const RATINGS = [
 
 // ─── Category definitions ─────────────────────────────────────────────────────
 const CATEGORIES = [
-  { type: null,         jp: '全部', label: 'All Cards',  sub: 'Vocabulary + Kanji combined', icon: '📚' },
-  { type: 'vocabulary', jp: '単語', label: 'Vocabulary', sub: 'N5 words',                   icon: '言' },
-  { type: 'kanji',      jp: '漢字', label: 'Kanji',      sub: 'N5 characters',              icon: '字' },
+  { type: 'vocabulary', jp: '単語', label: 'Vocabulary', sub: 'N5 words', icon: '言' },
+  { type: 'kanji',      jp: '漢字', label: 'Kanji',      sub: 'N5 characters', icon: '字' },
 ];
 
 // ─── Category Picker ──────────────────────────────────────────────────────────
-function CategoryPicker({ counts, onSelect }) {
-  const total = (counts.vocabulary || 0) + (counts.kanji || 0);
+function CategoryPicker({ counts, available, limits, onSelect }) {
+  const totalDue = (counts.vocabulary || 0) + (counts.kanji || 0);
+
   return (
     <div>
-      <div className="mb-8">
-        <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>
-          スペースド・リピティション
-        </p>
-        <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>復習</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>
-          Review — choose a category to quiz yourself
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold" style={{ color: 'var(--text-1)' }}>復習</h1>
+        <p className="text-sm mt-2 opacity-60" style={{ color: 'var(--text-2)' }}>
+          Review your cards to strengthen your memory
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mb-8">
         {CATEGORIES.map((cat) => {
-          const due = cat.type === null ? total : (counts[cat.type] || 0);
+          const due = counts[cat.type] || 0;
+          const avail = available[cat.type] || 0;
+          const limit = limits[cat.type] || 0;
+
           return (
             <button
               key={cat.label}
               onClick={() => onSelect(cat)}
-              disabled={due === 0}
-              className="rounded-xl p-6 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              disabled={avail === 0 || limit === 0}
+              className="rounded-2xl p-8 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed group relative overflow-hidden"
               style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
-              onMouseEnter={(e) => { if (due > 0) { e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)'; e.currentTarget.style.background = 'rgba(255,0,128,0.05)'; } }}
+              onMouseEnter={(e) => { if (avail > 0 && limit > 0) { e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)'; e.currentTarget.style.background = 'rgba(255,0,128,0.05)'; } }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--bg-surface)'; }}
             >
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 font-japanese font-bold"
-                style={{ background: due > 0 ? 'rgba(255,0,128,0.1)' : 'var(--bg-elevated)', fontSize: '24px', color: due > 0 ? 'var(--pink)' : 'var(--text-3)', border: `1px solid ${due > 0 ? 'rgba(255,0,128,0.25)' : 'var(--border)'}` }}>
-                {cat.icon}
+              <div className="flex justify-between items-start mb-6">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center font-japanese font-bold text-3xl"
+                  style={{ background: avail > 0 && limit > 0 ? 'rgba(255,0,128,0.1)' : 'var(--bg-elevated)', color: avail > 0 && limit > 0 ? 'var(--pink)' : 'var(--text-3)', border: `1px solid ${avail > 0 && limit > 0 ? 'rgba(255,0,128,0.25)' : 'var(--border)'}` }}>
+                  {cat.icon}
+                </div>
+                {avail > 0 && limit > 0 && (
+                  <div className="text-right">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Available</p>
+                    <p className="text-xl font-bold font-mono">{Math.min(avail, limit)}</p>
+                  </div>
+                )}
+                {limit === 0 && (
+                  <div className="text-right">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Done Today</p>
+                    <p className="text-xl font-bold font-mono">50/50</p>
+                  </div>
+                )}
               </div>
-              <p className="font-japanese text-xs mb-1" style={{ color: 'var(--text-3)' }}>{cat.jp}</p>
-              <p className="text-sm font-semibold mb-1" style={{ color: 'var(--text-1)' }}>{cat.label}</p>
-              <p className="text-xs mb-3" style={{ color: 'var(--text-3)' }}>{cat.sub}</p>
-              <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-bold font-japanese" style={{ color: due > 0 ? 'var(--pink)' : 'var(--text-3)' }}>{due}</span>
-                <span className="text-xs" style={{ color: 'var(--text-3)' }}>{due === 1 ? 'card due' : 'cards due'}</span>
+
+              <p className="font-japanese text-sm mb-1" style={{ color: 'var(--text-3)' }}>{cat.jp}</p>
+              <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>{cat.label} Review</h2>
+              <p className="text-xs mb-4" style={{ color: 'var(--text-3)' }}>{cat.sub}</p>
+
+              <div className="flex items-center justify-between pt-4 mt-auto" style={{ borderTop: '1px solid var(--border)' }}>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-lg font-bold font-japanese" style={{ color: due > 0 ? 'var(--pink)' : 'var(--text-3)' }}>{due}</span>
+                  <span className="text-[10px]" style={{ color: 'var(--text-3)' }}>Total Due</span>
+                </div>
+                <div className="text-[10px] opacity-60">{50 - limit}/50 reviewed</div>
               </div>
             </button>
           );
         })}
       </div>
-      {total === 0 && (
-        <div className="mt-8">
-          <p className="font-japanese text-lg font-bold mb-2" style={{ color: '#44ddaa' }}>完璧！</p>
-          <p className="text-sm" style={{ color: 'var(--text-2)' }}>No cards due today. Come back tomorrow!</p>
+
+      {limits.vocabulary === 0 && limits.kanji === 0 && (
+        <div className="mt-8 text-center max-w-2xl">
+          <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
+            <CheckCircle size={32} className="text-emerald-500" />
+          </div>
+          <p className="font-japanese text-xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>今日の目標達成！</p>
+          <p className="text-sm" style={{ color: 'var(--text-3)' }}>
+            You have reached your 50-card limit for both categories. <br/>
+            Excellent work! Please <strong>try again tomorrow</strong>.
+          </p>
+        </div>
+      )}
+
+      {totalDue === 0 && (
+        <div className="mt-8 text-center max-w-2xl">
+          <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
+            <CheckCircle size={32} className="text-emerald-500" />
+          </div>
+          <p className="font-japanese text-xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>完璧！</p>
+          <p className="text-sm" style={{ color: 'var(--text-3)' }}>You have no cards due for review today. Come back tomorrow!</p>
         </div>
       )}
     </div>
@@ -384,16 +421,29 @@ function QuizDrill({ category, pools, onBack }) {
           </div>
 
           {/* Question card */}
-          <div className="rounded-xl p-8 text-center mb-4"
-            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
-            <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
-              {current.content_type === 'vocabulary' ? '単語 — Translate to Japanese' : '漢字 — How do you read this?'}
-            </p>
-            <p className={`${current.content_type === 'vocabulary' ? 'font-semibold' : 'font-japanese font-bold'} mb-2`}
-               style={{ fontSize: current.content_type === 'vocabulary' ? '40px' : '72px', lineHeight: 1.1, color: 'var(--text-1)' }}>
-              {current.content_type === 'vocabulary' ? current.back : current.front}
-            </p>
-          </div>
+          {(() => {
+            const isVocab = current.content_type === 'vocabulary';
+            const hasKanji = isVocab && /[㐀-䶵一-鿋豈-頻]/.test(current.front);
+            // Mixed mode: for vocab with kanji, 50% chance to show Kanji (Recognition) instead of English (Recall)
+            const useRecognition = isVocab && hasKanji && (current.id % 2 !== 0);
+
+            const promptText = useRecognition ? current.front : (isVocab ? current.back : current.front);
+            const instruction = useRecognition ? '単語 — How do you read this?' : (isVocab ? '単語 — Translate to Japanese' : '漢字 — How do you read this?');
+            const isBig = !isVocab || useRecognition;
+
+            return (
+              <div className="rounded-xl p-8 text-center mb-4"
+                style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
+                <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
+                  {instruction}
+                </p>
+                <p className={`${isBig ? 'font-japanese font-bold' : 'font-semibold'} mb-2`}
+                   style={{ fontSize: isBig ? '72px' : '40px', lineHeight: 1.1, color: 'var(--text-1)' }}>
+                  {promptText}
+                </p>
+              </div>
+            );
+          })()}
 
           {/* Answer options */}
           {!chosen && (
@@ -439,6 +489,8 @@ function QuizDrill({ category, pools, onBack }) {
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function ReviewPage() {
   const [counts, setCounts]       = useState({});
+  const [available, setAvailable] = useState({});
+  const [limits, setLimits]       = useState({});
   const [pools, setPools]         = useState({});
   const [loading, setLoading]     = useState(true);
   const [activeCategory, setActiveCategory] = useState(null);
@@ -447,7 +499,13 @@ export default function ReviewPage() {
     setLoading(true);
     fetch('/api/review/due')
       .then((r) => r.json())
-      .then((d) => { setCounts(d.counts || {}); setPools(d.pools || {}); setLoading(false); });
+      .then((d) => {
+        setCounts(d.counts || {});
+        setAvailable(d.available || {});
+        setLimits(d.limits || { vocabulary: 50, kanji: 50 });
+        setPools(d.pools || {});
+        setLoading(false);
+      });
   }
 
   useEffect(() => { loadCounts(); }, []);
@@ -457,5 +515,5 @@ export default function ReviewPage() {
   if (activeCategory) return <QuizDrill category={activeCategory} pools={pools} onBack={handleBack} />;
   return loading
     ? <div className="py-24 text-center font-japanese text-sm" style={{ color: 'var(--text-3)' }}>読み込み中…</div>
-    : <CategoryPicker counts={counts} onSelect={setActiveCategory} />;
+    : <CategoryPicker counts={counts} available={available} limits={limits} onSelect={setActiveCategory} />;
 }

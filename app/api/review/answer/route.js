@@ -61,8 +61,8 @@ export async function POST(request) {
   // Log study session card
   db.prepare(`
     INSERT INTO study_sessions (section, duration_minutes, cards_reviewed)
-    VALUES ('review', 0, 1)
-  `).run();
+    VALUES (?, 0, 1)
+  `).run(`review:${card.content_type}`);
 
   return NextResponse.json({
     success: true,

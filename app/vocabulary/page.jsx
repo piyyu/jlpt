@@ -10,13 +10,17 @@ const CATEGORIES = [
   'Numbers & Counters',
   'Time & Dates',
   'People & Family',
+  'Body Parts',
+  'Clothing',
   'Food & Drink',
   'School & Work',
   'Places & Directions',
+  'Nature & Animals',
   'Greetings & Expressions',
+  'Colors',
   'Things & Objects',
-  'Verbs',
-  'Adjectives'
+  'Adjectives',
+  'Verbs'
 ];
 
 export default function VocabularyPage() {
@@ -125,7 +129,11 @@ export default function VocabularyPage() {
     'Food & Drink': { background: 'rgba(249,115,22,0.12)', color: '#f97316', border: '1px solid rgba(249,115,22,0.25)' },
     'School & Work': { background: 'rgba(16,185,129,0.12)', color: '#10b981', border: '1px solid rgba(16,185,129,0.25)' },
     'Places & Directions': { background: 'rgba(59,130,246,0.12)', color: '#3b82f6', border: '1px solid rgba(59,130,246,0.25)' },
+    'Body Parts': { background: 'rgba(239,68,68,0.12)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.25)' },
+    'Clothing': { background: 'rgba(14,165,233,0.12)', color: '#0ea5e9', border: '1px solid rgba(14,165,233,0.25)' },
+    'Nature & Animals': { background: 'rgba(34,197,94,0.12)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.25)' },
     'Greetings & Expressions': { background: 'rgba(234,179,8,0.12)', color: '#eab308', border: '1px solid rgba(234,179,8,0.25)' },
+    'Colors': { background: 'rgba(252,165,165,0.12)', color: '#fca5a5', border: '1px solid rgba(252,165,165,0.25)' },
     'Things & Objects': { background: 'rgba(107,114,128,0.12)', color: '#6b7280', border: '1px solid rgba(107,114,128,0.25)' },
     'Verbs': { background: 'rgba(74,222,128,0.12)', color: '#4ade80', border: '1px solid rgba(74,222,128,0.25)' },
     'Adjectives': { background: 'rgba(196,181,253,0.12)', color: '#c4b5fd', border: '1px solid rgba(196,181,253,0.25)' },
@@ -206,7 +214,7 @@ export default function VocabularyPage() {
                 <th style={{ width: '28px' }}></th>
                 <th>Japanese</th>
                 <th>Reading</th>
-                {showEnglish && <th>Romaji</th>}
+                <th>Romaji</th>
                 <th>English</th>
                 <th>Category</th>
                 <th></th>
@@ -218,7 +226,7 @@ export default function VocabularyPage() {
                 return (
                   <Fragment key={group.name}>
                     <tr>
-                      <td colSpan={showEnglish ? 8 : 7} className="px-4 py-3 bg-[var(--bg-elevated)] border-b border-[var(--border)] relative">
+                      <td colSpan={8} className="px-4 py-3 bg-[var(--bg-elevated)] border-b border-[var(--border)] relative">
                         <div className="flex items-center gap-4">
                           <span
                             style={categoryBadgeColor[group.name] || { background: 'var(--bg-elevated)', color: 'var(--text-3)' }}
@@ -286,13 +294,15 @@ export default function VocabularyPage() {
                       </td>
 
                       {/* Romaji */}
-                      {showEnglish && (
-                        <td>
+                      {/* Romaji */}
+                      <td>
+                        <div className="flex items-center gap-2">
                           <span className="text-sm font-mono" style={{ color: 'var(--pink)', opacity: 0.8 }}>
                             {toRomaji(word.reading)}
                           </span>
-                        </td>
-                      )}
+                          <AudioButton text={word.japanese} />
+                        </div>
+                      </td>
 
                       {/* English */}
                       <td style={{ color: 'var(--text-2)' }}>{word.english}</td>
@@ -318,7 +328,7 @@ export default function VocabularyPage() {
                     {/* Expanded example */}
                     {isExp && (
                       <tr key={`${word.id}-detail`}>
-                        <td colSpan={showEnglish ? 8 : 7} className="px-4 py-4" style={{ background: 'var(--bg-elevated)' }}>
+                        <td colSpan={8} className="px-4 py-4" style={{ background: 'var(--bg-elevated)' }}>
                           <div className="flex items-start gap-6">
                             <div className="flex-1 space-y-2">
                               {word.example_jp ? (
