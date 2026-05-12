@@ -168,7 +168,7 @@ function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
           {isCorrect ? '✓ Correct!' : '✗ Wrong'}
         </span>
         <span className="text-sm" style={{ color: 'var(--text-2)' }}>
-          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--pink)' }}>{card.drill_answer}</strong> 
+          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--pink)' }}>{card.drill_answer}</strong>
           {!isKanji && <span style={{opacity: 0.7, marginLeft: '8px'}}>({card.front})</span>}
         </span>
       </div>
@@ -292,9 +292,7 @@ function QuizDrill({ category, pools, onBack }) {
   const pool = useMemo(() => {
     if (!current) return [];
     if (current.content_type === 'kanji') return pools.kanji || [];
-    // For vocabulary, check if answer is English or Japanese
-    const isJapanese = /[ぁ-んァ-ン]/.test(current.drill_answer);
-    return isJapanese ? pools.vocabulary_reading : pools.vocabulary_english;
+    return pools.vocabulary || [];
   }, [current, pools]);
 
   const options = useMemo(
