@@ -1,31 +1,22 @@
-# KOTOBA
+# KOTOBA (言葉)
 
-A modern, local-first Japanese language learning application designed to help you prepare for the JLPT N5. It features a Spaced Repetition System (SRS) powered by the widely used SM-2 algorithm (similar to Anki), interactive quiz modes, and comprehensive content covering vocabulary, kanji, grammar, and more!
+A modern, minimalist Japanese language learning application designed for JLPT N5 preparation. KOTOBA focuses on core vocabulary and kanji through an optimized Spaced Repetition System (SRS) and interactive quizzes.
 
 ## Features
 
-- **Spaced Repetition System (SRS)**: Optimize your study sessions. Cards are scheduled at optimal intervals based on your past performance to ensure long-term retention.
-- **Targeted Practice (Selections)**: Manually lock specific vocabulary or kanji elements into your "Selections" list to filter your reviews into a concentrated, custom deck.
-- **Mastering the SRS Ratings**:
-  When reviewing a card, you are presented with 4 difficulty options. Here's exactly how they affect your future card reviews (based on the SM-2 formula):
-  - **1 (Again)**: Complete blank. Resets your "streak" and the interval drops back to **1 day**. Lowers the card's future growth multiplier.
-  - **2 (Hard)**: Struggled to remember. Doesn't completely reset your streak, but the interval will only grow very slowly (1.2x).
-  - **3 (Good)**: Recalled correctly. Uses standard growth. Brand new cards jump to **1 day**, then **6 days**, then multiply by your ease factor (~15+ days).
-  - **4 (Easy)**: Perfect recall. Skips intervals faster and boosts your multiplier permanently. Brand new cards jump straight to **4 days**, then **9 days**, and then grow 30% faster than "Good" responses.
-- **Quiz Modes & Mock Tests**: Test your knowledge across different topics with multiple-choice questions or challenge yourself with a mock exam.
-- **Audio Support**: Hear the native pronunciation of vocabulary words directly in the app.
-- **Comprehensive Content**:
-  - Hiragana & Katakana
-  - N5 Vocabulary & Kanji
-  - Particles & Grammar
-  - Reading & Listening Practice
+- **Optimized SRS**: Powered by the SM-2 algorithm (similar to Anki). Cards are scheduled at optimal intervals based on your performance to maximize long-term retention.
+- **Collapsible Sidebar**: A clean, responsive navigation system that stays out of your way during study sessions.
+- **Selections System**: Manually select specific words or kanji to create a custom study deck for focused practice.
+- **Vocabulary & Kanji**: Over 800 vocabulary words and 100+ kanji, each with detailed readings, meanings, and example sentences.
+- **Interactive Quiz**: Test your knowledge with multiple-choice questions for both vocabulary and kanji.
+- **Native Audio**: High-quality text-to-speech for all vocabulary words to help with pronunciation.
+- **Minimalist Dark Mode**: A sleek, high-contrast interface designed for long, distraction-free study sessions.
 
 ## Tech Stack
 
-- [Next.js](https://nextjs.org/) - React framework (App Router)
-- [Better-SQLite3](https://github.com/WiseLibs/better-sqlite3) - Lightweight, fast local database architecture
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first styling
-- [Lucide React](https://lucide.dev/) - Beautiful iconography
+- **Frontend**: Next.js (App Router), Tailwind CSS, Lucide Icons
+- **Database**: Better-SQLite3 (Local, fast, zero-config)
+- **Algorithm**: Custom SM-2 Spaced Repetition implementation
 
 ## Getting Started
 
@@ -34,22 +25,21 @@ A modern, local-first Japanese language learning application designed to help yo
 npm install
 ```
 
-### 2. Initialize the Database
-Before running the app for the first time, populate the local SQLite database (`jlpt.db`) from the raw dataset files located in the `data/` folder.
-```bash
-npm run seed
-```
-
-### 3. Run the Development Server
+### 2. Run the Development Server
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) with your browser to automatically jump into your studies.
+Open [http://localhost:3000](http://localhost:3000) to start your study session.
 
-## Project Structure
+## SRS Ratings Guide
 
-- `/app` - Core application logic containing Next.js pages and API routes
-- `/components` - Reusable UI widgets (Quiz cards, Audio buttons, Navigation, etc.)
-- `/data` - Raw CSV dataset files representing the study material
-- `/lib` - Application utility functions (DB connection logic, SM-2 Spaced Repetition algorithm, Romaji conversion, etc.)
-- `/scripts` - Automation scripts for managing, seeding, and migrating database definitions
+When reviewing a card, choose the rating that best describes your recall:
+
+- **Again (1)**: Total failure to recall. Resets the interval to 1 day and decreases the ease factor.
+- **Hard (2)**: Recalled with great difficulty. The interval increases slowly.
+- **Good (3)**: Recalled correctly with some hesitation. The standard SRS progression.
+- **Easy (4)**: Perfect, instant recall. The interval increases significantly faster.
+
+## Project Philosophy
+
+KOTOBA is designed to be **lean and distraction-free**. By focusing exclusively on vocabulary and kanji, it provides a dedicated environment for mastering the building blocks of the Japanese language.

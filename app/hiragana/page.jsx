@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 
-const HIRAGANA = [
+const GOJUON = [
   { char: 'あ', romaji: 'a' },  { char: 'い', romaji: 'i' },  { char: 'う', romaji: 'u' },  { char: 'え', romaji: 'e' },  { char: 'お', romaji: 'o' },
   { char: 'か', romaji: 'ka' }, { char: 'き', romaji: 'ki' }, { char: 'く', romaji: 'ku' }, { char: 'け', romaji: 'ke' }, { char: 'こ', romaji: 'ko' },
   { char: 'さ', romaji: 'sa' }, { char: 'し', romaji: 'shi'},  { char: 'す', romaji: 'su' }, { char: 'せ', romaji: 'se' }, { char: 'そ', romaji: 'so' },
@@ -14,6 +14,30 @@ const HIRAGANA = [
   { char: 'ら', romaji: 'ra' }, { char: 'り', romaji: 'ri' }, { char: 'る', romaji: 'ru' }, { char: 'れ', romaji: 're' }, { char: 'ろ', romaji: 'ro' },
   { char: 'わ', romaji: 'wa' }, { char: 'を', romaji: 'wo' }, { char: 'ん', romaji: 'n' },
 ];
+
+const DAKUTEN = [
+  { char: 'が', romaji: 'ga' }, { char: 'ぎ', romaji: 'gi' }, { char: 'ぐ', romaji: 'gu' }, { char: 'げ', romaji: 'ge' }, { char: 'ご', romaji: 'go' },
+  { char: 'ざ', romaji: 'za' }, { char: 'じ', romaji: 'ji' }, { char: 'ず', romaji: 'zu' }, { char: 'ぜ', romaji: 'ze' }, { char: 'ぞ', romaji: 'zo' },
+  { char: 'だ', romaji: 'da' }, { char: 'ぢ', romaji: 'ji' }, { char: 'づ', romaji: 'zu' }, { char: 'で', romaji: 'de' }, { char: 'ど', romaji: 'do' },
+  { char: 'ば', romaji: 'ba' }, { char: 'び', romaji: 'bi' }, { char: 'ぶ', romaji: 'bu' }, { char: 'べ', romaji: 'be' }, { char: 'ぼ', romaji: 'bo' },
+  { char: 'ぱ', romaji: 'pa' }, { char: 'ぴ', romaji: 'pi' }, { char: 'ぷ', romaji: 'pu' }, { char: 'ぺ', romaji: 'pe' }, { char: 'ぽ', romaji: 'po' },
+];
+
+const YOON = [
+  { char: 'きゃ', romaji: 'kya' }, { char: 'きゅ', romaji: 'kyu' }, { char: 'きょ', romaji: 'kyo' },
+  { char: 'しゃ', romaji: 'sha' }, { char: 'しゅ', romaji: 'shu' }, { char: 'しょ', romaji: 'sho' },
+  { char: 'ちゃ', romaji: 'cha' }, { char: 'ちゅ', romaji: 'chu' }, { char: 'ちょ', romaji: 'cho' },
+  { char: 'にゃ', romaji: 'nya' }, { char: 'にゅ', romaji: 'nyu' }, { char: 'にょ', romaji: 'nyo' },
+  { char: 'ひゃ', romaji: 'hya' }, { char: 'ひゅ', romaji: 'hyu' }, { char: 'ひょ', romaji: 'hyo' },
+  { char: 'みゃ', romaji: 'mya' }, { char: 'みゅ', romaji: 'myu' }, { char: 'みょ', romaji: 'myo' },
+  { char: 'りゃ', romaji: 'rya' }, { char: 'りゅ', romaji: 'ryu' }, { char: 'りょ', romaji: 'ryo' },
+  { char: 'ぎゃ', romaji: 'gya' }, { char: 'ぎゅ', romaji: 'gyu' }, { char: 'ぎょ', romaji: 'gyo' },
+  { char: 'じゃ', romaji: 'ja' },  { char: 'じゅ', romaji: 'ju' },  { char: 'じょ', romaji: 'jo' },
+  { char: 'びゃ', romaji: 'bya' }, { char: 'びゅ', romaji: 'byu' }, { char: 'びょ', romaji: 'byo' },
+  { char: 'ぴゃ', romaji: 'pya' }, { char: 'ぴゅ', romaji: 'pyu' }, { char: 'ぴょ', romaji: 'pyo' },
+];
+
+const ALL_HIRAGANA = [...GOJUON, ...DAKUTEN, ...YOON];
 
 function shuffle(arr) {
   const a = [...arr];
@@ -46,7 +70,7 @@ export default function HiraganaPage() {
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
   function startDrill() {
-    setDrillQueue(shuffle(HIRAGANA));
+    setDrillQueue(shuffle(ALL_HIRAGANA));
     setDrillIndex(0);
     setSelected(null);
     setScore({ correct: 0, total: 0 });
@@ -57,7 +81,7 @@ export default function HiraganaPage() {
   const current = drillQueue[drillIndex] ?? null;
   // useMemo so options don't reshuffle on every render; only when the card changes
   const options = useMemo(
-    () => (current ? getOptions(current, HIRAGANA) : []),
+    () => (current ? getOptions(current, ALL_HIRAGANA) : []),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [current?.char],
   );
@@ -93,6 +117,29 @@ export default function HiraganaPage() {
     }, 900);
   }
 
+  const renderCard = (h) => (
+    <div
+      key={h.char}
+      className="rounded-xl p-4 flex flex-col items-center gap-1 transition-all group"
+      style={{ 
+        background: 'var(--bg-surface)', 
+        border: '1px solid var(--border)',
+        cursor: 'default' 
+      }}
+      onMouseEnter={(e) => { 
+        e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)';
+        e.currentTarget.style.background = 'rgba(255,0,128,0.04)';
+      }}
+      onMouseLeave={(e) => { 
+        e.currentTarget.style.borderColor = 'var(--border)';
+        e.currentTarget.style.background = 'var(--bg-surface)';
+      }}
+    >
+      <span className="font-japanese text-3xl transition-transform group-hover:scale-110" style={{ color: 'var(--text-1)' }}>{h.char}</span>
+      <span className="text-xs font-mono" style={{ color: 'var(--pink)', opacity: 0.8 }}>{h.romaji}</span>
+    </div>
+  );
+
   return (
     <div>
       {/* ── Header ── */}
@@ -120,21 +167,27 @@ export default function HiraganaPage() {
 
       {/* ── Reference Chart ── */}
       {mode === 'reference' && (
-        <div className="card overflow-hidden">
-          <div className="grid grid-cols-5 divide-x divide-y" style={{ borderColor: 'var(--border)' }}>
-            {HIRAGANA.map((h) => (
-              <div
-                key={h.char}
-                className="p-4 flex flex-col items-center gap-1 transition-colors"
-                style={{ cursor: 'default' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--bg-elevated)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = ''; }}
-              >
-                <span className="font-japanese text-2xl" style={{ color: 'var(--text-1)' }}>{h.char}</span>
-                <span className="text-xs font-mono" style={{ color: 'var(--pink)', opacity: 0.8 }}>{h.romaji}</span>
-              </div>
-            ))}
-          </div>
+        <div className="space-y-10">
+          <section>
+            <h2 className="text-sm font-semibold mb-4 opacity-50 uppercase tracking-widest">Basic — 五十音</h2>
+            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-3">
+              {GOJUON.map(renderCard)}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-sm font-semibold mb-4 opacity-50 uppercase tracking-widest">Voiced — 濁音 / 半濁音</h2>
+            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-3">
+              {DAKUTEN.map(renderCard)}
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-sm font-semibold mb-4 opacity-50 uppercase tracking-widest">Contracted — 拗音</h2>
+            <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-9 gap-3">
+              {YOON.map(renderCard)}
+            </div>
+          </section>
         </div>
       )}
 

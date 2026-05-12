@@ -23,36 +23,38 @@ function buildOptions(correct, pool) {
 
 // SM-2 interval preview (client-side estimate so user sees what will happen)
 function previewInterval(label, card) {
-  const ef    = card?.ease_factor ?? 2.5;
-  const rep   = card?.repetitions ?? 0;
+  const ef = card?.ease_factor ?? 2.5;
+  const rep = card?.repetitions ?? 0;
   const inter = card?.interval_days ?? 1;
+
   if (label === 'again') return '1 day';
-  if (label === 'hard')  return `${Math.max(1, Math.round(inter * 1.2))} days`;
-  if (label === 'good') {
-    if (rep === 0) return '1 day';
-    if (rep === 1) return '6 days';
-    return `${Math.round(inter * ef)} days`;
+
+  if (rep === 0) {
+    const days = label === 'hard' ? 1 : (label === 'good' ? 2 : 4);
+    return `${days} ${days === 1 ? 'day' : 'days'}`;
   }
-  if (label === 'easy') {
-    if (rep === 0) return '4 days';
-    if (rep === 1) return '9 days';
-    return `${Math.round(inter * ef * 1.3)} days`;
+  if (rep === 1) {
+    const days = label === 'hard' ? 3 : (label === 'good' ? 6 : 9);
+    return `${days} days`;
   }
-  return '?';
+
+  const modifier = label === 'hard' ? 0.8 : (label === 'good' ? 1.0 : 1.3);
+  const days = Math.round(inter * ef * modifier);
+  return `${days} days`;
 }
 
 // ─── Difficulty button config ─────────────────────────────────────────────────
 const RATINGS = [
-  { label: 'again', jp: 'もう一度', key: '1', color: '#ff3c50', bg: 'rgba(255,60,80,0.1)',   border: 'rgba(255,60,80,0.4)'   },
-  { label: 'hard',  jp: '難しい',   key: '2', color: '#f97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.4)' },
-  { label: 'good',  jp: 'よかった', key: '3', color: '#44ddaa', bg: 'rgba(68,221,170,0.1)', border: 'rgba(68,221,170,0.4)' },
-  { label: 'easy',  jp: '簡単',     key: '4', color: '#38bdf8', bg: 'rgba(56,189,248,0.1)', border: 'rgba(56,189,248,0.4)' },
+  { label: 'again', jp: 'もう一度', key: '1', color: '#ff3c50', bg: 'rgba(255,60,80,0.1)', border: 'rgba(255,60,80,0.4)' },
+  { label: 'hard', jp: '難しい', key: '2', color: '#f97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.4)' },
+  { label: 'good', jp: 'よかった', key: '3', color: '#44ddaa', bg: 'rgba(68,221,170,0.1)', border: 'rgba(68,221,170,0.4)' },
+  { label: 'easy', jp: '簡単', key: '4', color: '#38bdf8', bg: 'rgba(56,189,248,0.1)', border: 'rgba(56,189,248,0.4)' },
 ];
 
 // ─── Category definitions ─────────────────────────────────────────────────────
 const CATEGORIES = [
   { type: 'vocabulary', jp: '単語', label: 'Vocabulary', sub: 'N5 words', icon: '言' },
-  { type: 'kanji',      jp: '漢字', label: 'Kanji',      sub: 'N5 characters', icon: '字' },
+  { type: 'kanji', jp: '漢字', label: 'Kanji', sub: 'N5 characters', icon: '字' },
 ];
 
 // ─── Category Picker ──────────────────────────────────────────────────────────
@@ -126,7 +128,7 @@ function CategoryPicker({ counts, available, limits, onSelect }) {
           </div>
           <p className="font-japanese text-xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>今日の目標達成！</p>
           <p className="text-sm" style={{ color: 'var(--text-3)' }}>
-            You have reached your 50-card limit for both categories. <br/>
+            You have reached your 50-card limit for both categories. <br />
             Excellent work! Please <strong>try again tomorrow</strong>.
           </p>
         </div>
@@ -169,7 +171,7 @@ function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
         </span>
         <span className="text-sm" style={{ color: 'var(--text-2)' }}>
           Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--pink)' }}>{card.drill_answer}</strong>
-          {!isKanji && <span style={{opacity: 0.7, marginLeft: '8px'}}>({card.front})</span>}
+          {!isKanji && <span style={{ opacity: 0.7, marginLeft: '8px' }}>({card.front})</span>}
         </span>
       </div>
 
@@ -271,19 +273,31 @@ function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
 
 // ─── Quiz Drill ───────────────────────────────────────────────────────────────
 function QuizDrill({ category, pools, onBack }) {
-  const [cards, setCards]       = useState([]);
-  const [index, setIndex]       = useState(0);
-  const [chosen, setChosen]     = useState(null);    // answer string picked
-  const [rated, setRated]       = useState(false);   // difficulty submitted
-  const [done, setDone]         = useState(false);
-  const [loading, setLoading]   = useState(true);
-  const [stats, setStats]       = useState({ correct: 0, total: 0 });
+  const [cards, setCards] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [chosen, setChosen] = useState(null);    // answer string picked
+  const [rated, setRated] = useState(false);   // difficulty submitted
+  const [done, setDone] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({ correct: 0, total: 0 });
   const { showEnglish } = useSettings();
 
   const fetchCards = useCallback(() => {
     setLoading(true);
     const url = category.type ? `/api/review/due?type=${category.type}` : '/api/review/due';
-    fetch(url).then((r) => r.json()).then((d) => { setCards(d.cards); setLoading(false); });
+    fetch(url)
+      .then((r) => {
+        if (!r.ok) throw new Error('Failed to fetch cards');
+        return r.json();
+      })
+      .then((d) => {
+        setCards(d.cards || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [category]);
 
   useEffect(() => { fetchCards(); }, [fetchCards]);
@@ -365,9 +379,9 @@ function QuizDrill({ category, pools, onBack }) {
       cursor: 'pointer',
     };
     const isCorrect = opt === current.drill_answer;
-    const isPicked  = opt === chosen;
+    const isPicked = opt === chosen;
     if (isCorrect) return { background: 'rgba(68,221,170,0.12)', border: '1px solid #44ddaa', color: '#44ddaa' };
-    if (isPicked)  return { background: 'rgba(255,60,80,0.1)', border: '1px solid rgba(255,60,80,0.5)', color: '#ff3c50' };
+    if (isPicked) return { background: 'rgba(255,60,80,0.1)', border: '1px solid rgba(255,60,80,0.5)', color: '#ff3c50' };
     return { background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-3)', opacity: 0.35, cursor: 'default' };
   }
 
@@ -435,12 +449,12 @@ function QuizDrill({ category, pools, onBack }) {
           {/* Question card */}
           {(() => {
             const isVocab = current.content_type === 'vocabulary';
-            // For vocab, always use English meaning (back). For Kanji, keep the recognition mode.
-            const useRecognition = !isVocab && (current.id % 2 !== 0);
+            // Always show Kanji character for Kanji cards. For Vocab, show English meaning.
+            const useRecognition = !isVocab;
 
-            const promptText = isVocab ? current.back : (useRecognition ? current.front : current.back);
-            const instruction = isVocab ? '単語 — Translate to Japanese' : (useRecognition ? '漢字 — How do you read this?' : '漢字 — What does this mean?');
-            const isBig = !isVocab && useRecognition;
+            const promptText = isVocab ? current.back : current.front;
+            const instruction = isVocab ? '単語 — Translate to Japanese' : '漢字 — How do you read this?';
+            const isBig = !isVocab;
 
             return (
               <div className="rounded-xl p-8 text-center mb-4"
@@ -448,8 +462,8 @@ function QuizDrill({ category, pools, onBack }) {
                 <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
                   {instruction}
                 </p>
-                <p className={`${isBig ? 'font-japanese font-bold' : (isVocab ? 'font-sans font-bold' : 'font-semibold')} mb-2`}
-                   style={{ fontSize: isBig ? '72px' : (isVocab ? '28px' : '40px'), lineHeight: 1.1, color: 'var(--text-1)' }}>
+                <p className={`${isBig ? 'font-japanese font-bold' : 'font-sans font-bold'} mb-2`}
+                  style={{ fontSize: isBig ? '72px' : '28px', lineHeight: 1.1, color: 'var(--text-1)' }}>
                   {promptText}
                 </p>
               </div>
@@ -506,22 +520,29 @@ function QuizDrill({ category, pools, onBack }) {
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function ReviewPage() {
-  const [counts, setCounts]       = useState({});
+  const [counts, setCounts] = useState({});
   const [available, setAvailable] = useState({});
-  const [limits, setLimits]       = useState({});
-  const [pools, setPools]         = useState({});
-  const [loading, setLoading]     = useState(true);
+  const [limits, setLimits] = useState({});
+  const [pools, setPools] = useState({});
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState(null);
 
   function loadCounts() {
     setLoading(true);
     fetch('/api/review/due')
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error('Failed to load summary');
+        return r.json();
+      })
       .then((d) => {
         setCounts(d.counts || {});
         setAvailable(d.available || {});
         setLimits(d.limits || { vocabulary: 50, kanji: 50 });
         setPools(d.pools || {});
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
         setLoading(false);
       });
   }

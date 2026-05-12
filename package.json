@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "seed": "node scripts/seed.js",
-    "db:reset": "rm -f jlpt.db && node scripts/seed.js"
+    "lint": "next lint"
   },
   "dependencies": {
     "better-sqlite3": "^12.9.0",

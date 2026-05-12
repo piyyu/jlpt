@@ -87,23 +87,6 @@ function getKanjiQuestions(db, count, selectedOnly = false) {
   });
 }
 
-function getGrammarQuestions(db, count) {
-  const all = db.prepare('SELECT * FROM grammar ORDER BY RANDOM() LIMIT ?').all(count * 3);
-  return all.slice(0, count).map((item) => {
-    const distractors = shuffle(all.filter((d) => d.id !== item.id))
-      .slice(0, 3)
-      .map((d) => d.pattern);
-    return {
-      content_type: 'grammar',
-      content_id: item.id,
-      prompt: item.meaning,
-      hint: null,
-      correct_answer: item.pattern,
-      options: shuffle([item.pattern, ...distractors]),
-      details: item,
-    };
-  });
-}
 
 export async function POST(request) {
   const db = getDb();
@@ -117,14 +100,11 @@ export async function POST(request) {
     questions = getVocabQuestions(db, n, selected_only);
   } else if (quiz_type === 'kanji') {
     questions = getKanjiQuestions(db, n, selected_only);
-  } else if (quiz_type === 'grammar') {
-    questions = getGrammarQuestions(db, n);
   } else {
-    const third = Math.ceil(n / 3);
+    const half = Math.ceil(n / 2);
     questions = shuffle([
-      ...getVocabQuestions(db, third),
-      ...getKanjiQuestions(db, third),
-      ...getGrammarQuestions(db, n - third * 2),
+      ...getVocabQuestions(db, half),
+      ...getKanjiQuestions(db, n - half),
     ]).slice(0, n);
   }
 

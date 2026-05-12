@@ -7,9 +7,9 @@ import { toRomajiParts } from '@/lib/toRomaji';
 import { useSettings } from '@/lib/useSettings';
 
 export default function KanjiPage() {
-  const [kanji, setKanji]       = useState([]);
+  const [kanji, setKanji] = useState([]);
   const [selected, setSelected] = useState(null);   // kanji card open in detail panel
-  const [loading, setLoading]   = useState(true);
+  const [loading, setLoading] = useState(true);
   const [selections, setSelections] = useState(new Set()); // ticked IDs
   const [selCount, setSelCount] = useState(0);
   const [toggling, setToggling] = useState(null);
@@ -68,15 +68,6 @@ export default function KanjiPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          {selCount > 0 && (
-            <button
-              onClick={clearAll}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-colors"
-              style={{ background: 'rgba(255,0,128,0.08)', border: '1px solid rgba(255,0,128,0.3)', color: 'var(--pink)' }}
-            >
-              <X size={12} /> Clear {selCount}
-            </button>
-          )}
           <a
             href={`/quiz?type=kanji${selCount > 0 ? '&selected_only=true' : ''}`}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-colors font-medium"
@@ -93,7 +84,7 @@ export default function KanjiPage() {
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
           {kanji.map((k) => {
             const isDetail = selected?.id === k.id;
-            const isSel    = selections.has(k.id);
+            const isSel = selections.has(k.id);
             return (
               <div key={k.id} className="relative group">
                 {/* Main card button */}
@@ -153,7 +144,7 @@ export default function KanjiPage() {
       {/* Detail panel */}
       {selected && (
         <div
-          className="fixed bottom-0 left-0 right-0 md:left-56 z-20 p-6 border-t"
+          className="fixed bottom-0 left-0 right-0 md:left-[var(--sidebar-width)] z-20 p-6 border-t transition-all duration-300 ease-in-out"
           style={{ background: '#0d0d0d', borderColor: 'rgba(255,0,128,0.2)' }}
         >
           <div className="max-w-3xl mx-auto">

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 
 // ── Floating kanji characters for the hero ────────────────────────────────────
-const BG_KANJI = ['日','月','火','水','木','金','土','山','川','人','口','手','目','耳','心','語','本','学','字','読'];
+const BG_KANJI = ['日', '月', '火', '水', '木', '金', '土', '山', '川', '人', '口', '手', '目', '耳', '心', '語', '本', '学', '字', '読'];
 
 function FloatingChar({ char, style }) {
   return (
@@ -112,13 +112,13 @@ export default function Dashboard() {
       .then((d) => { setData(d); setLoading(false); });
   }, []);
 
-  const vocabMastered  = data?.progress?.vocabulary?.mastered ?? 0;
-  const vocabTotal     = data?.progress?.vocabulary?.total ?? 0;
-  const kanjiMastered  = data?.progress?.kanji?.mastered ?? 0;
-  const kanjiTotal     = data?.progress?.kanji?.total ?? 0;
-  const streak         = data?.streak ?? 0;
-  const vocabDue       = data?.counts?.vocabulary ?? 0;
-  const kanjiDue       = data?.counts?.kanji ?? 0;
+  const vocabMastered = data?.progress?.vocabulary?.mastered ?? 0;
+  const vocabTotal = data?.progress?.vocabulary?.total ?? 0;
+  const kanjiMastered = data?.progress?.kanji?.mastered ?? 0;
+  const kanjiTotal = data?.progress?.kanji?.total ?? 0;
+  const streak = data?.streak ?? 0;
+  const vocabDue = data?.counts?.vocabulary ?? 0;
+  const kanjiDue = data?.counts?.kanji ?? 0;
 
   return (
     <div>
@@ -228,9 +228,9 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { href: '/vocabulary', jp: '単語', label: 'Vocabulary', sub: `${vocabTotal} words`, color: '#ff0080' },
-          { href: '/kanji',      jp: '漢字', label: 'Kanji',      sub: `${kanjiTotal} chars`, color: '#c084fc' },
-          { href: '/review',     jp: '復習', label: 'Review',     sub: `${(vocabDue + kanjiDue)} due`, color: '#f97316' },
-          { href: '/mock-test',  jp: '模試', label: 'Mock Test',  sub: 'Timed quiz',          color: '#22d3ee' },
+          { href: '/kanji', jp: '漢字', label: 'Kanji', sub: `${kanjiTotal} chars`, color: '#c084fc' },
+          { href: '/review', jp: '復習', label: 'Review', sub: `${(vocabDue + kanjiDue)} due`, color: '#f97316' },
+          { href: '/mock-test', jp: '模試', label: 'Mock Test', sub: 'Timed quiz', color: '#22d3ee' },
         ].map(({ href, jp, label, sub, color }) => (
           <Link
             key={href}
@@ -239,11 +239,11 @@ export default function Dashboard() {
             style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = `${color}55`;
-              e.currentTarget.style.background  = `${color}0a`;
+              e.currentTarget.style.background = `${color}0a`;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = 'var(--border)';
-              e.currentTarget.style.background  = 'var(--bg-surface)';
+              e.currentTarget.style.background = 'var(--bg-surface)';
             }}
           >
             <p className="font-japanese text-2xl font-bold mb-1" style={{ color }}>{jp}</p>

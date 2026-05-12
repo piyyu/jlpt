@@ -6,7 +6,6 @@ import { AlertTriangle } from 'lucide-react';
 const TYPE_COLORS = {
   vocabulary: 'bg-blue-50 text-blue-700 border-blue-200',
   kanji: 'bg-purple-50 text-purple-700 border-purple-200',
-  grammar: 'bg-orange-50 text-orange-700 border-orange-200',
 };
 
 export default function WeakPointsPage() {
@@ -37,7 +36,6 @@ export default function WeakPointsPage() {
           <option value="">All types</option>
           <option value="vocabulary">Vocabulary</option>
           <option value="kanji">Kanji</option>
-          <option value="grammar">Grammar</option>
         </select>
       </div>
 

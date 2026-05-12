@@ -65,7 +65,7 @@ export async function POST(request) {
   }
 
   const session = db.prepare(
-    'INSERT INTO mock_test_results (vocab_score, grammar_score, reading_score, listening_score, total_score) VALUES (0, 0, 0, 0, 0)'
+    'INSERT INTO mock_test_results (vocab_score, total_score) VALUES (0, 0)'
   ).run();
 
   return NextResponse.json({
