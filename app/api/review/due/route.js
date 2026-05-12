@@ -1,27 +1,22 @@
 import { NextResponse } from 'next/server';
 import getDb from '@/lib/db';
 
-function firstReading(yomi) {
-  if (!yomi) return null;
-  return yomi.split(/[・、/\s]/)[0].trim() || null;
-}
-
 export function GET(request) {
   const db = getDb();
   const today = new Date().toISOString().split('T')[0];
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type'); // 'vocabulary' | 'kanji' | null = all
 
-  // Check if the user has any selections for this type (or overall)
+  // Check if the user has any selections
   const selectionCountQuery = type
-    ? `SELECT COUNT(*) as n FROM user_selections WHERE content_type = '${type}'`
-    : `SELECT COUNT(*) as n FROM user_selections`;
-  const { n: selectionCount } = db.prepare(selectionCountQuery).get();
+    ? 'SELECT COUNT(*) as n FROM user_selections WHERE content_type = ?'
+    : 'SELECT COUNT(*) as n FROM user_selections';
+  const { n: selectionCount } = type 
+    ? db.prepare(selectionCountQuery).get(type)
+    : db.prepare(selectionCountQuery).get();
 
-  // Always filter by due date (like Anki).
-  // If user has selections, it acts as a "custom deck" filter.
-  const whereClauses = [];
-  whereClauses.push('s.next_review_date <= ?');
+  const whereClauses = ['s.next_review_date <= ?'];
+  const queryParams = [today];
 
   if (selectionCount > 0) {
     whereClauses.push(`EXISTS (
@@ -29,123 +24,125 @@ export function GET(request) {
         WHERE us2.content_type = s.content_type AND us2.content_id = s.content_id
       )`);
   }
-  if (type) {
-    whereClauses.push(`s.content_type = '${type}'`);
-  }
-  const whereStr = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
+  
+  const whereStrBase = `WHERE ${whereClauses.join(' AND ')}`;
 
-
-  // Get actual available counts per category regardless of limit
+  // Available counts per type
   const availableCounts = Object.fromEntries(db.prepare(`
     SELECT content_type, COUNT(*) as due
     FROM srs_cards s
-    ${whereStr}
+    ${whereStrBase}
     GROUP BY content_type
-  `).all(today).map((r) => [r.content_type, r.due]));
+  `).all(...queryParams).map((r) => [r.content_type, r.due]));
 
-  const kanjiReviewsTodayRow = db.prepare(`
+  // Daily limits (50 per type)
+  const kanjiReviewedToday = db.prepare(`
     SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at) = date('now') AND section = 'review:kanji'
-  `).get();
-  const vocabReviewsTodayRow = db.prepare(`
+  `).get()?.total || 0;
+  const vocabReviewedToday = db.prepare(`
     SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at) = date('now') AND section = 'review:vocabulary'
-  `).get();
+  `).get()?.total || 0;
 
   const limits = {
-    kanji: Math.max(0, 50 - (kanjiReviewsTodayRow?.total || 0)),
-    vocabulary: Math.max(0, 50 - (vocabReviewsTodayRow?.total || 0))
+    kanji: Math.max(0, 50 - kanjiReviewedToday),
+    vocabulary: Math.max(0, 50 - vocabReviewedToday)
   };
 
-  const limitRemaining = type === 'kanji' ? limits.kanji : type === 'vocabulary' ? limits.vocabulary : Math.max(limits.kanji, limits.vocabulary);
+  // Helper to build the main card query for a specific type and limit
+  const buildQuery = (ctype, limit) => {
+    if (limit <= 0) return null;
+    let where = whereStrBase + ` AND s.content_type = '${ctype}'`;
+    return `
+      SELECT s.*,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.japanese
+          WHEN 'kanji' THEN k.character
+        END AS front,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.english
+          WHEN 'kanji' THEN k.meaning
+        END AS back,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.reading
+          WHEN 'kanji' THEN
+            TRIM(COALESCE(k.kun_yomi, '') || CASE WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != '' AND k.on_yomi IS NOT NULL AND k.on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(k.on_yomi, ''))
+        END AS drill_answer,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.reading
+          WHEN 'kanji'      THEN k.kun_yomi
+        END AS reading,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.example_jp
+          WHEN 'kanji' THEN k.example_word1
+        END AS hint,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.example_en
+          WHEN 'kanji' THEN k.example_word2
+        END AS hint2,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN NULL
+          WHEN 'kanji' THEN k.on_yomi
+        END AS on_yomi,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN NULL
+          WHEN 'kanji' THEN k.stroke_count
+        END AS stroke_count,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.type
+          WHEN 'kanji' THEN NULL
+        END AS word_type,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.example_jp
+          WHEN 'kanji' THEN NULL
+        END AS example_jp,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.example_en
+          WHEN 'kanji' THEN NULL
+        END AS example_en,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN v.romaji
+          WHEN 'kanji' THEN NULL
+        END AS romaji,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN NULL
+          WHEN 'kanji' THEN k.example_word1
+        END AS example_word1,
+        CASE s.content_type
+          WHEN 'vocabulary' THEN NULL
+          WHEN 'kanji' THEN k.example_word2
+        END AS example_word2
+      FROM srs_cards s
+      LEFT JOIN vocabulary v ON s.content_type = 'vocabulary' AND s.content_id = v.id
+      LEFT JOIN kanji k ON s.content_type = 'kanji' AND s.content_id = k.id
+      ${where}
+      ORDER BY RANDOM()
+      LIMIT ${limit}
+    `;
+  };
 
-  // If daily limit reached, just short-circuit returning 0
-  if (limitRemaining === 0) {
-    return NextResponse.json({
-      cards: [],
-      count: 0,
-      date: today,
-      counts: allCounts.reduce((acc, row) => ({ ...acc, [row.content_type]: row.due }), {}),
-      available: availableCounts,
-      limits,
-      pools: { vocabulary: [], kanji: [] },
-      selectionActive: selectionCount > 0,
-      selectionCount,
-    });
+  let cards = [];
+  if (type === 'vocabulary') {
+    const q = buildQuery('vocabulary', limits.vocabulary);
+    if (q) cards = db.prepare(q).all(...queryParams);
+  } else if (type === 'kanji') {
+    const q = buildQuery('kanji', limits.kanji);
+    if (q) cards = db.prepare(q).all(...queryParams);
+  } else {
+    // Mixed: Pull from both, respecting individual limits
+    const qv = buildQuery('vocabulary', limits.vocabulary);
+    const qk = buildQuery('kanji', limits.kanji);
+    if (qv) cards.push(...db.prepare(qv).all(...queryParams));
+    if (qk) cards.push(...db.prepare(qk).all(...queryParams));
+    // Shuffle the mixed results
+    cards.sort(() => Math.random() - 0.5);
   }
 
-
-  // Main cards query — pull ALL columns from vocabulary/kanji for the details panel
-  const queryStr = `
-    SELECT s.*,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.japanese
-        WHEN 'kanji' THEN k.character
-      END AS front,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.english
-        WHEN 'kanji' THEN k.meaning
-      END AS back,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.reading
-        WHEN 'kanji' THEN
-          TRIM(COALESCE(k.kun_yomi, '') || CASE WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != '' AND k.on_yomi IS NOT NULL AND k.on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(k.on_yomi, ''))
-      END AS drill_answer,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.reading
-        WHEN 'kanji'      THEN k.kun_yomi
-      END AS reading,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.example_jp
-        WHEN 'kanji' THEN k.example_word1
-      END AS hint,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.example_en
-        WHEN 'kanji' THEN k.example_word2
-      END AS hint2,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN NULL
-        WHEN 'kanji' THEN k.on_yomi
-      END AS on_yomi,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN NULL
-        WHEN 'kanji' THEN k.stroke_count
-      END AS stroke_count,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.type
-        WHEN 'kanji' THEN NULL
-      END AS word_type,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.example_jp
-        WHEN 'kanji' THEN NULL
-      END AS example_jp,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN v.example_en
-        WHEN 'kanji' THEN NULL
-      END AS example_en,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN NULL
-        WHEN 'kanji' THEN k.example_word1
-      END AS example_word1,
-      CASE s.content_type
-        WHEN 'vocabulary' THEN NULL
-        WHEN 'kanji' THEN k.example_word2
-      END AS example_word2
-    FROM srs_cards s
-    LEFT JOIN vocabulary v ON s.content_type = 'vocabulary' AND s.content_id = v.id
-    LEFT JOIN kanji k ON s.content_type = 'kanji' AND s.content_id = k.id
-    ${whereStr}
-    ORDER BY RANDOM()
-    LIMIT ${limitRemaining}
-  `;
-
-  const cards = db.prepare(queryStr).all(today);
-
-  // Distractor pools: vocab → readings, kanji → first kun/on reading
+  // Distractor pools
   const vocabPoolQuery = selectionCount > 0
     ? `SELECT v.reading AS answer FROM vocabulary v
        INNER JOIN user_selections us ON us.content_type = 'vocabulary' AND us.content_id = v.id
-       WHERE v.reading IS NOT NULL AND v.reading != ''
        ORDER BY RANDOM() LIMIT 40`
-    : `SELECT reading AS answer FROM vocabulary WHERE reading IS NOT NULL AND reading != '' ORDER BY RANDOM() LIMIT 40`;
+    : `SELECT reading AS answer FROM vocabulary ORDER BY RANDOM() LIMIT 40`;
 
   const kanjiPoolQuery = selectionCount > 0
     ? `SELECT TRIM(COALESCE(k.kun_yomi, '') || CASE WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != '' AND k.on_yomi IS NOT NULL AND k.on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(k.on_yomi, '')) AS answer FROM kanji k
@@ -153,36 +150,14 @@ export function GET(request) {
        ORDER BY RANDOM() LIMIT 40`
     : `SELECT TRIM(COALESCE(kun_yomi, '') || CASE WHEN kun_yomi IS NOT NULL AND kun_yomi != '' AND on_yomi IS NOT NULL AND on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(on_yomi, '')) AS answer FROM kanji ORDER BY RANDOM() LIMIT 40`;
 
-  const vocabPool = db.prepare(vocabPoolQuery).all().map((r) => r.answer);
+  const vocabPool = db.prepare(vocabPoolQuery).all().map((r) => r.answer).filter(Boolean);
   const kanjiPool = db.prepare(kanjiPoolQuery).all().map((r) => r.answer).filter(Boolean);
-
-  // Due counts
-  const countsQuery = `
-    SELECT s.content_type, COUNT(*) as due
-    FROM srs_cards s
-    ${whereStr}
-    GROUP BY s.content_type
-  `;
-
-  const allCounts = db.prepare(countsQuery).all(today);
-
-  // Distribute the remaining limit across categories proportionally (or just cap the display sum so we don't exceed limit)
-  // For simplicity, just return the actual length of cards retrieved per category!
-  const counts = [];
-  const countMap = {};
-  for (const c of cards) {
-    countMap[c.content_type] = (countMap[c.content_type] || 0) + 1;
-  }
-  for (const [ctype, due] of Object.entries(countMap)) {
-    counts.push({ content_type: ctype, due });
-  }
-
 
   return NextResponse.json({
     cards,
     count: cards.length,
     date: today,
-    counts: Object.fromEntries(allCounts.map((r) => [r.content_type, r.due])),
+    counts: availableCounts,
     available: availableCounts,
     limits,
     pools: { vocabulary: vocabPool, kanji: kanjiPool },

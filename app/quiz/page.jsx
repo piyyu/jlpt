@@ -6,7 +6,7 @@ import QuizCard from '@/components/QuizCard';
 import AudioButton from '@/components/AudioButton';
 import { Trophy, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 
-const TYPES = ['mixed', 'vocabulary', 'kanji', 'grammar'];
+const TYPES = ['mixed', 'vocabulary', 'kanji'];
 const COUNTS = [5, 10, 15, 20];
 
 function QuizContent() {

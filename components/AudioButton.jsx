@@ -16,7 +16,7 @@ export default function AudioButton({ text, lang = 'ja-JP', rate = 1.0, classNam
     utterance.lang = lang;
     utterance.rate = rate;
     utterance.onstart = () => setPlaying(true);
-    utterance.onend   = () => setPlaying(false);
+    utterance.onend = () => setPlaying(false);
     utterance.onerror = () => setPlaying(false);
     window.speechSynthesis.speak(utterance);
   }

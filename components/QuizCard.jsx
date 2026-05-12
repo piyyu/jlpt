@@ -36,7 +36,7 @@ export default function QuizCard({
       fetch(`/api/selections?type=${content_type}`)
         .then((r) => r.json())
         .then((ids) => setIsSaved(ids.includes(details.id)))
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [answered, details, content_type]);
 
@@ -144,8 +144,8 @@ export default function QuizCard({
       {/* Prompt */}
       <div className="text-center mb-8 px-4">
         <p
-          className={`${(content_type === 'grammar' || content_type === 'vocabulary') ? 'font-sans' : 'font-japanese'} font-bold mb-2`}
-          style={{ fontSize: (content_type === 'grammar' || content_type === 'vocabulary') ? '28px' : '72px', lineHeight: 1.2, color: 'var(--text-1)' }}
+          className={`${(content_type === 'vocabulary') ? 'font-sans' : 'font-japanese'} font-bold mb-2`}
+          style={{ fontSize: (content_type === 'vocabulary') ? '28px' : '72px', lineHeight: 1.2, color: 'var(--text-1)' }}
         >
           {prompt}
         </p>
@@ -291,29 +291,6 @@ export default function QuizCard({
                 </>
               )}
 
-              {/* ── Grammar ── */}
-              {content_type === 'grammar' && (
-                <>
-                  <div className="col-span-2">
-                    <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>Pattern</p>
-                    <p className="font-japanese text-base font-semibold" style={{ color: 'var(--text-1)' }}>{details.pattern}</p>
-                  </div>
-                  {(details.example1_jp || details.example1_en) && (
-                    <div className="col-span-2" style={{ borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
-                      <p className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--text-3)' }}>Example 1</p>
-                      <p className="font-japanese font-medium" style={{ color: 'var(--text-1)' }}>{details.example1_jp}</p>
-                      <p className="text-xs mt-1" style={{ color: 'var(--text-2)' }}>{details.example1_en}</p>
-                    </div>
-                  )}
-                  {(details.example2_jp || details.example2_en) && (
-                    <div className="col-span-2" style={{ borderTop: '1px dashed var(--border)', paddingTop: '12px' }}>
-                      <p className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--text-3)' }}>Example 2</p>
-                      <p className="font-japanese font-medium" style={{ color: 'var(--text-1)' }}>{details.example2_jp}</p>
-                      <p className="text-xs mt-1" style={{ color: 'var(--text-2)' }}>{details.example2_en}</p>
-                    </div>
-                  )}
-                </>
-              )}
 
             </div>
           </div>

@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
 
           <Sidebar />
 
-          <main className="flex-1 min-w-0 relative z-10 md:ml-56">
+          <main className="flex-1 min-w-0 relative z-10 md:ml-[var(--sidebar-width)] transition-[margin] duration-300">
             {/* Mobile spacer */}
             <div className="md:hidden h-14" />
             <div className="max-w-5xl mx-auto px-5 py-8">

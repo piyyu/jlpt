@@ -206,15 +206,6 @@ export default function VocabularyPage() {
         </button>
 
         <div className="flex gap-2">
-          {selCount > 0 && (
-            <button
-              onClick={clearAll}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors"
-              style={{ background: 'rgba(255,0,128,0.08)', border: '1px solid rgba(255,0,128,0.3)', color: 'var(--pink)' }}
-            >
-              <X size={13} /> Clear {selCount}
-            </button>
-          )}
           <a
             href={`/quiz?type=vocabulary${selCount > 0 ? '&selected_only=true' : ''}`}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors font-medium"
@@ -282,130 +273,130 @@ export default function VocabularyPage() {
                       const isExp = expanded === word.id;
                       return (
                         <Fragment key={word.id}>
-                    <tr
-                      className="cursor-pointer"
-                      onClick={() => setExpanded(isExp ? null : word.id)}
-                      style={isSel ? { background: 'rgba(255,0,128,0.04)' } : {}}
-                    >
-                      {/* Row number */}
-                      <td>
-                        <span className="text-xs font-mono" style={{ color: 'var(--text-3)' }}>{displayedIndex + 1}</span>
-                      </td>
+                          <tr
+                            className="cursor-pointer"
+                            onClick={() => setExpanded(isExp ? null : word.id)}
+                            style={isSel ? { background: 'rgba(255,0,128,0.04)' } : {}}
+                          >
+                            {/* Row number */}
+                            <td>
+                              <span className="text-xs font-mono" style={{ color: 'var(--text-3)' }}>{displayedIndex + 1}</span>
+                            </td>
 
-                      {/* Checkbox */}
-                      <td onClick={(e) => toggleSelection(word.id, e)}>
-                        <button
-                          className="flex items-center justify-center w-5 h-5 rounded transition-all"
-                          style={{ color: isSel ? 'var(--pink)' : 'var(--text-3)' }}
-                          title={isSel ? 'Remove from review' : 'Add to review'}
-                        >
-                          {isSel
-                            ? <CheckSquare size={15} style={{ color: 'var(--pink)' }} />
-                            : <Square size={15} style={{ opacity: 0.4 }} />}
-                        </button>
-                      </td>
+                            {/* Checkbox */}
+                            <td onClick={(e) => toggleSelection(word.id, e)}>
+                              <button
+                                className="flex items-center justify-center w-5 h-5 rounded transition-all"
+                                style={{ color: isSel ? 'var(--pink)' : 'var(--text-3)' }}
+                                title={isSel ? 'Remove from review' : 'Add to review'}
+                              >
+                                {isSel
+                                  ? <CheckSquare size={15} style={{ color: 'var(--pink)' }} />
+                                  : <Square size={15} style={{ opacity: 0.4 }} />}
+                              </button>
+                            </td>
 
-                      {/* Japanese */}
-                      <td>
-                        <span className="font-japanese text-base font-semibold" style={{ color: 'var(--text-1)' }}>
-                          {word.japanese}
-                        </span>
-                      </td>
+                            {/* Japanese */}
+                            <td>
+                              <span className="font-japanese text-base font-semibold" style={{ color: 'var(--text-1)' }}>
+                                {word.japanese}
+                              </span>
+                            </td>
 
-                      {/* Reading */}
-                      <td>
-                        <span className="font-japanese text-sm" style={{ color: 'var(--text-2)' }}>
-                          {word.reading}
-                        </span>
-                      </td>
+                            {/* Reading */}
+                            <td>
+                              <span className="font-japanese text-sm" style={{ color: 'var(--text-2)' }}>
+                                {word.reading}
+                              </span>
+                            </td>
 
-                      {/* Romaji */}
-                      {/* Romaji */}
-                      <td>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-mono" style={{ color: 'var(--pink)', opacity: 0.8 }}>
-                            {toRomaji(word.reading)}
-                          </span>
-                          <AudioButton text={word.japanese} />
-                        </div>
-                      </td>
+                            {/* Romaji */}
+                            {/* Romaji */}
+                            <td>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-mono" style={{ color: 'var(--pink)', opacity: 0.8 }}>
+                                  {toRomaji(word.reading)}
+                                </span>
+                                <AudioButton text={word.japanese} />
+                              </div>
+                            </td>
 
-                      {/* English */}
-                      <td style={{ color: 'var(--text-2)' }}>{word.english}</td>
+                            {/* English */}
+                            <td style={{ color: 'var(--text-2)' }}>{word.english}</td>
 
-                      {/* Category badge */}
-                      <td>
-                        <span
-                          className="badge"
-                          style={categoryBadgeColor[word.category] || { background: 'var(--bg-elevated)', color: 'var(--text-3)' }}
-                        >
-                          {word.category}
-                        </span>
-                      </td>
+                            {/* Category badge */}
+                            <td>
+                              <span
+                                className="badge"
+                                style={categoryBadgeColor[word.category] || { background: 'var(--bg-elevated)', color: 'var(--text-3)' }}
+                              >
+                                {word.category}
+                              </span>
+                            </td>
 
-                      {/* Due info */}
-                      <td className="text-right">
-                        {word.next_review_date ? (() => {
-                          const today = new Date();
-                          today.setHours(0, 0, 0, 0);
-                          const nextReview = new Date(word.next_review_date);
-                          const diffTime = nextReview - today;
-                          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            {/* Due info */}
+                            <td className="text-right">
+                              {word.next_review_date ? (() => {
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                const nextReview = new Date(word.next_review_date);
+                                const diffTime = nextReview - today;
+                                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                          if (diffDays <= 0) return <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-pink-500/10 text-pink-400">Due</span>;
-                          if (diffDays === 1) return <span className="text-[10px] font-medium text-[var(--text-3)]">Tmrw</span>;
-                          return <span className="text-[10px] text-[var(--text-3)] opacity-70">{diffDays}d</span>;
-                        })() : <span className="text-[10px] text-[var(--text-3)] opacity-40">-</span>}
-                      </td>
+                                if (diffDays <= 0) return <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-pink-500/10 text-pink-400">Due</span>;
+                                if (diffDays === 1) return <span className="text-[10px] font-medium text-[var(--text-3)]">Tmrw</span>;
+                                return <span className="text-[10px] text-[var(--text-3)] opacity-70">{diffDays}d</span>;
+                              })() : <span className="text-[10px] text-[var(--text-3)] opacity-40">-</span>}
+                            </td>
 
-                      {/* Expand chevron */}
-                      <td className="text-right pl-2">
-                        {isExp
-                          ? <ChevronUp size={14} style={{ color: 'var(--text-3)' }} />
-                          : <ChevronDown size={14} style={{ color: 'var(--text-3)' }} />}
-                      </td>
-                    </tr>
+                            {/* Expand chevron */}
+                            <td className="text-right pl-2">
+                              {isExp
+                                ? <ChevronUp size={14} style={{ color: 'var(--text-3)' }} />
+                                : <ChevronDown size={14} style={{ color: 'var(--text-3)' }} />}
+                            </td>
+                          </tr>
 
-                    {/* Expanded example */}
-                    {isExp && (
-                      <tr key={`${word.id}-detail`}>
-                        <td colSpan={9} className="px-4 py-4" style={{ background: 'var(--bg-elevated)' }}>
-                          <div className="flex items-start gap-6">
-                            <div className="flex-1 space-y-2">
-                              {word.example_jp ? (
-                                <>
-                                  <p className="font-japanese text-sm" style={{ color: 'var(--text-1)' }}>
-                                    {word.example_jp}
-                                  </p>
-                                  {showEnglish && (
-                                    <p className="text-xs font-mono mt-0.5" style={{ color: 'var(--pink)', opacity: 0.7 }}>
-                                      {toRomaji(word.example_jp)}
-                                    </p>
-                                  )}
-                                  <p className="text-xs" style={{ color: 'var(--text-3)' }}>
-                                    {word.example_en}
-                                  </p>
-                                </>
-                              ) : (
-                                <p className="text-xs italic" style={{ color: 'var(--text-3)' }}>No example sentence available yet.</p>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-3 shrink-0">
-                              <AudioButton text={word.japanese} />
-                              {word.example_jp && <AudioButton text={word.example_jp} />}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
+                          {/* Expanded example */}
+                          {isExp && (
+                            <tr key={`${word.id}-detail`}>
+                              <td colSpan={9} className="px-4 py-4" style={{ background: 'var(--bg-elevated)' }}>
+                                <div className="flex items-start gap-6">
+                                  <div className="flex-1 space-y-2">
+                                    {word.example_jp ? (
+                                      <>
+                                        <p className="font-japanese text-sm" style={{ color: 'var(--text-1)' }}>
+                                          {word.example_jp}
+                                        </p>
+                                        {showEnglish && (
+                                          <p className="text-xs font-mono mt-0.5" style={{ color: 'var(--pink)', opacity: 0.7 }}>
+                                            {word.romaji}
+                                          </p>
+                                        )}
+                                        <p className="text-xs" style={{ color: 'var(--text-3)' }}>
+                                          {word.example_en}
+                                        </p>
+                                      </>
+                                    ) : (
+                                      <p className="text-xs italic" style={{ color: 'var(--text-3)' }}>No example sentence available yet.</p>
+                                    )}
+                                  </div>
+                                  <div className="flex items-center gap-3 shrink-0">
+                                    <AudioButton text={word.japanese} />
+                                    {word.example_jp && <AudioButton text={word.example_jp} />}
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </Fragment>
+                      );
+                    })}
                   </Fragment>
                 );
               })}
-            </Fragment>
-          );
-        })}
-      </tbody>
-    </table>
+            </tbody>
+          </table>
         )}
       </div>
     </div>
