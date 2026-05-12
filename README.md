@@ -6,6 +6,12 @@ A modern, local-first Japanese language learning application designed to help yo
 
 - **Spaced Repetition System (SRS)**: Optimize your study sessions. Cards are scheduled at optimal intervals based on your past performance to ensure long-term retention.
 - **Targeted Practice (Selections)**: Manually lock specific vocabulary or kanji elements into your "Selections" list to filter your reviews into a concentrated, custom deck.
+- **Mastering the SRS Ratings**:
+  When reviewing a card, you are presented with 4 difficulty options. Here's exactly how they affect your future card reviews (based on the SM-2 formula):
+  - **1 (Again)**: Complete blank. Resets your "streak" and the interval drops back to **1 day**. Lowers the card's future growth multiplier.
+  - **2 (Hard)**: Struggled to remember. Doesn't completely reset your streak, but the interval will only grow very slowly (1.2x).
+  - **3 (Good)**: Recalled correctly. Uses standard growth. Brand new cards jump to **1 day**, then **6 days**, then multiply by your ease factor (~15+ days).
+  - **4 (Easy)**: Perfect recall. Skips intervals faster and boosts your multiplier permanently. Brand new cards jump straight to **4 days**, then **9 days**, and then grow 30% faster than "Good" responses.
 - **Quiz Modes & Mock Tests**: Test your knowledge across different topics with multiple-choice questions or challenge yourself with a mock exam.
 - **Audio Support**: Hear the native pronunciation of vocabulary words directly in the app.
 - **Comprehensive Content**:

@@ -10,10 +10,13 @@ export function GET(request) {
 
   let query = `
     SELECT v.*,
-      CASE WHEN us.content_id IS NOT NULL THEN 1 ELSE 0 END AS is_selected
+      CASE WHEN us.content_id IS NOT NULL THEN 1 ELSE 0 END AS is_selected,
+      s.next_review_date
     FROM vocabulary v
     LEFT JOIN user_selections us
       ON us.content_type = 'vocabulary' AND us.content_id = v.id
+    LEFT JOIN srs_cards s
+      ON s.content_type = 'vocabulary' AND s.content_id = v.id
     WHERE 1=1
   `;
   const params = [];

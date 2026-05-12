@@ -114,7 +114,7 @@ export default function VocabularyPage() {
   const groupedVocab = useMemo(() => {
     const groups = {};
     const filteredVocab = selectedOnly ? vocab.filter(w => selections.has(w.id)) : vocab;
-    
+
     for (const w of filteredVocab) {
       const cat = w.category || 'Other';
       if (!groups[cat]) groups[cat] = [];
@@ -124,7 +124,7 @@ export default function VocabularyPage() {
     const foundCats = Object.keys(groups);
     const orderedCats = [...CATEGORIES, 'Other', 'Uncategorized'].filter(c => foundCats.includes(c));
     const extraCats = foundCats.filter(c => !orderedCats.includes(c));
-    
+
     return [...orderedCats, ...extraCats].map(c => ({
       name: c,
       words: groups[c]
@@ -191,15 +191,15 @@ export default function VocabularyPage() {
           <option value="">All Categories</option>
           {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
-        
+
         <button
           onClick={() => setSelectedOnly(!selectedOnly)}
           disabled={selCount === 0 && !selectedOnly}
           className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-all ${selCount === 0 && !selectedOnly ? 'opacity-50 cursor-not-allowed' : ''}`}
-          style={{ 
-            background: selectedOnly ? 'var(--pink)' : 'var(--bg-surface)', 
-            border: `1px solid ${selectedOnly ? 'var(--pink)' : 'var(--border)'}`, 
-            color: selectedOnly ? '#fff' : 'var(--text-1)' 
+          style={{
+            background: selectedOnly ? 'var(--pink)' : 'var(--bg-surface)',
+            border: `1px solid ${selectedOnly ? 'var(--pink)' : 'var(--border)'}`,
+            color: selectedOnly ? '#fff' : 'var(--text-1)'
           }}
         >
           {selectedOnly ? 'Showing Selected' : `Show Selected Only (${selCount})`}
@@ -242,6 +242,7 @@ export default function VocabularyPage() {
                 <th>Romaji</th>
                 <th>English</th>
                 <th>Category</th>
+                <th className="text-right">Due</th>
                 <th></th>
               </tr>
             </thead>
@@ -251,7 +252,7 @@ export default function VocabularyPage() {
                 return (
                   <Fragment key={group.name}>
                     <tr>
-                      <td colSpan={8} className="px-4 py-3 bg-[var(--bg-elevated)] border-b border-[var(--border)] relative">
+                      <td colSpan={9} className="px-4 py-3 bg-[var(--bg-elevated)] border-b border-[var(--border)] relative">
                         <div className="flex items-center gap-4">
                           <span
                             style={categoryBadgeColor[group.name] || { background: 'var(--bg-elevated)', color: 'var(--text-3)' }}
@@ -342,8 +343,23 @@ export default function VocabularyPage() {
                         </span>
                       </td>
 
-                      {/* Expand chevron */}
+                      {/* Due info */}
                       <td className="text-right">
+                        {word.next_review_date ? (() => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          const nextReview = new Date(word.next_review_date);
+                          const diffTime = nextReview - today;
+                          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                          if (diffDays <= 0) return <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-pink-500/10 text-pink-400">Due</span>;
+                          if (diffDays === 1) return <span className="text-[10px] font-medium text-[var(--text-3)]">Tmrw</span>;
+                          return <span className="text-[10px] text-[var(--text-3)] opacity-70">{diffDays}d</span>;
+                        })() : <span className="text-[10px] text-[var(--text-3)] opacity-40">-</span>}
+                      </td>
+
+                      {/* Expand chevron */}
+                      <td className="text-right pl-2">
                         {isExp
                           ? <ChevronUp size={14} style={{ color: 'var(--text-3)' }} />
                           : <ChevronDown size={14} style={{ color: 'var(--text-3)' }} />}
@@ -353,7 +369,7 @@ export default function VocabularyPage() {
                     {/* Expanded example */}
                     {isExp && (
                       <tr key={`${word.id}-detail`}>
-                        <td colSpan={8} className="px-4 py-4" style={{ background: 'var(--bg-elevated)' }}>
+                        <td colSpan={9} className="px-4 py-4" style={{ background: 'var(--bg-elevated)' }}>
                           <div className="flex items-start gap-6">
                             <div className="flex-1 space-y-2">
                               {word.example_jp ? (
