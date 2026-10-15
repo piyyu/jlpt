@@ -1,0 +1,411 @@
+pattern,example_jp,example_en,explanation,sort_order
+は,私は学生です。,I am a student.,"は marks 私 as the topic: as for me.",10
+は,これは本です。,This is a book.,"これ + は introduces what we are talking about.",20
+は,今日は雨です。,Today it is raining.,"Time words can be topics too.",30
+は,彼は先生じゃない。,He is not a teacher.,"The topic stays put even in negatives.",40
+は,猫は魚が好きです。,Cats like fish.,"は sets the stage, が points at the liked thing.",50
+は,日本語は難しいです。,Japanese is difficult.,"Adjective sentences need a topic too.",60
+は,明日は休みです。,Tomorrow is a day off.,"Time topic plus noun sentence.",70
+は,あれは学校ですか。,Is that a school over there?,"Question about the topic.",80
+は,私も猫が好きです。,I like cats too.,"Topic stays は while extras take も.",90
+は,母は料理が上手です。,My mother is good at cooking.,"Topic (mother) versus skill target (が).",100
+が,誰が来ますか。,Who is coming?,"が asks which one among possibilities.",10
+が,私がします。,I will do it.,"が stresses the doer: I am the one.",20
+が,雨が降っています。,It is raining.,"Weather and natural events take が.",30
+が,猫が魚を食べます。,The cat eats the fish.,"が marks the actor of the verb.",40
+が,彼が学生です。,He is the student.,"Answers who is it, with emphasis.",50
+が,何がありますか。,What is there?,"Existence questions use が.",60
+が,水が飲みたいです。,I want to drink water.,"With たい, the wanted thing takes が.",70
+が,日本語が話せます。,I can speak Japanese.,"Potential verbs pair with が.",80
+が,どれがいいですか。,Which one is good?,"Choosing among options uses が.",90
+が,頭が痛いです。,My head hurts.,"Body parts and feelings take が.",100
+も,私も行きます。,I will go too.,"も means too, joining what came before.",10
+も,これも本です。,This is also a book.,"も replaces は or が: only one particle fits.",20
+も,明日も雨です。,It rains tomorrow too.,"も on time words means repetition.",30
+も,彼も彼女も来ます。,Both he and she are coming.,"AもBも means both.",40
+も,猫もいます。,There is a cat too.,"Adds to an already mentioned group.",50
+も,水も飲みます。,I will drink water too.,"も on the object: in addition.",60
+も,私は寿司も食べます。,I eat sushi too.,"Topic stays は, the extra item gets も.",70
+も,昨日も勉強しました。,I studied yesterday too.,"も on time means as well as other days.",80
+も,これもそれも高いです。,This and that are both expensive.,"も…も pairs two items.",90
+も,友達も来ません。,My friend is not coming either.,"も works in negatives: either.",100
+を,パンを食べます。,I eat bread.,"を marks what the verb acts on.",10
+を,水を飲みます。,I drink water.,"The classic を example.",20
+を,映画を見ます。,I watch a movie.,"The watched thing takes を.",30
+を,本を読みます。,I read a book.,"The read thing takes を.",40
+を,音楽を聞きます。,I listen to music.,"Even listen takes を for its target.",50
+を,公園を歩きます。,I walk through the park.,"を can mark the space moved through.",60
+を,バスを降ります。,I get off the bus.,"Verbs of leaving take を.",70
+を,宿題をします。,I do my homework.,"する pairs with を.",80
+を,電話をかけます。,I make a phone call.,"Set phrase with を.",90
+を,部屋を出ます。,I leave the room.,"出る takes を for what you exit.",100
+に,学校に行きます。,I go to school.,"に is the destination with movement verbs.",10
+に,三時に会います。,We meet at 3 o'clock.,"に pins down clock time.",20
+に,月曜日に来ます。,They come on Monday.,"Days of the week take に.",30
+に,部屋にいます。,I am in the room.,"に is the location of existence.",40
+に,友達に会います。,I meet my friend.,"The person you meet takes に.",50
+に,先生になります。,I will become a teacher.,"になる shows change of state.",60
+に,猫に餌をやります。,I give food to the cat.,"に marks the receiver.",70
+に,紙に書きます。,I write on paper.,"The surface written on takes に.",80
+に,机の上に本があります。,There is a book on the desk.,"に for where something exists.",90
+に,楽しみにしています。,I am looking forward to it.,"Set pattern: 楽しみにする.",100
+へ,学校へ行きます。,I go to school.,"へ stresses direction over destination.",10
+へ,日本へ来ます。,They come to Japan.,"Country as direction.",20
+へ,右へ曲がります。,Turn to the right.,"Turning direction.",30
+へ,駅へ歩きます。,I walk toward the station.,"Walking direction.",40
+へ,上へ上がります。,Go upward.,"Direction word plus へ.",50
+へ,外へ出ます。,I go outside.,"Exiting toward outside.",60
+へ,家へ帰ります。,I go home.,"Home as direction.",70
+へ,北へ行きます。,Go north.,"Compass direction.",80
+へ,友達の家へ行きます。,I go to my friend's house.,"Place plus へ.",90
+へ,空へ飛びます。,It flies into the sky.,"Dramatic direction.",100
+で,学校で勉強します。,I study at school.,"で is where the action happens.",10
+で,バスで行きます。,I go by bus.,"で means by (vehicle).",20
+で,はしで食べます。,I eat with chopsticks.,"Tool used takes で.",30
+で,日本語で話します。,I speak in Japanese.,"Language takes で.",40
+で,一人で行きます。,I go alone.,"State or condition takes で.",50
+で,図書館で本を読みます。,I read books at the library.,"Classic place-of-action.",60
+で,ナイフで切ります。,Cut it with a knife.,"Instrument takes で.",70
+で,みんなで食べます。,We all eat together.,"で means as a group.",80
+で,三人で行きます。,The three of us are going.,"Number plus で is a group unit.",90
+で,百円で買いました。,I bought it for 100 yen.,"Price takes で.",100
+と,パンと卵を買います。,I will buy bread and eggs.,"と joins two nouns fully.",10
+と,友達と行きます。,I go with my friend.,"と means together with.",20
+と,猫と遊びます。,I play with the cat.,"Companion takes と.",30
+と,母と話します。,I talk with my mother.,"Conversation partner.",40
+と,肉と魚が好きです。,I like meat and fish.,"と lists every item, unlike や.",50
+と,先生と学生がいます。,There is a teacher and a student.,"Existence list.",60
+と,コーヒーと紅茶どっちがいいですか。,"Coffee or tea, which is good?",と in choices.,70
+と,彼と同じです。,It is the same as his.,"と means as or with for comparison.",80
+と,朝と夜に薬を飲みます。,I take medicine morning and evening.,"Time pair with と.",90
+と,約束と違う。,It is different from the promise.,"と違う is a set phrase.",100
+や,パンや卵を買います。,"I buy bread, eggs, and such.","や hints the list continues.",10
+や,本や雑誌があります。,"There are books, magazines, etc.","Existence with an open list.",20
+や,肉や魚が好きです。,"I like meat, fish, and such.","Preferences, non-exhaustive.",30
+や,猫や犬がいます。,"There are cats, dogs, etc.","Animals, open list.",40
+や,机や椅子を買います。,"I will buy a desk, chair, etc.","Furniture shopping list.",50
+や,りんごやバナナを食べます。,"I eat apples, bananas, etc.","Fruit examples.",60
+や,友達や家族と遊びます。,"I hang out with friends, family, etc.","People list.",70
+や,映画や音楽が好きです。,"I like movies, music, etc.","Hobby list.",80
+や,野菜や果物を食べます。,"I eat vegetables, fruit, etc.","Food groups.",90
+や,ペンやノートがいります。,"I need a pen, notebook, etc.","School supplies.",100
+の,私の本です。,It is my book.,"の links owner to thing.",10
+の,日本の車です。,It is a Japanese car.,"の links origin or type.",20
+の,友達の家です。,It is my friend's house.,"Person plus の plus place.",30
+の,猫の名前は何ですか。,What is the cat's name?,"の for attributes.",40
+の,学校の先生です。,He is a school teacher.,"Organization plus の.",50
+の,赤の車が好きです。,I like red cars.,"Color plus の modifies a noun.",60
+の,今日の天気はいいです。,Today's weather is good.,"Time plus の.",70
+の,子供の本です。,It is a children's book.,"Audience plus の.",80
+の,駅の前です。,It is in front of the station.,"Place plus の plus location noun.",90
+の,母の料理はおいしいです。,Mom's cooking is tasty.,"Person plus の plus activity-noun.",100
+から,朝から働きます。,I work from morning.,"Start time.",10
+から,東京から来ました。,I came from Tokyo.,"Start place.",20
+から,三時からです。,It starts at 3.,"Event start.",30
+から,友達から手紙が来ました。,A letter came from my friend.,"Sender takes から.",40
+から,昼から雨です。,Rain from noon.,"Weather start.",50
+から,月曜から金曜まで働きます。,I work Monday to Friday.,"から…まで pair.",60
+から,家から学校まで歩きます。,I walk from home to school.,"Full from-to trip.",70
+から,九時から五時までです。,It is 9 to 5.,"Business hours pattern.",80
+から,ここから見えます。,You can see it from here.,"Viewpoint start.",90
+から,子供から大人まで好きです。,Loved from kids to adults.,"Range of people.",100
+まで,夜まで働きます。,I work until night.,"End time.",10
+まで,駅まで歩きます。,I walk to the station.,"End place.",20
+まで,五時までです。,It is until 5.,"Event end.",30
+まで,明日まで待ちます。,I will wait until tomorrow.,"Waiting endpoint.",40
+まで,晩まで遊びます。,We play until evening.,"Activity endpoint.",50
+まで,ここまで来てください。,Please come this far.,"Extent reached.",60
+まで,三つまでください。,"Three, please.",Quantity limit.,70
+まで,今までありがとう。,Thanks for everything until now.,"Set gratitude phrase.",80
+まで,十二時まで開いています。,We are open until 12.,"Shop hours.",90
+まで,あそこまで遠いです。,"It is far, all the way there.",Distance extent.,100
+か,これは何ですか。,What is this?,"か turns a sentence into a question.",10
+か,誰ですか。,Who is it?,"Question word plus か.",20
+か,いくらですか。,How much is it?,"Price question.",30
+か,どこですか。,Where is it?,"Place question.",40
+か,いつ来ますか。,When are you coming?,"Time question.",50
+か,元気ですか。,Are you well?,"Adjective question.",60
+か,学生ですか。,Are you a student?,"Noun question.",70
+か,何時ですか。,What time is it?,"何時 plus か.",80
+か,どうですか。,How is it?,"Opinion question.",90
+か,大丈夫ですか。,Are you okay?,"Check-in question.",100
+よ,行きますよ。,"I am going, I tell you!",よ pushes your point.,10
+よ,おいしいですよ。,"It's tasty, trust me!","Recommending with よ.",20
+よ,大丈夫ですよ。,"It's fine, really!","Reassuring with よ.",30
+よ,明日は雨ですよ。,"It will rain tomorrow, just so you know.",Informing with よ.,40
+よ,ここですよ。,"It is here, look!",Pointing out with よ.,50
+よ,食べますよ。,"I will eat it, okay?!",Insisting with よ.,60
+よ,安いですよ。,"It's cheap, believe me!","Persuading with よ.",70
+よ,知っていますよ。,"I know it, of course!",Asserting knowledge.,80
+よ,できますよ。,You can do it!,"Encouraging with よ.",90
+よ,危ないですよ。,"It is dangerous, watch out!",Warning with よ.,100
+ね,いい天気ですね。,"Nice weather, isn't it?","ね seeks agreement.",10
+ね,おいしいですね。,"It's tasty, right?","Sharing a feeling.",20
+ね,明日会いましょうね。,"Let's meet tomorrow, okay?",Soft confirmation.,30
+ね,難しいですね。,"It's hard, huh?","Mutual sympathy.",40
+ね,かわいいですね。,"Cute, isn't she?","Admiring together.",50
+ね,暑いですね。,"It's hot, isn't it?","Classic small talk.",60
+ね,そうですね。,That's right.,"Agreeing.",70
+ね,頑張りましょうね。,"Let's do our best, okay?",Encouraging together.,80
+ね,遅いですね。,"It's late, huh?","Observing together.",90
+ね,楽しかったですね。,"It was fun, wasn't it?","Looking back together.",100
+です・ます,私は学生です。,I am a student.,"です makes nouns polite.",10
+です・ます,水を飲みます。,I drink water.,"ます makes verbs polite.",20
+です・ます,今日はいい天気です。,Today's weather is nice.,"Politeness with adjectives.",30
+です・ます,明日行きます。,I am going tomorrow.,"Polite announcement.",40
+です・ます,これは辞書です。,This is a dictionary.,"Identifying things politely.",50
+です・ます,友達と食べます。,I will eat with my friend.,"Polite plan.",60
+です・ます,日本語が好きです。,I like Japanese.,"Polite feeling.",70
+です・ます,駅はあそこです。,The station is over there.,"Polite directions.",80
+です・ます,もう寝ます。,I am going to sleep now.,"Polite closing.",90
+です・ます,ありがとうございます。,Thank you very much.,"The politest thanks.",100
+だ,彼は学生だ。,He is a student.,"だ is plain だ for being.",10
+だ,これは本だ。,This is a book.,"Plain identification.",20
+だ,今日は雨だ。,Today it is rainy.,"Plain weather.",30
+だ,明日は休みだ。,Tomorrow is a day off.,"Plain schedule.",40
+だ,猫だ。,It is a cat.,"Blunt naming.",50
+だ,友達だ。,He is a friend.,"Casual relation.",60
+だ,大丈夫だ。,It is fine.,"Casual reassurance.",70
+だ,有名だ。,It is famous.,"Plain na-adjective plus だ.",80
+だ,静かだ。,It is quiet.,"Plain description.",90
+だ,元気だ。,He is well.,"Plain state.",100
+じゃない,これはペンじゃない。,This is not a pen.,"じゃない negates nouns.",10
+じゃない,学生じゃない。,Not a student.,"Short negative answer.",20
+じゃない,元気じゃない。,Not well.,"Negative state.",30
+じゃない,雨じゃない。,It is not rain.,"Denying weather.",40
+じゃない,友達じゃない。,Not a friend.,"Negating relation.",50
+じゃない,静かじゃない。,It is not quiet.,"Na-adjective negative.",60
+じゃない,有名じゃない。,It is not famous.,"Denying fame.",70
+じゃない,大丈夫じゃない。,It is not okay.,"Flagging a problem.",80
+じゃない,暇じゃない。,I am not free.,"暇 means free time.",90
+じゃない,簡単じゃない。,It is not easy.,"Na-adjective negative.",100
+だった,昨日は雨だった。,Yesterday it rained.,"だった means was.",10
+だった,彼は学生だった。,He was a student.,"Past identity.",20
+だった,元気だった。,He was well.,"Past state.",30
+だった,友達だった。,We were friends.,"Past relation.",40
+だった,静かだった。,It was quiet.,"Past description.",50
+だった,有名だった。,It was famous.,"Past fame.",60
+だった,大丈夫だった。,It was fine.,"Past reassurance.",70
+だった,暇だった。,I was free.,"Past availability.",80
+だった,簡単だった。,It was easy.,"Looking back.",90
+だった,子供だった。,I was a child.,"Life stage in the past.",100
+i-adjectives,高いビルですね。,It's a tall building.,"い-adjective sits right before the noun.",10
+i-adjectives,このりんごは大きいです。,This apple is big.,"い-adjective as predicate.",20
+i-adjectives,高くないです。,It's not tall.,"Drop い, add くない.",30
+i-adjectives,高かったです。,It was tall.,"Drop い, add かった.",40
+i-adjectives,寒い朝ですね。,"It's a cold morning, huh?",Seasonal small talk.,50
+i-adjectives,暑い国から来ました。,I came from a hot country.,"Modifying with い-adjective.",60
+i-adjectives,新しい車がほしいです。,I want a new car.,"ほしい with い-adjective noun.",70
+i-adjectives,おいしくないです。,It's not tasty.,"Negative taste.",80
+i-adjectives,忙しかったです。,I was busy.,"Past state.",90
+i-adjectives,小さい犬が好きです。,I like small dogs.,"い-adjective plus noun.",100
+な-adjectives,静かな町です。,It's a quiet town.,"な links adjective to noun.",10
+な-adjectives,有名な人です。,He is a famous person.,"Famous plus な.",20
+な-adjectives,きれいな花ですね。,"Pretty flowers, huh?","Ends in い but it is a な-adjective.",30
+な-adjectives,親切な先生です。,She is a kind teacher.,"親切 needs な.",40
+な-adjectives,元気な子供です。,He is a healthy kid.,"Health description.",50
+な-adjectives,暇な日がない。,I have no free days.,"な-adjective plus noun plus が.",60
+な-adjectives,簡単な問題です。,It's an easy problem.,"問題 means problem.",70
+な-adjectives,大切な友達です。,She is a dear friend.,"大切 needs な.",80
+な-adjectives,きれいじゃないです。,It's not pretty.,"な-adjectives conjugate like nouns.",90
+な-adjectives,静かだった。,It was quiet.,"Past works like nouns too.",100
+いい (exception),この本はいいです。,This book is good.,"いい looks regular here: trap!",10
+いい (exception),よくないです。,It's not good.,"Negative comes from よい, not いい.",20
+いい (exception),よかったです。,It was good.,"Past also comes from よい.",30
+いい (exception),よくなかったです。,It wasn't good.,"Negative-past from よい.",40
+いい (exception),いい天気ですね。,"Nice weather, huh?","The common set phrase.",50
+いい (exception),映画はよかったです。,The movie was good.,"Talking about past fun.",60
+いい (exception),あまりよくないです。,It's not very good.,"あまり pairs with negatives.",70
+いい (exception),かっこいいですね。,"He's cool, huh?",Also conjugates from よい.,80
+いい (exception),かっこよくないです。,He's not cool.,"Same よい root.",90
+いい (exception),いいえ、よくないです。,"No, it's not good.","Short refusal pattern.",100
+ru/u verbs,毎日走る。,I run every day.,"Plain present habit.",10
+ru/u verbs,ご飯を食べる。,I eat rice.,"る-verb, plain form.",20
+ru/u verbs,明日来る。,They are coming tomorrow.,"来る is an exception, plain.",30
+ru/u verbs,毎日勉強する。,I study every day.,"する is an exception, plain.",40
+ru/u verbs,水を飲む。,I drink water.,"u-verb, plain form.",50
+ru/u verbs,映画を見る。,I watch movies.,"る-verb, plain form.",60
+ru/u verbs,早く寝る。,I sleep early.,"早く means early.",70
+ru/u verbs,友達に会う。,I meet my friend.,"う-verb, plain form.",80
+ru/u verbs,本を買う。,I will buy a book.,"u-verb, plain form.",90
+ru/u verbs,歌を歌う。,I sing songs.,"Same-kanji verb pair, plain.",100
+ない-form,肉を食べない。,I don't eat meat.,"る-verb: drop る, add ない.",10
+ない-form,行かない。,I am not going.,"く becomes か plus ない.",20
+ない-form,飲まない。,I don't drink.,"む becomes ま plus ない.",30
+ない-form,話さない。,I don't speak.,"す becomes さ plus ない.",40
+ない-form,買わない。,I won't buy it.,"う becomes わ plus ない.",50
+ない-form,来ない。,They are not coming.,"Exception: 来ない.",60
+ない-form,しない。,I won't do it.,"Exception: しない.",70
+ない-form,寝ない。,I won't sleep.,"る-verb negative.",80
+ない-form,見ない。,I won't watch it.,"見る becomes 見ない.",90
+ない-form,泳がない。,I don't swim.,"ぐ becomes が plus ない.",100
+た-form,昨日映画を見た。,I watched a movie yesterday.,"る-verb past.",10
+た-form,ご飯を食べた。,I ate.,"た past.",20
+た-form,東京に行った。,I went to Tokyo.,"く becomes いた.",30
+た-form,本を買った。,I bought a book.,"う becomes った.",40
+た-form,水を飲んだ。,I drank water.,"む becomes んだ.",50
+た-form,手紙を書いた。,I wrote a letter.,"く becomes いた.",60
+た-form,来た。,They came.,"Exception past.",70
+た-form,した。,I did it.,"Exception past.",80
+た-form,泳いだ。,I swam.,"ぐ becomes いだ.",90
+た-form,バスに乗った。,I got on the bus.,"る becomes った.",100
+て-form,朝ごはんを食べて学校へ行く。,I eat breakfast and go to school.,"て links two actions in order.",10
+て-form,走って来る。,Come running.,"Manner of motion.",20
+て-form,作って食べる。,I make it and eat it.,"Sequence.",30
+て-form,買って帰る。,I'll buy it and go home.,"Errand sequence.",40
+て-form,歩いて行く。,I'll walk there.,"いて means by means of ~ing.",50
+て-form,座って待つ。,Sit and wait.,"Posture plus action.",60
+て-form,立って見る。,Watch standing up.,"Same posture pattern.",70
+て-form,笑って答える。,Answer with a laugh.,"Manner nuance.",80
+て-form,急いで帰る。,Hurry home.,"Adverbial て-form.",90
+て-form,持って来る。,Bring it here.,"持つ て plus 来る, classic combo.",100
+てください,ちょっと待ってください。,Please wait a moment.,"The number-one request phrase.",10
+てください,見てください。,Please look.,"Asking attention.",20
+てください,聞いてください。,Please listen.,"Asking to listen.",30
+てください,座ってください。,Please sit down.,"Polite instruction.",40
+てください,書いてください。,Please write it.,"Asking a favor.",50
+てください,教えてください。,Please teach me.,"Classic classroom phrase.",60
+てください,読んでください。,Please read it.,"Reading request.",70
+てください,来てください。,Please come.,"Invitation or request.",80
+てください,食べてください。,Please eat.,"Offering food.",90
+てください,止まってください。,Please stop.,"Stop request.",100
+てもいいです,入ってもいいです。,You may come in.,"Asking or giving permission.",10
+てもいいです,座ってもいいですか。,May I sit down?,"Permission question.",20
+てもいいです,写真を撮ってもいいですか。,May I take a photo?,"Classic tourist phrase.",30
+てもいいです,ここで食べてもいいです。,You may eat here.,"Place permission.",40
+てもいいです,明日でもいいです。,Tomorrow is fine too.,"でもいい variation.",50
+てもいいです,見てもいいですか。,May I look?,"Casual permission ask.",60
+てもいいです,使ってもいいです。,You may use it.,"Lending permission.",70
+てもいいです,帰ってもいいですか。,May I go home?,"Early-leave ask.",80
+てもいいです,休んでもいいです。,You may rest.,"Rest permission.",90
+てもいいです,電話してもいいですか。,May I make a call?,"Phone permission.",100
+てはいけません,ここでタバコを吸ってはいけません。,You must not smoke here.,"Rule signs.",10
+てはいけません,泳いではいけません。,No swimming.,"Pool rule.",20
+てはいけません,入ってはいけません。,Do not enter.,"Prohibition sign.",30
+てはいけません,写真を撮ってはいけません。,No photos.,"Camera rule.",40
+てはいけません,走ってはいけません。,No running.,"School rule.",50
+てはいけません,大きな声を出してはいけません。,Don't be loud.,"Volume rule.",60
+てはいけません,遅れてはいけません。,Don't be late.,"Punctuality rule.",70
+てはいけません,忘れてはいけません。,Don't forget.,"Memory rule.",80
+てはいけません,ゴミを捨ててはいけません。,Don't litter.,"Trash rule.",90
+てはいけません,嘘をついてはいけません。,Don't lie.,"Honesty rule.",100
+ている,今テレビを見ている。,I'm watching TV now.,"Action in progress.",10
+ている,雨が降っている。,It's raining now.,"Weather in progress.",20
+ている,東京に住んでいる。,I live in Tokyo.,"Habitual state.",30
+ている,知っている。,I know it.,"知る ている means knowing.",40
+ている,持っている。,I'm holding it.,"Possession state.",50
+ている,疲れている。,I'm tired.,"Result state.",60
+ている,開いている。,It's open.,"Shop-sign state.",70
+ている,閉まっている。,It's closed.,"Paired state.",80
+ている,座っている。,She's sitting.,"Posture state.",90
+ている,ご飯を食べている。,I'm in the middle of eating.,"Core progressive.",100
+たい,日本へ行きたいです。,I want to go to Japan.,"The number-one たい sentence.",10
+たい,水が飲みたいです。,I want to drink water.,"Wanted thing takes が.",20
+たい,寿司を食べたいです。,I want to eat sushi.,"を also works with たい.",30
+たい,会いたいです。,I want to meet you.,"Emotional たい.",40
+たい,寝たいです。,I want to sleep.,"Plain desire.",50
+たい,買いたいです。,I want to buy it.,"Shopping desire.",60
+たい,帰りたいです。,I want to go home.,"Homesick たい.",70
+たい,見たい映画があります。,There's a movie I want to watch.,"たい modifying a noun.",80
+たい,休みたいです。,I want a rest.,"Rest desire.",90
+たい,知りたいです。,I want to know.,"Curiosity たい.",100
+ほしい,新しい車がほしいです。,I want a new car.,"Wanted thing plus が plus ほしい.",10
+ほしい,水がほしいです。,I want water.,"Simple want.",20
+ほしい,時間がほしいです。,I want more time.,"Abstract want.",30
+ほしい,友達がほしいです。,I want friends.,"People want is grammatical.",40
+ほしい,休みがほしいです。,I want a day off.,"休み means holiday.",50
+ほしい,お金がほしいです。,I want money.,"Blunt want.",60
+ほしい,新しい靴がほしいです。,I want new shoes.,"Adjective plus want.",70
+ほしい,甘いものがほしいです。,I want something sweet.,"もの nominalizes.",80
+ほしい,静かな部屋がほしいです。,I want a quiet room.,"Na-adjective plus want.",90
+ほしい,日本の切手がほしいです。,I want Japanese stamps.,"Specific want.",100
+potential,日本語が話せます。,I can speak Japanese.,"Potential verb.",10
+potential,泳げます。,I can swim.,"U-verb potential.",20
+potential,漢字が読めます。,I can read kanji.,"Reading ability.",30
+potential,車が運転できます。,I can drive.,"する becomes できる.",40
+potential,食べられます。,I can eat it.,"る-verb potential.",50
+potential,来られますか。,Can you come?,"来る potential question.",60
+potential,歌が歌えます。,I can sing songs.,"Ability.",70
+potential,高い所に登れます。,I can climb high places.,"所 means place.",80
+potential,三時に来られます。,I can come at 3.,"Time plus potential.",90
+potential,たくさん食べられます。,I can eat a lot.,"Quantity plus potential.",100
+なければなりません,薬を飲まなければなりません。,I must take my medicine.,"Obligation number one.",10
+なければなりません,行かなければなりません。,I have to go.,"Motion obligation.",20
+なければなりません,勉強しなければなりません。,I must study.,"Student obligation.",30
+なければなりません,早く寝なければなりません。,I must sleep early.,"Health obligation.",40
+なければなりません,宿題をしなければなりません。,I must do my homework.,"Homework.",50
+なければなりません,働かなければなりません。,I must work.,"Work obligation.",60
+なければなりません,起きなければなりません。,I must get up.,"Morning obligation.",70
+なければなりません,書かなければなりません。,I must write it.,"Writing obligation.",80
+なければなりません,払わなければなりません。,I must pay.,"Payment obligation.",90
+なければなりません,覚えなければなりません。,I must memorize it.,"Memory obligation.",100
+てみる,このケーキを食べてみる。,I'll try eating this cake.,"Tasting trial.",10
+てみる,着てみる。,Try it on.,"Clothes trial.",20
+てみる,読んでみる。,Give it a read.,"Reading trial.",30
+てみる,聞いてみる。,Give it a listen.,"Dual meaning: listen or ask.",40
+てみる,行ってみる。,Go and see.,"Scouting trial.",50
+てみる,使ってみる。,Try using it.,"Tool trial.",60
+てみる,泳いでみる。,Try swimming.,"Activity trial.",70
+てみる,書いてみる。,Try writing it.,"Writing trial.",80
+てみる,飲んでみる。,Try drinking it.,"Drink trial.",90
+てみる,会ってみる。,Try meeting them.,"People trial.",100
+ましょう,一緒に行きましょう。,Let's go together.,"Invitation number one.",10
+ましょう,食べましょう。,Let's eat.,"Mealtime.",20
+ましょう,始めましょう。,Let's begin.,"Class or meeting start.",30
+ましょう,休みましょう。,Let's take a break.,"Rest proposal.",40
+ましょう,帰りましょう。,Let's go home.,"Leaving together.",50
+ましょう,見ましょう。,Let's watch it.,"Suggestion.",60
+ましょう,歌いましょう。,Let's sing.,"Group fun.",70
+ましょう,勉強しましょう。,Let's study.,"Study proposal.",80
+ましょう,歩きましょう。,Let's walk.,"Movement proposal.",90
+ましょう,寝ましょう。,Let's sleep.,"Bedtime.",100
+なる,先生になりたいです。,I want to become a teacher.,"Career change.",10
+なる,医者になりたいです。,I want to become a doctor.,"医者 means doctor.",20
+なる,有名になりました。,He became famous.,"Fame change.",30
+なる,元気になりました。,He got well.,"Recovery.",40
+なる,寒くなりました。,It got cold.,"Weather change with i-adjective.",50
+なる,静かになりました。,It got quiet.,"Na-adjective plus なる.",60
+なる,夜になりました。,Night fell.,"Time change.",70
+なる,大人になりました。,I became an adult.,"Life stage.",80
+なる,きれいになりました。,It became pretty.,"Improvement.",90
+なる,暑くなりました。,It got hot.,"Seasonal change.",100
+たり～たりする,休みに本を読んだり、映画を見たりする。,On days off I read and watch movies.,"Non-exhaustive weekend list.",10
+たり～たりする,歌ったり踊ったりする。,We sing and dance and stuff.,"Party activities.",20
+たり～たりする,食べたり飲んだりする。,We eat and drink and stuff.,"Party verbs.",30
+たり～たりする,買ったり売ったりする。,I buy and sell things.,"Business pair.",40
+たり～たりする,書いたり読んだりする。,I write and read.,"Study pair.",50
+たり～たりする,泣いたり笑ったりする。,She cries and laughs by turns.,"Emotional swings.",60
+たり～たりする,走ったり歩いたりする。,I run and walk by turns.,"Exercise mix.",70
+たり～たりする,見たり聞いたりする。,I watch and listen.,"Media pair.",80
+たり～たりする,作ったり壊したりする。,He makes and breaks things.,"Creative chaos.",90
+たり～たりする,寝たり起きたりする。,He naps on and off all day.,"Repeating cycle.",100
+ながら,音楽を聞きながら歩く。,I walk while listening to music.,"The classic ながら.",10
+ながら,食べながら話す。,Talk while eating.,"Mealtime multitask.",20
+ながら,歩きながら考える。,Think while walking.,"Movement plus thought.",30
+ながら,テレビを見ながらご飯を食べる。,Eat while watching TV.,"Evening routine.",40
+ながら,歌いながら踊る。,Sing while dancing.,"Performance pair.",50
+ながら,働きながら勉強する。,Study while working.,"Double life.",60
+ながら,笑いながら言う。,Say it with a laugh.,"Manner nuance.",70
+ながら,泣きながら謝る。,Apologize through tears.,"Emotional nuance.",80
+ながら,走りながら水を飲む。,Drink water while running.,"Sports scene.",90
+ながら,読みながら書く。,Write while reading.,"Study multitask.",100
+まえに,食べるまえに手を洗う。,Wash your hands before eating.,"Rule number one.",10
+まえに,寝るまえに歯を磨く。,Brush your teeth before bed.,"Nightly routine.",20
+まえに,出かけるまえに電話する。,Call before going out.,"Errand order.",30
+まえに,買うまえに見る。,Look before you buy.,"Shopping wisdom.",40
+まえに,食べるまえにいただきますと言う。,Say grace before eating.,"Mealtime manner.",50
+まえに,来るまえに連絡する。,Contact me before coming.,"Visitor rule.",60
+まえに,帰るまえに掃除する。,Clean before going home.,"Office closing.",70
+まえに,始めるまえに準備する。,Prepare before starting.,"Prep rule.",80
+まえに,旅行のまえに貯金する。,Save money before the trip.,"Noun plus の plus まえに.",90
+まえに,結婚するまえに会う。,Meet before marrying.,"Life order.",100
+より・ほう・いちばん,犬より猫のほうが好きです。,I like cats more than dogs.,"より versus ほう pair.",10
+より・ほう・いちばん,バスより電車のほうが速いです。,Trains are faster than buses.,"Transport compare.",20
+より・ほう・いちばん,今日より明日のほうが暑いです。,Tomorrow will be hotter than today.,"Weather compare.",30
+より・ほう・いちばん,この本がいちばんおもしろいです。,This book is the most interesting.,"いちばん plus adjective.",40
+より・ほう・いちばん,りんごがいちばん好きです。,I like apples best.,"Preference best.",50
+より・ほう・いちばん,母より父のほうが高いです。,Dad is taller than mom.,"Family compare.",60
+より・ほう・いちばん,夏より冬のほうが好きです。,I like winter more than summer.,"Season compare.",70
+より・ほう・いちばん,肉より魚のほうが体にいいです。,Fish is healthier than meat.,"Health compare.",80
+より・ほう・いちばん,これがいちばん安いです。,This is the cheapest.,"Shopping best.",90
+より・ほう・いちばん,東京より京都のほうが静かです。,Kyoto is quieter than Tokyo.,"City compare.",100

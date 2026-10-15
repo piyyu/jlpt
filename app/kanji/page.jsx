@@ -1,19 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import AudioButton from '@/components/AudioButton';
-import { X, CheckSquare, Square } from 'lucide-react';
+import StrokeOrder from '@/components/StrokeOrder';
 import { toRomajiParts } from '@/lib/toRomaji';
 import { useSettings } from '@/lib/useSettings';
 
+function firstReading(k) {
+  return ((k.kun_yomi || k.on_yomi || '').split(/[・/]/)[0] || '').trim();
+}
+
 export default function KanjiPage() {
   const [kanji, setKanji] = useState([]);
-  const [selected, setSelected] = useState(null);   // kanji card open in detail panel
+  const [open, setOpen] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selections, setSelections] = useState(new Set()); // ticked IDs
+  const [selections, setSelections] = useState(new Set());
   const [selCount, setSelCount] = useState(0);
-  const [toggling, setToggling] = useState(null);
-  const { showEnglish } = useSettings();
+  const { showEnglish, showRomaji } = useSettings();
 
   useEffect(() => {
     fetch('/api/kanji')
@@ -24,21 +28,45 @@ export default function KanjiPage() {
       .then((ids) => { setSelections(new Set(ids)); setSelCount(ids.length); });
   }, []);
 
-  async function toggleSelection(id, e) {
-    e.stopPropagation();
-    if (toggling) return;
-    setToggling(id);
+  // Modal ergonomics: Escape closes, background stays put while open.
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  async function toggleSelection(id) {
     const isSel = selections.has(id);
     const next = new Set(selections);
     if (isSel) next.delete(id); else next.add(id);
     setSelections(next);
     setSelCount(next.size);
+    if (open && open.id === id) setOpen({ ...open });
     await fetch('/api/selections', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content_type: 'kanji', content_id: id, selected: !isSel }),
     });
-    setToggling(null);
+  }
+
+  async function selectAll() {
+    const ids = kanji.map((k) => k.id);
+    if (ids.length === 0) return;
+    setSelections(new Set(ids));
+    setSelCount(ids.length);
+    await fetch('/api/selections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content_type: 'kanji', content_ids: ids, selected: true }),
+    });
   }
 
   async function clearAll() {
@@ -53,182 +81,134 @@ export default function KanjiPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-start justify-between">
-        <div>
-          <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>漢字リスト</p>
-          <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>Kanji</h1>
-          <p className="text-sm mt-1 flex items-center gap-2" style={{ color: 'var(--text-2)' }}>
-            All N5 kanji — {kanji.length} characters · click card for details
-            {selCount > 0 && (
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                style={{ background: 'rgba(255,0,128,0.12)', color: 'var(--pink)', border: '1px solid rgba(255,0,128,0.3)' }}>
-                {selCount} selected
-              </span>
-            )}
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <a
-            href={`/quiz?type=kanji${selCount > 0 ? '&selected_only=true' : ''}`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-colors font-medium"
-            style={{ background: 'var(--text-1)', color: 'var(--bg-base)' }}
+      <h1 className="page-title">Kanji</h1>
+      <p style={{ marginTop: 0 }}>
+        {kanji.length} N5 characters{selCount > 0 && ` · ${selCount} in your deck`}.
+        <br />
+        <span className="muted" style={{ fontSize: '0.85rem' }}>
+          Tick characters to add them to review, or tap a tile for details.
+        </span>
+      </p>
+      <div className="toolbar-actions">
+        <button
+          className="btn"
+          onClick={selectAll}
+          style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+        >
+          Select all
+        </button>
+        {selCount > 0 && (
+          <button
+            className="btn"
+            onClick={clearAll}
+            style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
           >
-            {selCount > 0 ? 'Quiz Selected' : 'Quiz All'}
-          </a>
-        </div>
+            Clear ({selCount})
+          </button>
+        )}
+        <Link
+          className="btn"
+          href={`/quiz?type=kanji${selCount > 0 ? '&selected_only=true' : ''}`}
+          style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+        >
+          Quiz{selCount > 0 ? ' selected' : ''} →
+        </Link>
       </div>
 
       {loading ? (
-        <div className="py-24 text-center text-sm" style={{ color: 'var(--text-3)' }}>読み込み中…</div>
+        <p className="muted">Loading…</p>
       ) : (
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))', gap: '0.6rem' }}>
           {kanji.map((k) => {
-            const isDetail = selected?.id === k.id;
             const isSel = selections.has(k.id);
+            const isOpen = open?.id === k.id;
             return (
-              <div key={k.id} className="relative group">
-                {/* Main card button */}
+              <div key={k.id} style={{ position: 'relative' }}>
                 <button
-                  onClick={() => setSelected(isDetail ? null : k)}
-                  className="w-full rounded-lg p-2 flex flex-col items-center gap-1 transition-all"
-                  style={{
-                    background: isDetail ? 'rgba(255,0,128,0.08)' : isSel ? 'rgba(255,0,128,0.04)' : 'var(--bg-surface)',
-                    border: `1px solid ${isDetail ? 'rgba(255,0,128,0.4)' : isSel ? 'rgba(255,0,128,0.25)' : 'var(--border)'}`,
-                  }}
-                >
-                  {/* Character */}
-                  <span className="font-japanese font-semibold leading-none" style={{ fontSize: '28px', color: 'var(--text-1)' }}>
-                    {k.character}
-                  </span>
-                  {/* Primary reading */}
-                  <span className="font-japanese leading-none text-center w-full truncate" style={{ fontSize: '9px', color: 'var(--text-3)' }}>
-                    {(k.kun_yomi || k.on_yomi || '').split(/[・/]/)[0]}
-                  </span>
-                  {/* Romaji */}
-                  {showEnglish && (
-                    <span className="font-mono leading-none text-center w-full truncate" style={{ fontSize: '8px', color: 'var(--pink)', opacity: 0.7 }}>
-                      {toRomajiParts((k.kun_yomi || k.on_yomi || '').split(/[・/]/)[0])}
-                    </span>
-                  )}
-                  {/* English meaning */}
-                  <span className="text-center w-full leading-tight" style={{ fontSize: '9px', color: 'var(--text-2)' }}>
-                    {k.meaning.split('/')[0].trim()}
-                  </span>
-                </button>
-
-                {/* Tick/checkbox overlay — top-right corner */}
-                <button
-                  onClick={(e) => toggleSelection(k.id, e)}
-                  className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity rounded"
-                  style={{ color: isSel ? 'var(--pink)' : 'var(--text-3)' }}
+                  className="tick"
+                  aria-pressed={isSel}
+                  onClick={() => toggleSelection(k.id)}
                   title={isSel ? 'Remove from review' : 'Add to review'}
+                  style={{ position: 'absolute', top: 6, left: 6, zIndex: 1, width: '1.5rem', height: '1.5rem', fontSize: '0.85rem' }}
                 >
-                  {isSel
-                    ? <CheckSquare size={12} style={{ color: 'var(--pink)' }} />
-                    : <Square size={12} style={{ opacity: 0.5 }} />}
+                  {isSel ? '✓' : '+'}
                 </button>
-
-                {/* Always-visible pink dot if selected */}
-                {isSel && (
-                  <div
-                    className="absolute top-1 left-1 w-1.5 h-1.5 rounded-full"
-                    style={{ background: 'var(--pink)' }}
-                  />
-                )}
+                <button
+                  onClick={() => setOpen(isOpen ? null : k)}
+                  aria-pressed={isOpen}
+                  className={`kanji-tile${isSel ? ' selected' : ''}${isOpen ? ' open' : ''}`}
+                  style={{ width: '100%' }}
+                >
+                <span className="jp-display" style={{ display: 'block', fontSize: '2rem', lineHeight: 1.2 }}>{k.character}</span>
+                <span className="muted font-japanese" style={{ display: 'block', fontSize: '0.68rem', marginTop: '0.2rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {firstReading(k)}
+                </span>
+                <span className="muted" style={{ display: 'block', fontSize: '0.68rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {k.meaning.split('/')[0].trim()}
+                </span>
+                </button>
               </div>
             );
           })}
         </div>
       )}
 
-      {/* Detail panel */}
-      {selected && (
+      {open && (
         <div
-          className="fixed bottom-0 left-0 right-0 md:left-[var(--sidebar-width)] z-20 p-6 border-t transition-all duration-300 ease-in-out"
-          style={{ background: '#0d0d0d', borderColor: 'rgba(255,0,128,0.2)' }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={open.character}
+          onClick={() => setOpen(null)}
+          className="modal-overlay"
+          style={{
+            position: 'fixed', inset: 0, zIndex: 50,
+            background: 'rgba(0,0,0,0.6)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '1rem',
+          }}
         >
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-start gap-8">
-              {/* Big character + select toggle */}
-              <div className="text-center shrink-0">
-                <p className="font-japanese font-bold leading-none" style={{ fontSize: '72px', color: 'var(--text-1)' }}>
-                  {selected.character}
+        <section
+          onClick={(e) => e.stopPropagation()}
+          className="modal-card"
+          style={{ border: '2px solid var(--border)', borderRadius: 12, borderTop: '4px solid var(--orange)', background: 'var(--panel)', padding: '1.25rem 1.5rem', width: 'min(36rem, calc(100vw - 2rem))', height: 'min(78vh, 620px)', overflowY: 'auto' }}>
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+            <div style={{ textAlign: 'center' }}>
+              <p className="jp-display" style={{ fontSize: '4.5rem', lineHeight: 1.15, margin: 0 }}>{open.character}</p>
+              <p className="muted" style={{ fontSize: '0.8rem', margin: '0.25rem 0 0' }}>{open.stroke_count ?? '—'} strokes</p>
+              <p style={{ margin: '0.6rem 0 0' }}>
+                <button className="btn" style={{ padding: '0.3rem 0.7rem', fontSize: '0.78rem' }} onClick={() => toggleSelection(open.id)}>
+                  {selections.has(open.id) ? '✓ in deck — remove' : '+ add to deck'}
+                </button>
+              </p>
+            </div>
+            <div style={{ flex: 1, minWidth: '200px' }}>
+              <p style={{ margin: '0 0 0.5rem', fontSize: '1.15rem' }}><strong>{open.meaning}</strong></p>
+              <p style={{ margin: '0 0 0.25rem' }}>
+                <span className="muted" style={{ fontSize: '0.8rem' }}>On: </span>
+                <span className="font-japanese">{open.on_yomi || '—'}</span>
+                    {showRomaji && open.on_yomi && <span className="muted" style={{ fontSize: '0.8rem' }}> ({toRomajiParts(open.on_yomi)})</span>}
+              </p>
+              <p style={{ margin: '0 0 0.25rem' }}>
+                <span className="muted" style={{ fontSize: '0.8rem' }}>Kun: </span>
+                <span className="font-japanese">{open.kun_yomi || '—'}</span>
+                    {showRomaji && open.kun_yomi && <span className="muted" style={{ fontSize: '0.8rem' }}> ({toRomajiParts(open.kun_yomi)})</span>}
+              </p>
+              {[open.example_word1, open.example_word2].filter(Boolean).length > 0 && (
+                <p className="muted font-japanese" style={{ fontSize: '0.85rem', margin: '0.5rem 0 0' }}>
+                  {[open.example_word1, open.example_word2].filter(Boolean).join(' · ')}
                 </p>
-                <p className="text-xs mt-1 font-semibold" style={{ color: 'var(--pink)' }}>{selected.stroke_count} strokes</p>
-                {/* Big select button in detail panel */}
-                <button
-                  onClick={(e) => toggleSelection(selected.id, e)}
-                  className="mt-2 flex items-center gap-1 mx-auto text-xs px-2 py-1 rounded-md transition-all"
-                  style={selections.has(selected.id)
-                    ? { background: 'rgba(255,0,128,0.15)', border: '1px solid rgba(255,0,128,0.4)', color: 'var(--pink)' }
-                    : { background: 'var(--bg-elevated)', border: '1px solid var(--border)', color: 'var(--text-3)' }}
-                >
-                  {selections.has(selected.id)
-                    ? <><CheckSquare size={11} /> Selected</>
-                    : <><Square size={11} /> Select</>}
-                </button>
-              </div>
-
-              {/* Readings grid */}
-              <div className="flex-1 grid grid-cols-2 gap-4">
-                <div className="col-span-2">
-                  <p className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--text-3)' }}>Meaning</p>
-                  <p className="text-lg font-semibold" style={{ color: 'var(--text-1)' }}>{selected.meaning}</p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--text-3)' }}>
-                    On-yomi <span style={{ color: 'var(--pink)', opacity: 0.6 }}>(音読み)</span>
-                  </p>
-                  <p className="font-japanese text-base font-semibold" style={{ color: 'var(--text-1)' }}>{selected.on_yomi || '—'}</p>
-                  {showEnglish && selected.on_yomi && (
-                    <p className="font-mono text-xs mt-0.5" style={{ color: 'var(--pink)', opacity: 0.8 }}>{toRomajiParts(selected.on_yomi)}</p>
-                  )}
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--text-3)' }}>
-                    Kun-yomi <span style={{ color: 'var(--pink)', opacity: 0.6 }}>(訓読み)</span>
-                  </p>
-                  <p className="font-japanese text-base font-semibold" style={{ color: 'var(--text-1)' }}>{selected.kun_yomi || '—'}</p>
-                  {showEnglish && selected.kun_yomi && (
-                    <p className="font-mono text-xs mt-0.5" style={{ color: 'var(--pink)', opacity: 0.8 }}>{toRomajiParts(selected.kun_yomi)}</p>
-                  )}
-                </div>
-                {(selected.example_word1 || selected.example_word2) && (
-                  <div className="col-span-2">
-                    <p className="text-xs uppercase tracking-wider mb-2" style={{ color: 'var(--text-3)' }}>Examples</p>
-                    <div className="flex flex-wrap gap-4">
-                      {[selected.example_word1, selected.example_word2].filter(Boolean).map((ex, i) => {
-                        const match = ex.match(/^(.+?)\s*\((.+?)\)$/);
-                        const word = match ? match[1] : ex;
-                        const reading = match ? match[2] : '';
-                        return (
-                          <div key={i} className="flex flex-col">
-                            <span className="font-japanese text-sm font-semibold" style={{ color: 'var(--text-1)' }}>{word}</span>
-                            {reading && (
-                              <>
-                                <span className="font-japanese text-xs" style={{ color: 'var(--text-3)' }}>{reading}</span>
-                                {showEnglish && (
-                                  <span className="font-mono text-xs" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomajiParts(reading)}</span>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Close + audio */}
-              <div className="flex flex-col items-end gap-3 shrink-0">
-                <button onClick={() => setSelected(null)} className="p-1.5 rounded-md" style={{ color: 'var(--text-3)' }}>
-                  <X size={16} />
-                </button>
-                <AudioButton text={selected.character} />
+              )}
+              <div style={{ marginTop: '0.75rem' }}>
+                <p className="muted" style={{ fontSize: '0.8rem', margin: '0 0 0.35rem' }}>Stroke order</p>
+                <StrokeOrder key={open.character} char={open.character} />
               </div>
             </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'flex-end' }}>
+              <Link href="#" onClick={(e) => { e.preventDefault(); setOpen(null); }}>close ✕</Link>
+              <AudioButton text={open.character} />
+            </div>
           </div>
+        </section>
         </div>
       )}
     </div>

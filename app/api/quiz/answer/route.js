@@ -4,7 +4,7 @@ import getDb from '@/lib/db';
 export async function POST(request) {
   const db = getDb();
   const body = await request.json();
-  const { session_id, content_type, content_id, was_correct } = body;
+  const { session_id, content_type, content_id, was_correct, practice = false } = body;
 
   if (!session_id || !content_type || content_id == null || was_correct == null) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -19,8 +19,9 @@ export async function POST(request) {
     db.prepare(`
       UPDATE quiz_sessions SET correct_answers = correct_answers + 1 WHERE id = ?
     `).run(session_id);
-  } else {
-    // Track as weak item
+  } else if (!practice) {
+    // Track as weak item — SKIPPED in practice/mastery mode so a casual
+    // self-test never pollutes SRS / weak-points / study data.
     const now = new Date().toISOString();
     db.prepare(`
       INSERT INTO weak_items (content_type, content_id, wrong_count, last_wrong_at)
@@ -30,5 +31,5 @@ export async function POST(request) {
     `).run(content_type, content_id, now);
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, practice });
 }

@@ -1,22 +1,51 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Save, AlertTriangle } from 'lucide-react';
 
-const SETTINGS_DEF = [
-  { key: 'daily_goal', label: 'Daily Review Goal', type: 'number', min: 1, max: 200, description: 'Number of cards to review per day' },
-  { key: 'show_english', label: 'Show English on Cards', type: 'toggle', description: 'Show the English meaning on the front of review cards (helpful for beginners)' },
-  { key: 'furigana', label: 'Show Furigana', type: 'toggle', description: 'Display reading above Japanese characters' },
-  { key: 'romaji', label: 'Show Romaji', type: 'toggle', description: 'Display romanized pronunciation' },
-  { key: 'audio_speed', label: 'Audio Speed', type: 'range', min: 0.5, max: 2.0, step: 0.1, description: 'Playback speed for text-to-speech' },
+const GROUPS = [
+  {
+    title: 'Daily goals',
+    items: [
+      { key: 'daily_goal_vocab', label: 'Vocabulary', type: 'number', min: 1, max: 200, description: 'Cards per day — already-reviewed counts.' },
+      { key: 'daily_goal_kanji', label: 'Kanji', type: 'number', min: 1, max: 200, description: 'Cards per day — already-reviewed counts.' },
+      { key: 'daily_goal_grammar', label: 'Grammar', type: 'number', min: 1, max: 200, description: 'Cards per day — already-reviewed counts.' },
+    ],
+  },
+  {
+    title: 'Card display',
+    items: [
+      { key: 'show_english', label: 'English meanings', type: 'toggle', description: 'Show the English meaning alongside review cards.' },
+      { key: 'furigana', label: 'Furigana', type: 'toggle', description: 'Display reading above Japanese characters.' },
+      { key: 'romaji', label: 'Romaji', type: 'toggle', description: 'Display romanized pronunciation.' },
+    ],
+  },
+  {
+    title: 'Audio',
+    items: [
+      { key: 'audio_speed', label: 'Playback speed', type: 'range', min: 0.5, max: 2.0, step: 0.1, description: 'Speed for text-to-speech.' },
+    ],
+  },
 ];
+
+function Toggle({ on, onChange, label }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      className="switch"
+      onClick={() => onChange(!on)}
+    />
+  );
+}
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(null);
-  const [saved, setSaved] = useState(null);
-  const [resetConfirm, setResetConfirm] = useState(false);
+  const [savedKey, setSavedKey] = useState(null);
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [resetting, setResetting] = useState(false);
 
   useEffect(() => {
     fetch('/api/settings')
@@ -24,126 +53,134 @@ export default function SettingsPage() {
       .then((d) => { setSettings(d); setLoading(false); });
   }, []);
 
+  useEffect(() => {
+    if (!savedKey) return;
+    const t = setTimeout(() => setSavedKey(null), 1500);
+    return () => clearTimeout(t);
+  }, [savedKey]);
+
   async function saveSetting(key, value) {
-    setSaving(key);
     await fetch('/api/settings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key, value }),
     });
     setSettings((s) => ({ ...s, [key]: String(value) }));
-    setSaving(null);
-    setSaved(key);
-    setTimeout(() => setSaved(null), 2000);
+    setSavedKey(key);
   }
 
   async function resetProgress() {
-    // Reset SRS cards to defaults
+    setResetting(true);
     await fetch('/api/settings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key: 'reset_progress', value: String(Date.now()) }),
     });
-    setResetConfirm(false);
-    alert('Progress has been reset. You can now start fresh!');
+    setResetting(false);
+    setConfirmReset(false);
+    alert('Progress has been reset.');
   }
+
+  if (loading) return <p className="muted">Loading…</p>;
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--text-1)' }}>Settings</h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>Customize your study experience</p>
-      </div>
+      <h1 style={{ fontSize: '2rem', margin: '0 0 0.25rem' }}>Settings</h1>
+      <p className="muted" style={{ fontSize: '0.85rem', marginTop: 0, marginBottom: '1.5rem' }}>
+        Changes save automatically.
+      </p>
 
-      {loading ? (
-        <div className="py-16 text-center text-sm" style={{ color: 'var(--text-3)' }}>Loading…</div>
-      ) : (
-        <div className="max-w-lg space-y-4">
-          {SETTINGS_DEF.map((def) => (
-            <div key={def.key} className="card p-5" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <p className="text-sm font-medium" style={{ color: 'var(--text-1)' }}>{def.label}</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>{def.description}</p>
-                </div>
-
-                {def.type === 'toggle' && (
-                  <button
-                    onClick={() => saveSetting(def.key, settings[def.key] === 'true' ? 'false' : 'true')}
-                    className="relative w-11 h-6 rounded-full transition-all shrink-0"
-                    style={{
-                      background: settings[def.key] === 'true' ? 'var(--pink)' : 'var(--bg-elevated)',
-                      border: `1px solid ${settings[def.key] === 'true' ? 'var(--pink)' : 'var(--border)'}`,
-                    }}
-                  >
-                    <span
-                      className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform ${settings[def.key] === 'true' ? 'translate-x-5' : ''}`}
-                      style={{ background: settings[def.key] === 'true' ? '#fff' : 'var(--text-3)' }}
-                    />
-                  </button>
-                )}
-
-                {def.type === 'number' && (
-                  <div className="flex items-center gap-2 shrink-0">
-                    <input
-                      type="number"
-                      min={def.min}
-                      max={def.max}
-                      value={settings[def.key] || ''}
-                      onChange={(e) => setSettings((s) => ({ ...s, [def.key]: e.target.value }))}
-                      className="w-20 px-2 py-1.5 text-sm border rounded-lg text-center focus:outline-none focus:ring-1 focus:ring-pink-500"
-                      style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', color: 'var(--text-1)' }}
-                    />
-                    <button
-                      onClick={() => saveSetting(def.key, settings[def.key])}
-                      disabled={saving === def.key}
-                      className={`p-1.5 rounded-lg transition-colors ${saved === def.key ? 'text-green-500' : 'text-zinc-500 hover:text-zinc-300'}`}
-                    >
-                      <Save size={14} />
-                    </button>
-                  </div>
-                )}
-
-                {def.type === 'range' && (
-                  <div className="flex items-center gap-2 shrink-0">
-                    <input
-                      type="range"
-                      min={def.min}
-                      max={def.max}
-                      step={def.step}
-                      value={settings[def.key] || 1}
-                      onChange={(e) => setSettings((s) => ({ ...s, [def.key]: e.target.value }))}
-                      onMouseUp={(e) => saveSetting(def.key, e.target.value)}
-                      className="w-24 accent-pink-500"
-                    />
-                    <span className="text-sm w-8 text-right" style={{ color: 'var(--text-2)' }}>{parseFloat(settings[def.key] || 1).toFixed(1)}×</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-
-          {/* Reset progress */}
-          <div className="card p-5 border-red-900/30" style={{ background: 'rgba(220, 38, 38, 0.05)', border: '1px solid rgba(220, 38, 38, 0.2)' }}>
-            <div className="flex items-start justify-between gap-4">
+      {GROUPS.map((group) => (
+        <section key={group.title} className="settings-card" aria-label={group.title}>
+          <h2>{group.title}</h2>
+          {group.items.map((def) => (
+            <div key={def.key} className="setting-row">
               <div>
-                <p className="text-sm font-medium" style={{ color: '#ef4444' }}>Reset All Progress</p>
-                <p className="text-xs mt-0.5" style={{ color: 'rgba(239, 68, 68, 0.7)' }}>Delete all SRS progress and start fresh</p>
-              </div>
-              {resetConfirm ? (
-                <div className="flex gap-2 shrink-0">
-                  <button onClick={() => setResetConfirm(false)} className="text-xs px-3 py-1.5 rounded-md" style={{ color: 'var(--text-3)' }}>Cancel</button>
-                  <button onClick={resetProgress} className="text-xs px-3 py-1.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">Confirm</button>
+                <div className="setting-label">
+                  {def.label}{' '}
+                  {savedKey === def.key && (
+                    <span className="muted" style={{ fontSize: '0.75rem', fontWeight: 400 }}>· saved ✓</span>
+                  )}
                 </div>
-              ) : (
-                <button onClick={() => setResetConfirm(true)} className="shrink-0 text-xs px-3 py-1.5 border border-red-900/30 text-red-500 rounded-md hover:bg-red-900/10 transition-colors flex items-center gap-1">
-                  <AlertTriangle size={12} /> Reset
-                </button>
+                <div className="setting-desc muted">{def.description}</div>
+              </div>
+
+              {def.type === 'toggle' && (
+                <Toggle
+                  on={settings[def.key] === 'true'}
+                  label={def.label}
+                  onChange={(next) => saveSetting(def.key, next)}
+                />
+              )}
+
+              {def.type === 'number' && (
+                <input
+                  type="number"
+                  min={def.min}
+                  max={def.max}
+                  aria-label={def.label}
+                  value={settings[def.key] || ''}
+                  onChange={(e) => setSettings((s) => ({ ...s, [def.key]: e.target.value }))}
+                  onBlur={(e) => saveSetting(def.key, e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
+                  style={{ width: '4.5rem', textAlign: 'center' }}
+                />
+              )}
+
+              {def.type === 'range' && (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
+                  <input
+                    type="range"
+                    min={def.min}
+                    max={def.max}
+                    step={def.step}
+                    aria-label={def.label}
+                    value={settings[def.key] || 1}
+                    onChange={(e) => setSettings((s) => ({ ...s, [def.key]: e.target.value }))}
+                    onMouseUp={(e) => saveSetting(def.key, e.target.value)}
+                    onTouchEnd={(e) => saveSetting(def.key, e.target.value)}
+                    style={{ width: '6rem' }}
+                  />
+                  <span className="muted" style={{ minWidth: '2.5rem', textAlign: 'right' }}>
+                    {parseFloat(settings[def.key] || 1).toFixed(1)}×
+                  </span>
+                </span>
               )}
             </div>
+          ))}
+        </section>
+      ))}
+
+      <section className="settings-card" aria-label="Danger zone" style={{ borderColor: 'var(--red)' }}>
+        <h2 style={{ color: 'var(--red-dark)' }}>Danger zone</h2>
+        <div className="setting-row">
+          <div>
+            <div className="setting-label">Reset all progress</div>
+            <div className="setting-desc muted">Delete all SRS progress and start fresh. This cannot be undone.</div>
           </div>
+          {confirmReset ? (
+            <span style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+              <button className="btn" style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem' }} onClick={() => setConfirmReset(false)}>cancel</button>
+              <button
+                className="btn"
+                style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem', borderColor: 'var(--red)', color: 'var(--red-dark)' }}
+                onClick={resetProgress}
+                disabled={resetting}
+              >
+                {resetting ? 'resetting…' : 'confirm'}
+              </button>
+            </span>
+          ) : (
+            <button
+              className="btn"
+              style={{ padding: '0.25rem 0.6rem', fontSize: '0.8rem', borderColor: 'var(--red)', color: 'var(--red-dark)', flexShrink: 0 }}
+              onClick={() => setConfirmReset(true)}
+            >
+              reset
+            </button>
+          )}
         </div>
-      )}
+      </section>
     </div>
   );
 }

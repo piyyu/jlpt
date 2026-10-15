@@ -25,7 +25,41 @@ export function GET(request) {
 
 export async function POST(request) {
   const db = getDb();
-  const { content_type, content_id, content_ids, selected } = await request.json();
+  const { content_type, content_id, content_ids, selected, starter_pack = false } = await request.json();
+
+  const today = new Date().toISOString().split('T')[0];
+  const insertStmt = db.prepare(`INSERT OR IGNORE INTO user_selections (content_type, content_id) VALUES (?, ?)`);
+  const insertSrsStmt = db.prepare(`
+    INSERT OR IGNORE INTO srs_cards (content_type, content_id, next_review_date)
+    VALUES (?, ?, ?)
+  `);
+  const updateSrsStmt = db.prepare(`
+    UPDATE srs_cards
+    SET next_review_date = ?
+    WHERE content_type = ? AND content_id = ?
+  `);
+
+  // Starter pack: first 20 vocabulary + first 10 kanji, for fresh installs
+  // with zero cards. One click, no manual selecting needed to begin.
+  if (starter_pack) {
+    const vocabIds = db.prepare(
+      'SELECT id FROM vocabulary ORDER BY sort_order ASC, importance ASC, id ASC LIMIT 20'
+    ).all().map((r) => r.id);
+    const kanjiIds = db.prepare('SELECT id FROM kanji ORDER BY id ASC LIMIT 10').all().map((r) => r.id);
+    db.transaction(() => {
+      for (const id of vocabIds) {
+        insertStmt.run('vocabulary', id);
+        insertSrsStmt.run('vocabulary', id, today);
+        updateSrsStmt.run(today, 'vocabulary', id);
+      }
+      for (const id of kanjiIds) {
+        insertStmt.run('kanji', id);
+        insertSrsStmt.run('kanji', id, today);
+        updateSrsStmt.run(today, 'kanji', id);
+      }
+    })();
+    return NextResponse.json({ ok: true, starter_pack: true, vocabulary: vocabIds.length, kanji: kanjiIds.length });
+  }
 
   if (!content_type) {
     return NextResponse.json({ error: 'content_type required' }, { status: 400 });
@@ -36,21 +70,9 @@ export async function POST(request) {
     return NextResponse.json({ error: 'content_id or content_ids required' }, { status: 400 });
   }
 
-  const insertStmt = db.prepare(`INSERT OR IGNORE INTO user_selections (content_type, content_id) VALUES (?, ?)`);
   const deleteStmt = db.prepare(`DELETE FROM user_selections WHERE content_type = ? AND content_id = ?`);
-
-  const today = new Date().toISOString().split('T')[0];
-  const insertSrsStmt = db.prepare(`
-    INSERT OR IGNORE INTO srs_cards (content_type, content_id, next_review_date) 
-    VALUES (?, ?, ?)
-  `);
-  const updateSrsStmt = db.prepare(`
-    UPDATE srs_cards 
-    SET next_review_date = ? 
-    WHERE content_type = ? AND content_id = ?
-  `);
   const deleteSrsStmt = db.prepare(`
-    DELETE FROM srs_cards 
+    DELETE FROM srs_cards
     WHERE content_type = ? AND content_id = ?
   `);
 

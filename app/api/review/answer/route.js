@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 import getDb from '@/lib/db';
 import { sm2, qualityFromLabel } from '@/lib/sm2';
 
+const LEECH_THRESHOLD = 8;
+
 export async function POST(request) {
   const db = getDb();
   const body = await request.json();
-  const { cardId, label } = body; // label: 'again' | 'hard' | 'good' | 'easy'
+  const { cardId, label, was_correct_mcq = null } = body; // label: 'again' | 'hard' | 'good' | 'easy'
+  // was_correct_mcq: client MCQ result (true/false/null if unknown). Used to
+  // enforce SRS integrity: a wrong MCQ answer must be graded Again.
 
   if (!cardId || !label) {
     return NextResponse.json({ error: 'cardId and label required' }, { status: 400 });
@@ -16,7 +20,15 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Card not found' }, { status: 404 });
   }
 
-  const quality = qualityFromLabel(label);
+  // Integrity guard: never allow Hard/Good/Easy on a failed MCQ.
+  let effectiveLabel = label;
+  let forcedAgain = false;
+  if (was_correct_mcq === false && label !== 'again') {
+    effectiveLabel = 'again';
+    forcedAgain = true;
+  }
+
+  const quality = qualityFromLabel(effectiveLabel);
   const result = sm2({
     easeFactor: card.ease_factor,
     interval: card.interval_days,
@@ -48,14 +60,23 @@ export async function POST(request) {
     cardId
   );
 
-  // Update weak_items if wrong
+  let isLeech = false;
+  // Update weak_items if wrong, clear it when recalled correctly
   if (!wasCorrect) {
-    db.prepare(`
+    const row = db.prepare(`
       INSERT INTO weak_items (content_type, content_id, wrong_count, last_wrong_at)
       VALUES (?, ?, 1, ?)
       ON CONFLICT(content_type, content_id)
       DO UPDATE SET wrong_count = wrong_count + 1, last_wrong_at = excluded.last_wrong_at
-    `).run(card.content_type, card.content_id, now);
+      RETURNING wrong_count
+    `).get(card.content_type, card.content_id, now);
+    isLeech = (row?.wrong_count ?? 1) >= LEECH_THRESHOLD;
+  } else {
+    // Forgive: a correct recall removes the card from weak list so the
+    // Weak Points page stays actionable instead of growing forever.
+    db.prepare(
+      'DELETE FROM weak_items WHERE content_type = ? AND content_id = ?'
+    ).run(card.content_type, card.content_id);
   }
 
   // Log study session card
@@ -69,5 +90,7 @@ export async function POST(request) {
     nextReviewDate: result.nextReviewDate,
     interval: result.interval,
     easeFactor: result.easeFactor,
+    forcedAgain,
+    isLeech,
   });
 }

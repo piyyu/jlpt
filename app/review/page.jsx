@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, Suspense } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import AudioButton from '@/components/AudioButton';
-import { CheckCircle, ArrowLeft, RotateCcw } from 'lucide-react';
+import Bar from '@/components/Bar';
+import GrammarExamples from '@/components/GrammarExamples';
 import { useSettings } from '@/lib/useSettings';
 import { toRomaji, toRomajiParts } from '@/lib/toRomaji';
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 function fisherYates(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -21,538 +23,505 @@ function buildOptions(correct, pool) {
   return fisherYates([correct, ...distractors]);
 }
 
-// SM-2 interval preview (client-side estimate so user sees what will happen)
-function previewInterval(label, card) {
-  const ef = card?.ease_factor ?? 2.5;
-  const rep = card?.repetitions ?? 0;
-  const inter = card?.interval_days ?? 1;
-
-  if (label === 'again') return '1 day';
-
-  if (rep === 0) {
-    const days = label === 'hard' ? 1 : (label === 'good' ? 2 : 4);
-    return `${days} ${days === 1 ? 'day' : 'days'}`;
-  }
-  if (rep === 1) {
-    const days = label === 'hard' ? 3 : (label === 'good' ? 6 : 9);
-    return `${days} days`;
-  }
-
-  const modifier = label === 'hard' ? 0.8 : (label === 'good' ? 1.0 : 1.3);
-  const days = Math.round(inter * ef * modifier);
-  return `${days} days`;
-}
-
-// ─── Difficulty button config ─────────────────────────────────────────────────
-const RATINGS = [
-  { label: 'again', jp: 'もう一度', key: '1', color: '#ff3c50', bg: 'rgba(255,60,80,0.1)', border: 'rgba(255,60,80,0.4)' },
-  { label: 'hard', jp: '難しい', key: '2', color: '#f97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.4)' },
-  { label: 'good', jp: 'よかった', key: '3', color: '#44ddaa', bg: 'rgba(68,221,170,0.1)', border: 'rgba(68,221,170,0.4)' },
-  { label: 'easy', jp: '簡単', key: '4', color: '#38bdf8', bg: 'rgba(56,189,248,0.1)', border: 'rgba(56,189,248,0.4)' },
+const MODES = [
+  { id: 'mixed', label: 'Mixed', hint: 'both ways, random' },
+  { id: 'recognition', label: 'Recognition', hint: 'EN → reading' },
+  { id: 'production', label: 'Production', hint: 'JP → meaning' },
+  { id: 'listening', label: 'Listening', hint: 'audio → reading' },
 ];
 
-// ─── Category definitions ─────────────────────────────────────────────────────
-const CATEGORIES = [
-  { type: 'vocabulary', jp: '単語', label: 'Vocabulary', sub: 'N5 words', icon: '言' },
-  { type: 'kanji', jp: '漢字', label: 'Kanji', sub: 'N5 characters', icon: '字' },
-];
-
-// ─── Category Picker ──────────────────────────────────────────────────────────
-function CategoryPicker({ counts, available, limits, onSelect }) {
-  const totalDue = (counts.vocabulary || 0) + (counts.kanji || 0);
-
-  return (
-    <div>
-      <div className="mb-10">
-        <h1 className="text-4xl font-bold" style={{ color: 'var(--text-1)' }}>復習</h1>
-        <p className="text-sm mt-2 opacity-60" style={{ color: 'var(--text-2)' }}>
-          Review your cards to strengthen your memory
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mb-8">
-        {CATEGORIES.map((cat) => {
-          const due = counts[cat.type] || 0;
-          const avail = available[cat.type] || 0;
-          const limit = limits[cat.type] || 0;
-
-          return (
-            <button
-              key={cat.label}
-              onClick={() => onSelect(cat)}
-              disabled={avail === 0 || limit === 0}
-              className="rounded-2xl p-8 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed group relative overflow-hidden"
-              style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}
-              onMouseEnter={(e) => { if (avail > 0 && limit > 0) { e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)'; e.currentTarget.style.background = 'rgba(255,0,128,0.05)'; } }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--bg-surface)'; }}
-            >
-              <div className="flex justify-between items-start mb-6">
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center font-japanese font-bold text-3xl"
-                  style={{ background: avail > 0 && limit > 0 ? 'rgba(255,0,128,0.1)' : 'var(--bg-elevated)', color: avail > 0 && limit > 0 ? 'var(--pink)' : 'var(--text-3)', border: `1px solid ${avail > 0 && limit > 0 ? 'rgba(255,0,128,0.25)' : 'var(--border)'}` }}>
-                  {cat.icon}
-                </div>
-                {avail > 0 && limit > 0 && (
-                  <div className="text-right">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Available</p>
-                    <p className="text-xl font-bold font-mono">{Math.min(avail, limit)}</p>
-                  </div>
-                )}
-                {limit === 0 && (
-                  <div className="text-right">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Done Today</p>
-                    <p className="text-xl font-bold font-mono">50/50</p>
-                  </div>
-                )}
-              </div>
-
-              <p className="font-japanese text-sm mb-1" style={{ color: 'var(--text-3)' }}>{cat.jp}</p>
-              <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>{cat.label} Review</h2>
-              <p className="text-xs mb-4" style={{ color: 'var(--text-3)' }}>{cat.sub}</p>
-
-              <div className="flex items-center justify-between pt-4 mt-auto" style={{ borderTop: '1px solid var(--border)' }}>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-lg font-bold font-japanese" style={{ color: due > 0 ? 'var(--pink)' : 'var(--text-3)' }}>{due}</span>
-                  <span className="text-[10px]" style={{ color: 'var(--text-3)' }}>Total Due</span>
-                </div>
-                <div className="text-[10px] opacity-60">{50 - limit}/50 reviewed</div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      {limits.vocabulary === 0 && limits.kanji === 0 && (
-        <div className="mt-8 text-center max-w-2xl">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle size={32} className="text-emerald-500" />
-          </div>
-          <p className="font-japanese text-xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>今日の目標達成！</p>
-          <p className="text-sm" style={{ color: 'var(--text-3)' }}>
-            You have reached your 50-card limit for both categories. <br />
-            Excellent work! Please <strong>try again tomorrow</strong>.
-          </p>
-        </div>
-      )}
-
-      {totalDue === 0 && (
-        <div className="mt-8 text-center max-w-2xl">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle size={32} className="text-emerald-500" />
-          </div>
-          <p className="font-japanese text-xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>完璧！</p>
-          <p className="text-sm" style={{ color: 'var(--text-3)' }}>You have no cards due for review today. Come back tomorrow!</p>
-        </div>
-      )}
-    </div>
-  );
+function getModeQA(card, mode) {
+  const isVocab = card.content_type === 'vocabulary';
+  const isGrammar = card.content_type === 'grammar';
+  // Grammar has no listening form — fall back to recognition.
+  const effMode = isGrammar && mode === 'listening' ? 'recognition' : mode;
+  if (effMode === 'production') {
+    return {
+      promptText: card.prod_prompt || card.front,
+      correct: card.prod_answer || card.back,
+      instruction: isGrammar ? 'What does this pattern mean?' : 'What does this mean?',
+      audioText: card.prod_prompt || card.front,
+      hidePrompt: false,
+      isBig: !isVocab,
+    };
+  }
+  if (effMode === 'listening') {
+    return {
+      promptText: 'Listen',
+      correct: card.drill_answer,
+      instruction: 'Listen and pick the reading.',
+      audioText: card.listen_audio || card.front,
+      hidePrompt: true,
+      isBig: false,
+    };
+  }
+  // Recognition: meaning → pattern for grammar.
+  if (isGrammar) {
+    return {
+      promptText: card.back,
+      correct: card.drill_answer,
+      instruction: 'Which pattern means this?',
+      audioText: card.hint || card.front,
+      hidePrompt: false,
+      isBig: false,
+    };
+  }
+  return {
+    promptText: isVocab ? card.back : card.front,
+    correct: card.drill_answer,
+    instruction: isVocab ? 'Translate to Japanese.' : 'How do you read this?',
+    audioText: card.front,
+    hidePrompt: false,
+    isBig: !isVocab,
+  };
 }
 
-// ─── Detail panel (shown after answering) ─────────────────────────────────────
-function DetailPanel({ card, isCorrect, onRate, showEnglish }) {
+function getPoolFor(card, mode, pools) {
+  const isVocab = card.content_type === 'vocabulary';
+  const isGrammar = card.content_type === 'grammar';
+  const effMode = isGrammar && mode === 'listening' ? 'recognition' : mode;
+  if (isGrammar) {
+    return effMode === 'production'
+      ? pools.grammarMeaning || []
+      : pools.grammarPattern || [];
+  }
+  if (mode === 'production') {
+    if (isVocab) return pools.vocabEnglish || pools.vocabulary || [];
+    return pools.kanjiMeaning || pools.kanji || [];
+  }
+  if (isVocab) return pools.vocabReading || pools.vocabulary || [];
+  return pools.kanjiReading || pools.kanji || [];
+}
+
+function Detail({ card, isCorrect, correct, graded, onNext, showRomaji }) {
   const isKanji = card.content_type === 'kanji';
-
-  function parseExample(ex) {
-    if (!ex) return null;
-    const m = ex.match(/^(.+?)\s*\((.+?)\)$/);
-    return m ? { word: m[1], reading: m[2] } : { word: ex, reading: null };
-  }
-
-  const ex1 = parseExample(card.hint);
-  const ex2 = parseExample(card.hint2);
-
+  const isGrammar = card.content_type === 'grammar';
   return (
-    <div className="mt-4 rounded-xl overflow-hidden"
-      style={{ border: `1px solid ${isCorrect ? 'rgba(68,221,170,0.3)' : 'rgba(255,60,80,0.3)'}` }}>
-      {/* Result bar */}
-      <div className="px-5 py-3 flex items-center gap-3"
-        style={{ background: isCorrect ? 'rgba(68,221,170,0.08)' : 'rgba(255,60,80,0.08)' }}>
-        <span className="text-sm font-semibold" style={{ color: isCorrect ? '#44ddaa' : '#ff3c50' }}>
-          {isCorrect ? '✓ Correct!' : '✗ Wrong'}
-        </span>
-        <span className="text-sm" style={{ color: 'var(--text-2)' }}>
-          Answer: <strong className="font-japanese font-medium" style={{ color: 'var(--pink)' }}>{card.drill_answer}</strong>
-          {!isKanji && <span style={{ opacity: 0.7, marginLeft: '8px' }}>({card.front})</span>}
-        </span>
-      </div>
-
-      {/* Word detail */}
-      <div className="px-5 py-4 grid grid-cols-1 gap-4" style={{ background: 'var(--bg-elevated)' }}>
-        <div className="flex items-start gap-6">
-          <div className="shrink-0 text-center">
-            <p className="font-japanese font-bold leading-none" style={{ fontSize: '52px', color: 'var(--text-1)' }}>
-              {isKanji ? card.front : card.front}
-            </p>
-            {!isKanji && (
-              <div className="mt-2">
-                <p className="font-japanese text-sm" style={{ color: 'var(--text-3)' }}>{card.reading}</p>
-                <p className="font-mono text-xs opacity-60" style={{ color: 'var(--pink)' }}>{toRomaji(card.reading)}</p>
-              </div>
-            )}
-            {isKanji && (
-              <p className="font-mono text-xs mt-1" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomajiParts(card.reading)}</p>
-            )}
-          </div>
-          <div className="flex-1 grid grid-cols-2 gap-3 text-sm">
-            <div className="col-span-2">
-              <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>Meaning</p>
-              <p className="font-semibold" style={{ color: 'var(--text-1)' }}>{card.back}</p>
-            </div>
-            {isKanji && card.on_yomi && (
-              <div>
-                <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>On-yomi</p>
-                <p className="font-japanese font-semibold" style={{ color: 'var(--text-1)' }}>{card.on_yomi}</p>
-                {showEnglish && <p className="font-mono text-xs" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomajiParts(card.on_yomi)}</p>}
-              </div>
-            )}
-            {isKanji && card.reading && (
-              <div>
-                <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>Kun-yomi</p>
-                <p className="font-japanese font-semibold" style={{ color: 'var(--text-1)' }}>{card.reading}</p>
-                {showEnglish && <p className="font-mono text-xs" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomajiParts(card.reading)}</p>}
-              </div>
-            )}
-            {isKanji && card.stroke_count && (
-              <div>
-                <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-3)' }}>Strokes</p>
-                <p className="font-semibold" style={{ color: 'var(--text-1)' }}>{card.stroke_count}</p>
-              </div>
-            )}
-            {(ex1 || ex2) && (
-              <div className="col-span-2">
-                <p className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--text-3)' }}>
-                  {isKanji ? 'Example words' : 'Example sentence'}
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  {[ex1, ex2].filter(Boolean).map((ex, i) => (
-                    <div key={i}>
-                      <span className="font-japanese text-sm font-semibold" style={{ color: 'var(--text-1)' }}>{ex.word}</span>
-                      {ex.reading && (
-                        <>
-                          <span className="font-japanese text-xs ml-1" style={{ color: 'var(--text-3)' }}>{ex.reading}</span>
-                          {showEnglish && <span className="font-mono text-xs ml-1" style={{ color: 'var(--pink)', opacity: 0.7 }}>{toRomaji(ex.reading)}</span>}
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="shrink-0"><AudioButton text={card.front} /></div>
-        </div>
-      </div>
-
-      {/* ── Difficulty rating ── */}
-      <div className="px-5 py-4" style={{ background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)' }}>
-        <p className="text-xs mb-3 flex items-center gap-2" style={{ color: 'var(--text-3)' }}>
-          <span>How well did you know this?</span>
-          <span className="font-mono" style={{ color: 'var(--text-3)', opacity: 0.6 }}>Press 1–4</span>
+    <div className={`feedback ${isCorrect ? 'good' : 'bad'}`} style={{ marginTop: '1.25rem' }}>
+      <p aria-live="polite">
+        <span className={isCorrect ? 'is-correct' : 'is-wrong'}>
+          {isCorrect ? '✓ Correct.' : '✗ Wrong.'}
+        </span>{' '}
+        Answer: <span className="font-japanese"><strong>{correct}</strong></span>
+        {!isKanji && !isGrammar && <span className="muted"> ({card.front})</span>}
+        {card.is_leech === 1 && <span className="muted"> · leech — try a mnemonic</span>}
+      </p>
+      <p>
+        <span className="muted">Meaning: </span>
+        {card.back}
+        {card.reading && !isKanji && (
+          <span className="muted"> · {card.reading}{showRomaji ? ` (${toRomaji(card.reading)})` : ''}</span>
+        )}
+        {isKanji && card.reading && (
+          <span className="muted"> · {card.reading}{showRomaji ? ` (${toRomajiParts(card.reading)})` : ''}</span>
+        )}
+      </p>
+      {isGrammar && card.structure && (
+        <p className="muted" style={{ fontSize: '0.85rem' }}>Form: <span className="font-japanese">{card.structure}</span></p>
+      )}
+      {isGrammar && card.source_url && (
+        <p style={{ fontSize: '0.85rem' }}>
+          <a href={card.source_url} target="_blank" rel="noreferrer">Read explanation →</a>
+          <span className="muted"> (Tae Kim&apos;s guide — learn it there, drill it here)</span>
         </p>
-        <div className="grid grid-cols-4 gap-2">
-          {RATINGS.map((r) => (
-            <button
-              key={r.label}
-              onClick={() => onRate(r.label)}
-              className="rounded-lg py-3 px-2 flex flex-col items-center gap-1 transition-all font-semibold text-xs"
-              style={{ background: r.bg, border: `1px solid ${r.border}`, color: r.color }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = r.bg.replace('0.1', '0.2'); }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = r.bg; }}
-            >
-              <span className="text-sm font-bold">{r.key}</span>
-              <span className="font-japanese text-xs">{r.jp}</span>
-              <span style={{ color: r.color, opacity: 0.7, fontSize: 10 }}>
-                {previewInterval(r.label, card)}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
+      )}
+      {isGrammar && <GrammarExamples grammarId={card.content_id} />}
+      {(card.hint || card.hint2) && (
+        <p className="muted" style={{ fontSize: '0.85rem' }}>
+          {card.hint}{card.hint2 ? ` · ${card.hint2}` : ''}
+        </p>
+      )}
+      {isGrammar && showRomaji && card.example_romaji && (
+        <p className="muted" style={{ fontSize: '0.85rem' }}>{card.example_romaji}</p>
+      )}
+      {graded && (
+        <p className="muted" style={{ fontSize: '0.85rem' }}>
+          {isCorrect ? `Back in ${graded.interval}d.` : 'Coming back later this session.'}
+        </p>
+      )}
+      <p>
+        <button className="btn" onClick={onNext}>Next →</button>{' '}
+        <span className="muted" style={{ fontSize: '0.8rem' }}>or press Enter</span>
+      </p>
     </div>
   );
 }
 
-// ─── Quiz Drill ───────────────────────────────────────────────────────────────
-function QuizDrill({ category, pools, onBack }) {
+function QuizDrill({ category, pools, onBack, initialMode = 'mixed', source = null }) {
   const [cards, setCards] = useState([]);
   const [index, setIndex] = useState(0);
-  const [chosen, setChosen] = useState(null);    // answer string picked
-  const [rated, setRated] = useState(false);   // difficulty submitted
+  const [chosen, setChosen] = useState(null);
+  const [graded, setGraded] = useState(null); // { wasCorrect, interval } from auto-grade
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ correct: 0, total: 0 });
-  const { showEnglish } = useSettings();
+  const [mode, setMode] = useState(initialMode);
+  const [retryQueue, setRetryQueue] = useState([]);
+  // Mixed mode: fixed random direction per card (EN→JP or JP→EN), assigned once.
+  const [cardModes, setCardModes] = useState({});
+  const { showRomaji } = useSettings();
 
   const fetchCards = useCallback(() => {
     setLoading(true);
-    const url = category.type ? `/api/review/due?type=${category.type}` : '/api/review/due';
+    let url = category.type ? `/api/review/due?type=${category.type}` : '/api/review/due';
+    if (source === 'weak') url += (url.includes('?') ? '&' : '?') + 'source=weak';
     fetch(url)
       .then((r) => {
         if (!r.ok) throw new Error('Failed to fetch cards');
         return r.json();
       })
       .then((d) => {
-        setCards(d.cards || []);
+        const fetched = d.cards || [];
+        setCards(fetched);
+        setCardModes(Object.fromEntries(
+          fetched.map((c) => [`${c.content_type}:${c.content_id}`, Math.random() < 0.5 ? 'recognition' : 'production'])
+        ));
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [category]);
+      .catch(() => setLoading(false));
+  }, [category, source]);
 
   useEffect(() => { fetchCards(); }, [fetchCards]);
 
   const current = cards[index];
+  // Effective direction: fixed mode, or the card's pre-rolled direction in Mixed.
+  const effMode = mode === 'mixed' && current
+    ? (cardModes[`${current.content_type}:${current.content_id}`] || 'recognition')
+    : mode;
+  const qa = current ? getModeQA(current, effMode) : null;
   const pool = useMemo(() => {
     if (!current) return [];
-    if (current.content_type === 'kanji') return pools.kanji || [];
-    return pools.vocabulary || [];
-  }, [current, pools]);
+    return getPoolFor(current, effMode, pools);
+  }, [current, effMode, pools]);
 
   const options = useMemo(
-    () => (current && current.drill_answer ? buildOptions(current.drill_answer, pool) : []),
-    [current, pool],
+    () => (current && qa ? buildOptions(qa.correct, pool) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [current, qa?.correct, pool],
   );
 
-  // ── Keyboard shortcuts ──────────────────────────────────────────────────────
   useEffect(() => {
     function onKey(e) {
-      // Don't fire on input fields
       if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
-      const key = e.key;
-
       if (!chosen) {
-        // Phase 1: pick answer (1-4 maps to options A-D)
-        const idx = parseInt(key, 10) - 1;
-        if (idx >= 0 && idx <= 3 && options[idx] !== undefined) {
-          handleAnswer(options[idx]);
-        }
-      } else if (!rated) {
-        // Phase 2: pick difficulty (1-4 = Again/Hard/Good/Easy)
-        const ratingIdx = parseInt(key, 10) - 1;
-        if (ratingIdx >= 0 && ratingIdx <= 3) {
-          handleRate(RATINGS[ratingIdx].label);
-        }
+        // Phase 1: pick answer with 1-4
+        const idx = parseInt(e.key, 10) - 1;
+        if (idx >= 0 && idx <= 3 && options[idx] !== undefined) handleAnswer(options[idx]);
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        // Phase 2: Enter/Space moves to the next card
+        e.preventDefault();
+        handleNext();
       }
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chosen, rated, options, current]);
+  }, [chosen, graded, options, current]);
 
-  function handleAnswer(answer) {
-    if (chosen || !current) return;
+  async function handleAnswer(answer) {
+    if (chosen || !current || !qa) return;
     setChosen(answer);
-    const isCorrect = answer === current.drill_answer;
+    const isCorrect = answer === qa.correct;
     setStats((s) => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
-    // Don't submit SRS yet — wait for difficulty rating
-  }
-
-  async function handleRate(ratingLabel) {
-    if (rated || !current) return;
-    setRated(true);
-
-    // Submit SRS with the user-chosen difficulty label
-    await fetch('/api/review/answer', {
+    // Auto-grade: correct counts as Good, wrong as Again. No manual rating.
+    const res = await fetch('/api/review/answer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cardId: current.id, label: ratingLabel }),
-    });
-
-    // Advance after a brief pause so user sees the button light up
-    setTimeout(() => {
-      if (index + 1 >= cards.length) {
-        setDone(true);
-      } else {
-        setIndex(index + 1);
-        setChosen(null);
-        setRated(false);
-      }
-    }, 250);
+      body: JSON.stringify({ cardId: current.id, label: isCorrect ? 'good' : 'again', was_correct_mcq: isCorrect }),
+    }).then((r) => r.json()).catch(() => null);
+    setGraded({ wasCorrect: isCorrect, interval: res?.interval ?? (isCorrect ? 2 : 1) });
   }
 
-  function optStyle(opt) {
-    if (!chosen) return {
-      background: 'var(--bg-surface)',
-      border: '1px solid var(--border)',
-      color: 'var(--text-1)',
-      cursor: 'pointer',
-    };
-    const isCorrect = opt === current.drill_answer;
-    const isPicked = opt === chosen;
-    if (isCorrect) return { background: 'rgba(68,221,170,0.12)', border: '1px solid #44ddaa', color: '#44ddaa' };
-    if (isPicked) return { background: 'rgba(255,60,80,0.1)', border: '1px solid rgba(255,60,80,0.5)', color: '#ff3c50' };
-    return { background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-3)', opacity: 0.35, cursor: 'default' };
+  function handleNext() {
+    if (!chosen || !current) return;
+    const wasCorrect = graded?.wasCorrect ?? chosen === qa?.correct;
+    const shouldRetry = !wasCorrect;
+    let nextRetry = retryQueue;
+    if (shouldRetry && !retryQueue.find((c) => c.id === current.id)) {
+      nextRetry = [...retryQueue, current];
+      setRetryQueue(nextRetry);
+    }
+    if (index + 1 >= cards.length) {
+      if (nextRetry.length > 0) {
+        // Wrong cards come back later this session instead of tomorrow.
+        setCards(nextRetry);
+        setRetryQueue([]);
+        setIndex(0);
+        setChosen(null);
+        setGraded(null);
+      } else {
+        setDone(true);
+      }
+    } else {
+      setIndex(index + 1);
+      setChosen(null);
+      setGraded(null);
+    }
   }
 
   function restart() {
-    setIndex(0); setChosen(null); setRated(false); setDone(false);
+    setIndex(0); setChosen(null); setGraded(null); setDone(false);
     setStats({ correct: 0, total: 0 });
+    setRetryQueue([]);
     fetchCards();
   }
 
+  if (loading) return <p className="muted">Loading…</p>;
+
+  if (done || cards.length === 0) {
+    return (
+      <div>
+        <p><Link href="#" onClick={(e) => { e.preventDefault(); onBack(); }}>← back</Link></p>
+        <h1>{cards.length === 0 ? 'Nothing due' : 'Done'}</h1>
+        <p>
+          {cards.length === 0
+            ? 'No cards due. Come back tomorrow.'
+            : `${stats.correct} / ${stats.total} correct (${Math.round((stats.correct / stats.total) * 100)}%).`}
+        </p>
+        <p>
+          <button className="btn" onClick={restart}>Again</button>{' '}
+          <button className="btn" onClick={onBack}>Categories</button>
+        </p>
+      </div>
+    );
+  }
+
+  if (!current || !qa) return null;
+
   return (
     <div>
-      {/* Header */}
-      <div className="mb-6 flex items-start gap-4">
-        <button
-          onClick={onBack}
-          className="mt-1 p-1.5 rounded-md transition-colors shrink-0"
-          style={{ color: 'var(--text-3)', border: '1px solid var(--border)' }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--pink)'; e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-3)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-        >
-          <ArrowLeft size={16} />
-        </button>
-        <div>
-          <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>{category.jp} · クイズ</p>
-          <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>{category.label}</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>Quiz — {cards.length} cards due</p>
-        </div>
+      <p><Link href="#" onClick={(e) => { e.preventDefault(); onBack(); }}>← back</Link></p>
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem' }}>
+        {MODES.map((m) => (
+          <button
+            key={m.id}
+            className="btn"
+            aria-pressed={mode === m.id}
+            onClick={() => { setMode(m.id); setChosen(null); setGraded(null); }}
+            style={mode === m.id
+              ? { borderColor: 'var(--accent)', color: 'var(--heading)', padding: '0.35rem 0.8rem', fontSize: '0.82rem' }
+              : { padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+          >
+            {m.label}
+          </button>
+        ))}
       </div>
 
-      {loading ? (
-        <div className="py-24 text-center font-japanese text-sm" style={{ color: 'var(--text-3)' }}>読み込み中…</div>
-      ) : done || cards.length === 0 ? (
-        /* ── Done screen ── */
-        <div className="max-w-sm mx-auto rounded-xl p-10 text-center"
-          style={{ background: 'var(--bg-surface)', border: '1px solid rgba(255,0,128,0.2)' }}>
-          <CheckCircle size={40} className="mx-auto mb-4" style={{ color: '#44ddaa' }} />
-          <p className="font-japanese text-2xl font-bold mb-1" style={{ color: 'var(--text-1)' }}>
-            {cards.length === 0 ? '完璧！' : 'お疲れ様！'}
-          </p>
-          <p className="text-sm mb-2" style={{ color: 'var(--text-2)' }}>
-            {cards.length === 0 ? 'No cards due.' : `${stats.correct} / ${stats.total} correct`}
-          </p>
-          {stats.total > 0 && (
-            <p className="font-japanese text-4xl font-bold mb-6" style={{ color: 'var(--pink)' }}>
-              {Math.round((stats.correct / stats.total) * 100)}点
-            </p>
-          )}
-          <div className="flex gap-2 justify-center">
-            <button onClick={restart} className="btn-secondary flex items-center gap-2"><RotateCcw size={13} /> もう一度</button>
-            <button onClick={onBack} className="btn-secondary flex items-center gap-2"><ArrowLeft size={13} /> カテゴリ</button>
-          </div>
+      <p className="muted" style={{ fontSize: '0.85rem', margin: '0 0 0.4rem' }}>
+        {index + 1}/{cards.length} · {stats.correct}✓{retryQueue.length > 0 && ` · ${retryQueue.length} to retry`}
+      </p>
+      <div style={{ marginBottom: '1rem' }}>
+        <Bar value={index} max={cards.length} />
+      </div>
+
+      <p className="muted" style={{ fontSize: '0.85rem', margin: '0 0 0.25rem' }}>{qa.instruction}</p>
+      {!qa.hidePrompt ? (
+        <p className="jp-display" style={{ fontSize: qa.isBig ? '4.5rem' : '2rem', lineHeight: 1.25, margin: '0 0 1rem' }}>
+          {qa.promptText}
+        </p>
+      ) : (
+        <div style={{ marginBottom: '1rem' }}>
+          <p className="jp-display" style={{ fontSize: '2.6rem', margin: '0 0 0.5rem' }}>聴</p>
+          <AudioButton text={qa.audioText} />
         </div>
-      ) : current ? (
-        <div className="max-w-xl mx-auto">
-          {/* Progress bar */}
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-0.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
-              <div className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${(index / cards.length) * 100}%`, background: 'var(--pink)' }} />
-            </div>
-            <span className="text-xs font-mono shrink-0" style={{ color: 'var(--text-3)' }}>{index + 1}/{cards.length}</span>
-            <span className="text-xs font-mono shrink-0" style={{ color: '#44ddaa' }}>{stats.correct}✓</span>
-          </div>
+      )}
+      {mode !== 'listening' && <p style={{ margin: '0 0 1.25rem' }}><AudioButton text={qa.audioText} /></p>}
 
-          {/* Question card */}
-          {(() => {
-            const isVocab = current.content_type === 'vocabulary';
-            // Always show Kanji character for Kanji cards. For Vocab, show English meaning.
-            const useRecognition = !isVocab;
+      {!chosen && <p className="muted" style={{ fontSize: '0.8rem' }}>Pick 1–4.</p>}
+      <div style={{ display: 'grid', gap: '0.75rem' }}>
+        {options.map((opt, i) => {
+          let mark = '';
+          let style = {};
+          let cls = 'opt';
+          if (chosen) {
+            if (opt === qa.correct) { mark = '✓ '; cls = 'opt is-correct'; }
+            else if (opt === chosen) { mark = '✗ '; cls = 'opt is-wrong'; }
+            else style = { opacity: 0.35 };
+          }
+          return (
+            <button key={opt} onClick={() => handleAnswer(opt)} disabled={!!chosen} className={cls} style={style}>
+              <span className="font-japanese">{mark}<span className="opt-index">{i + 1}.</span> {opt}</span>
+              {current.content_type === 'vocabulary' && chosen && showRomaji && (
+                <span className="muted"> ({toRomaji(opt)})</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
 
-            const promptText = isVocab ? current.back : current.front;
-            const instruction = isVocab ? '単語 — Translate to Japanese' : '漢字 — How do you read this?';
-            const isBig = !isVocab;
-
-            return (
-              <div className="rounded-xl p-8 text-center mb-4"
-                style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
-                <p className="font-japanese text-xs uppercase tracking-widest mb-4" style={{ color: 'var(--text-3)' }}>
-                  {instruction}
-                </p>
-                <p className={`${isBig ? 'font-japanese font-bold' : 'font-sans font-bold'} mb-2`}
-                  style={{ fontSize: isBig ? '72px' : '28px', lineHeight: 1.1, color: 'var(--text-1)' }}>
-                  {promptText}
-                </p>
-              </div>
-            );
-          })()}
-
-          {/* Answer options */}
-          {!chosen && (
-            <p className="text-center text-xs mb-2 font-mono" style={{ color: 'var(--text-3)', opacity: 0.6 }}>
-              Click or press 1 · 2 · 3 · 4
-            </p>
-          )}
-          <div className="space-y-2 mb-2">
-            {options.map((opt, i) => (
-              <button
-                key={opt}
-                onClick={() => handleAnswer(opt)}
-                disabled={!!chosen}
-                className="w-full flex items-center px-4 py-4 rounded-xl text-lg font-japanese font-medium text-left transition-all gap-3"
-                style={optStyle(opt)}
-              >
-                <span
-                  className="shrink-0 w-6 h-6 rounded flex items-center justify-center font-mono text-xs font-bold"
-                  style={{ background: 'rgba(255,255,255,0.06)', color: 'inherit', minWidth: 24 }}
-                >
-                  {i + 1}
-                </span>
-                <span>
-                  {opt}
-                  {current.content_type === 'vocabulary' && chosen && (
-                    <span className="opacity-40 text-sm ml-2 font-mono font-normal animate-in fade-in slide-in-from-left-1 duration-300">
-                      ({toRomaji(opt)})
-                    </span>
-                  )}
-                </span>
-              </button>
-            ))}
-          </div>
-
-          {/* Detail + difficulty rating panel (appears after answering) */}
-          {chosen && (
-            <DetailPanel
-              card={current}
-              isCorrect={chosen === current.drill_answer}
-              onRate={handleRate}
-              showEnglish={showEnglish}
-            />
-          )}
-        </div>
-      ) : null}
+      {chosen && (
+        <Detail card={current} isCorrect={chosen === qa.correct} correct={qa.correct} graded={graded} onNext={handleNext} showRomaji={showRomaji} />
+      )}
     </div>
   );
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
-export default function ReviewPage() {
+const CATEGORIES = [
+  { type: 'vocabulary', label: 'Vocabulary' },
+  { type: 'kanji', label: 'Kanji' },
+  { type: 'grammar', label: 'Grammar' },
+];
+
+function ReviewContent() {
+  const searchParams = useSearchParams();
   const [counts, setCounts] = useState({});
   const [available, setAvailable] = useState({});
   const [limits, setLimits] = useState({});
   const [pools, setPools] = useState({});
+  const [dailyGoals, setDailyGoals] = useState({ vocabulary: 50, kanji: 20, grammar: 10 });
+  const [selectionCount, setSelectionCount] = useState(0);
+  const [weakCount, setWeakCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [starting, setStarting] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [mode, setMode] = useState('mixed');
+  const [weakOnly, setWeakOnly] = useState(searchParams.get('source') === 'weak');
+
+  // Deep links (e.g. dashboard path nodes) jump straight into a drill.
+  useEffect(() => {
+    const t = searchParams.get('type');
+    if (t === 'vocabulary') setActiveCategory({ type: 'vocabulary', label: 'Vocabulary' });
+    else if (t === 'kanji') setActiveCategory({ type: 'kanji', label: 'Kanji' });
+    else if (t === 'grammar') setActiveCategory({ type: 'grammar', label: 'Grammar' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function loadCounts() {
     setLoading(true);
-    fetch('/api/review/due')
-      .then((r) => {
-        if (!r.ok) throw new Error('Failed to load summary');
-        return r.json();
-      })
-      .then((d) => {
+    Promise.all([
+      fetch('/api/review/due').then((r) => { if (!r.ok) throw new Error('Failed'); return r.json(); }),
+      fetch('/api/weak-points').then((r) => r.json()).catch(() => []),
+    ])
+      .then(([d, weak]) => {
         setCounts(d.counts || {});
         setAvailable(d.available || {});
-        setLimits(d.limits || { vocabulary: 50, kanji: 50 });
+        setLimits(d.limits || { vocabulary: 50, kanji: 20, grammar: 10 });
         setPools(d.pools || {});
+        setDailyGoals(d.dailyGoals || d.dailyGoal || { vocabulary: 50, kanji: 20, grammar: 10 });
+        setSelectionCount(d.selectionCount || 0);
+        setWeakCount(Array.isArray(weak) ? weak.length : 0);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }
 
   useEffect(() => { loadCounts(); }, []);
 
+  async function startStarterPack() {
+    setStarting(true);
+    await fetch('/api/selections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ starter_pack: true }),
+    });
+    setStarting(false);
+    loadCounts();
+  }
+
   function handleBack() { setActiveCategory(null); loadCounts(); }
 
-  if (activeCategory) return <QuizDrill category={activeCategory} pools={pools} onBack={handleBack} />;
-  return loading
-    ? <div className="py-24 text-center font-japanese text-sm" style={{ color: 'var(--text-3)' }}>読み込み中…</div>
-    : <CategoryPicker counts={counts} available={available} limits={limits} onSelect={setActiveCategory} />;
+  if (activeCategory) {
+    return (
+      <QuizDrill
+        category={activeCategory}
+        pools={pools}
+        onBack={handleBack}
+        initialMode={mode}
+        source={weakOnly ? 'weak' : null}
+      />
+    );
+  }
+
+  if (loading) return <p className="muted">Loading…</p>;
+
+  const totalDue = (counts.vocabulary || 0) + (counts.kanji || 0) + (counts.grammar || 0);
+
+  return (
+    <div>
+      <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem' }}>Review</h1>
+
+      {selectionCount === 0 && totalDue === 0 ? (
+        <div>
+          <p>
+            Nothing to review yet — review cards are created from words you pick.
+            Start with the first 20 vocabulary words and 10 kanji, or pick your
+            own in <Link href="/vocabulary">Vocabulary</Link> and{' '}
+            <Link href="/kanji">Kanji</Link>.
+          </p>
+          <p>
+            <button className="btn btn-solid" onClick={startStarterPack} disabled={starting}>
+              {starting ? 'Adding…' : 'Start with the first 20 words'}
+            </button>
+          </p>
+        </div>
+      ) : totalDue === 0 ? (
+        <p>No cards due. Come back tomorrow.</p>
+      ) : (
+        <div>
+          <div style={{ display: 'grid', gap: '0.75rem', marginBottom: '1.25rem' }}>
+            {CATEGORIES.map(({ type, label }) => {
+              const due = counts[type] || 0;
+              const limit = limits[type] ?? 0;
+              const goal = dailyGoals[type] ?? 0;
+              const done = Math.max(0, goal - limit);
+              const ready = due > 0 && limit > 0;
+              return (
+                <button
+                  key={type}
+                  disabled={!ready}
+                  onClick={() => setActiveCategory({ type, label })}
+                  className="opt"
+                  style={!ready ? { opacity: 0.45 } : {}}
+                >
+                  <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem' }}>
+                    <strong>{label}</strong>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: due > 0 ? 'var(--accent)' : 'var(--muted)', lineHeight: 1.2 }}>
+                      {due} <span className="muted" style={{ fontSize: '0.8rem', fontWeight: 400 }}>due</span>
+                    </span>
+                  </span>
+                  <span className="muted" style={{ fontSize: '0.8rem' }}>{done}/{goal} done today{!ready && due === 0 ? ' · clear ✓' : ''}{!ready && due > 0 ? ' · cap reached' : ''}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <span className="muted" style={{ fontSize: '0.8rem' }}>Mode:</span>
+            {MODES.map((m) => (
+              <button
+                key={m.id}
+                className="btn"
+                aria-pressed={mode === m.id}
+                onClick={() => setMode(m.id)}
+                style={mode === m.id
+                  ? { borderColor: 'var(--accent)', color: 'var(--heading)', padding: '0.35rem 0.8rem', fontSize: '0.82rem' }
+                  : { padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+              >
+                {m.label}
+              </button>
+            ))}
+            {weakCount > 0 && (
+              <button
+                className="btn"
+                aria-pressed={weakOnly}
+                onClick={() => setWeakOnly(!weakOnly)}
+                style={weakOnly
+                  ? { borderColor: 'var(--accent)', color: 'var(--heading)', padding: '0.35rem 0.8rem', fontSize: '0.82rem' }
+                  : { padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+              >
+                Weak only ({weakCount})
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function ReviewPage() {
+  return (
+    <Suspense fallback={<p className="muted">Loading…</p>}>
+      <ReviewContent />
+    </Suspense>
+  );
 }

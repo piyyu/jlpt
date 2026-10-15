@@ -1,0 +1,42 @@
+pattern,structure,meaning,category,example_jp,example_en,example_romaji,source_url,sort_order
+は,Noun + は,topic marker: as for ~,Particles,私は学生です。,I am a student.,watashi wa gakusei desu.,https://guidetojapanese.org/learn/grammar/particlesintro,10
+が,Noun + が,subject marker: identifies the doer,Particles,誰が学生ですか。,Who is the student?,dare ga gakusei desu ka.,https://guidetojapanese.org/learn/grammar/particlesintro,20
+も,Noun + も,"also, too",Particles,私も学生です。,I am a student too.,watashi mo gakusei desu.,https://guidetojapanese.org/learn/grammar/particlesintro,30
+を,Noun + を + Verb,marks the direct object,Particles,水を飲みます。,I drink water.,mizu wo nomimasu.,https://guidetojapanese.org/learn/grammar/verbparticles,40
+に,Place/Time + に,"to, at, on (destination or time)",Particles,学校に行きます。,I go to school.,gakkou ni ikimasu.,https://guidetojapanese.org/learn/grammar/verbparticles,50
+へ,Place + へ,",to, toward (direction)",Particles,日本へ行きます。,I go to Japan.,nihon e ikimasu.,https://guidetojapanese.org/learn/grammar/verbparticles,60
+で,Place + で; Means + で,at/in (place of action); by (means),Particles,バスで行きます。,I go by bus.,basu de ikimasu.,https://guidetojapanese.org/learn/grammar/verbparticles,70
+と,Noun + と + Noun,and (joins nouns),Particles,猫と犬がいます。,There is a cat and a dog.,neko to inu ga imasu.,https://guidetojapanese.org/learn/grammar/nounparticles,80
+や,Noun + や + Noun,"and (incomplete list: A, B, etc.)",Particles,パンや卵を買います。,"I buy bread, eggs, and such.",pan ya tamago wo kaimasu.,https://guidetojapanese.org/learn/grammar/nounparticles,90
+の,Noun + の + Noun,possessive: links nouns,Particles,私の本です。,It is my book.,watashi no hon desu.,https://guidetojapanese.org/learn/grammar/nounparticles,100
+から,Place/Time + から,from (start point),Particles,朝から晩まで働きます。,I work from morning till night.,asa kara ban made hatarakimasu.,https://guidetojapanese.org/learn/grammar/verbparticles,110
+まで,Place/Time + まで,",until, up to",Particles,夜まで勉強します。,I study until night.,yoru made benkyou shimasu.,https://guidetojapanese.org/learn/grammar/verbparticles,120
+か,Sentence + か,question marker,Particles,これは何ですか。,What is this?,kore wa nan desu ka.,https://guidetojapanese.org/learn/grammar/question,130
+よ,Sentence + よ,emphasis: I'm telling you,Particles,明日行きますよ。,I'm going tomorrow (I tell you).,ashita ikimasu yo.,https://guidetojapanese.org/learn/grammar/sentence_ending,140
+ね,Sentence + ね,seeking agreement: right?,Particles,いい天気ですね。,"Nice weather, isn't it?",ii tenki desu ne.,https://guidetojapanese.org/learn/grammar/sentence_ending,150
+です・ます,Noun/Verb + です・ます,polite form,Basics,私は先生です。,I am a teacher.,watashi wa sensei desu.,https://guidetojapanese.org/learn/grammar/polite,160
+だ,Noun/na-adj + だ,plain state-of-being,Basics,彼は学生だ。,He is a student.,kare wa gakusei da.,https://guidetojapanese.org/learn/grammar/stateofbeing,170
+じゃない,Noun/na-adj + じゃない,negative: is not,Basics,これはペンじゃない。,This is not a pen.,kore wa pen ja nai.,https://guidetojapanese.org/learn/grammar/stateofbeing,180
+だった,Noun/na-adj + だった,past: was,Basics,昨日は雨だった。,Yesterday it rained.,kinou wa ame datta.,https://guidetojapanese.org/learn/grammar/stateofbeing,190
+i-adjectives,Adj(い) + Noun; stem + くない/かった,adjectives ending in い,Adjectives,高いビルですね。,It's a tall building.,takai biru desu ne.,https://guidetojapanese.org/learn/grammar/adjectives,200
+な-adjectives,Adj + な + Noun; + だ/じゃない,quasi-adjectives,Adjectives,静かな町です。,It's a quiet town.,shizuka na machi desu.,https://guidetojapanese.org/learn/grammar/adjectives,210
+いい (exception),いい → よく/よかった,good (irregular conjugation),Adjectives,この本はいいです。,This book is good.,kono hon wa ii desu.,https://guidetojapanese.org/learn/grammar/adjectives,220
+ru/u verbs,dictionary-form groups,verb groups for conjugation,Verbs,毎日日本語を勉強する。,I study Japanese every day.,mainichi nihongo wo benkyou suru.,https://guidetojapanese.org/learn/grammar/verbs,230
+ない-form,V-nai stem + ない,negative: not do,Verbs,肉を食べない。,I don't eat meat.,niku wo tabenai.,https://guidetojapanese.org/learn/grammar/negativeverbs,240
+た-form,V-ta stem + た/だ,past: did,Verbs,昨日映画を見た。,I watched a movie yesterday.,kinou eiga wo mita.,https://guidetojapanese.org/learn/grammar/past_tense,250
+て-form,V-te stem + て/で,connective -ing form,Verbs,朝ごはんを食べて学校へ行く。,I eat breakfast and go to school.,asagohan wo tabete gakkou e iku.,https://guidetojapanese.org/learn/grammar/teform,260
+てください,V-te + ください,please do ~,Verbs,ちょっと待ってください。,Please wait a moment.,chotto matte kudasai.,https://guidetojapanese.org/learn/grammar/teform,270
+てもいいです,V-te + もいいです,may do ~ (permission),Verbs,入ってもいいです。,You may come in.,haitte mo ii desu.,https://guidetojapanese.org/learn/grammar/teform,280
+てはいけません,V-te + はいけません,must not do ~,Verbs,ここでタバコを吸ってはいけません。,You must not smoke here.,koko de tabako wo sutte wa ikemasen.,https://guidetojapanese.org/learn/grammar/teform,290
+ている,V-te + いる,ongoing state / doing now,Verbs,今テレビを見ている。,I'm watching TV now.,ima terebi wo mite iru.,https://guidetojapanese.org/learn/grammar/teform,300
+たい,V-stem + たいです,want to do ~,Verbs,日本へ行きたいです。,I want to go to Japan.,nihon e ikitai desu.,https://guidetojapanese.org/learn/grammar/desire,310
+ほしい,Noun + が + ほしいです,want (a thing),Verbs,新しい車がほしいです。,I want a new car.,atarashii kuruma ga hoshii desu.,https://guidetojapanese.org/learn/grammar/desire,320
+potential,V-potential + ことができる,can do ~,Verbs,日本語が話せます。,I can speak Japanese.,nihongo ga hanasemasu.,https://guidetojapanese.org/learn/grammar/potential,330
+なければなりません,V-nai stem + なければなりません,must do ~,Verbs,薬を飲まなければなりません。,I must take my medicine.,kusuri wo nomanakereba narimasen.,https://guidetojapanese.org/learn/grammar/must,340
+てみる,V-te + みる,try doing ~,Verbs,このケーキを食べてみる。,I'll try eating this cake.,kono keeki wo tabete miru.,https://guidetojapanese.org/learn/grammar/try,350
+ましょう,V-stem + ましょう,let's do ~,Verbs,一緒に行きましょう。,Let's go together.,issho ni ikimashou.,https://guidetojapanese.org/learn/category/grammar-guide/essential-grammar/,360
+なる,Noun/Adj + に + なる,to become ~,Verbs,先生になりたいです。,I want to become a teacher.,sensei ni naritai desu.,https://guidetojapanese.org/learn/grammar/surunaru,370
+たり～たりする,V-ta + り、V-ta + り + する,do things like ~,Expressions,休みに本を読んだり、映画を見たりする。,On holidays I do things like read and watch movies.,"yasumi ni hon wo yondari, eiga wo mitari suru.",https://guidetojapanese.org/learn/category/grammar-guide/essential-grammar/,380
+ながら,V-stem + ながら,while doing ~,Expressions,音楽を聞きながら歩く。,I walk while listening to music.,ongaku wo kikinagara aruku.,https://guidetojapanese.org/learn/category/grammar-guide/essential-grammar/,390
+まえに,V-dict + まえに,before doing ~,Expressions,食べるまえに手を洗う。,I wash my hands before eating.,taberu mae ni te wo arau.,https://guidetojapanese.org/learn/category/grammar-guide/essential-grammar/,400
+より・ほう・いちばん,AよりBのほうが～; ～がいちばん,comparisons: more / best,Expressions,犬より猫のほうが好きです。,I like cats more than dogs.,inu yori neko no hou ga suki desu.,https://guidetojapanese.org/learn/category/grammar-guide/essential-grammar/,410
