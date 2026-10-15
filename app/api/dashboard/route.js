@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import getDb from '@/lib/db';
+import { todayLocal, addDaysLocal } from '@/lib/date';
 
 const MASTERED_INTERVAL = 21;
 
@@ -23,7 +24,7 @@ function getDailyGoals(db) {
 
 export function GET() {
   const db = getDb();
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayLocal();
   const dailyGoals = getDailyGoals(db);
 
   // Cards due today
@@ -63,17 +64,14 @@ export function GET() {
     "SELECT COUNT(*) as count FROM user_selections WHERE content_type='grammar'"
   ).get().count;
 
-  // Study streak (consecutive days with study_sessions)
+  // Study streak (consecutive days with study_sessions, local calendar days)
   const sessions = db.prepare(
-    "SELECT DISTINCT date(created_at) as day FROM study_sessions ORDER BY day DESC LIMIT 30"
+    "SELECT DISTINCT date(created_at,'localtime') as day FROM study_sessions ORDER BY day DESC LIMIT 30"
   ).all();
 
   let streak = 0;
-  const todayDate = new Date();
   for (let i = 0; i < sessions.length; i++) {
-    const expected = new Date(todayDate);
-    expected.setDate(expected.getDate() - i);
-    const expectedStr = expected.toISOString().split('T')[0];
+    const expectedStr = addDaysLocal(-i);
     if (sessions[i]?.day === expectedStr) {
       streak++;
     } else {
@@ -82,11 +80,9 @@ export function GET() {
   }
 
   // Time studied this week (minutes)
-  const weekAgo = new Date();
-  weekAgo.setDate(weekAgo.getDate() - 7);
-  const weekAgoStr = weekAgo.toISOString().split('T')[0];
+  const weekAgoStr = addDaysLocal(-7);
   const timeStudied = db.prepare(
-    "SELECT SUM(duration_minutes) as total FROM study_sessions WHERE date(created_at) >= ?"
+    "SELECT SUM(duration_minutes) as total FROM study_sessions WHERE date(created_at,'localtime') >= ?"
   ).get(weekAgoStr).total || 0;
 
   // Quiz stats

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AudioButton from '@/components/AudioButton';
 import GrammarExamples from '@/components/GrammarExamples';
 import { useSettings } from '@/lib/useSettings';
+import { todayLocal } from '@/lib/date';
 
 const CATEGORIES = [
   'Particles', 'Basics', 'Adjectives', 'Verbs', 'Expressions',
@@ -155,7 +156,7 @@ export default function GrammarPage() {
                 <tbody>
                   {group.words.map((item) => {
                     const isSel = selections.has(item.id);
-                    const todayStr = new Date().toISOString().split('T')[0];
+                    const todayStr = todayLocal();
                     const due = item.next_review_date && item.next_review_date <= todayStr;
                     let dueLabel = null;
                     if (item.next_review_date) {
