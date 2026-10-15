@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import getDb from '@/lib/db';
+import { todayLocal } from '@/lib/date';
 
 export function GET(request) {
   const db = getDb();
@@ -27,16 +28,11 @@ export async function POST(request) {
   const db = getDb();
   const { content_type, content_id, content_ids, selected, starter_pack = false } = await request.json();
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayLocal();
   const insertStmt = db.prepare(`INSERT OR IGNORE INTO user_selections (content_type, content_id) VALUES (?, ?)`);
   const insertSrsStmt = db.prepare(`
     INSERT OR IGNORE INTO srs_cards (content_type, content_id, next_review_date)
     VALUES (?, ?, ?)
-  `);
-  const updateSrsStmt = db.prepare(`
-    UPDATE srs_cards
-    SET next_review_date = ?
-    WHERE content_type = ? AND content_id = ?
   `);
 
   // Starter pack: first 20 vocabulary + first 10 kanji, for fresh installs
@@ -50,12 +46,10 @@ export async function POST(request) {
       for (const id of vocabIds) {
         insertStmt.run('vocabulary', id);
         insertSrsStmt.run('vocabulary', id, today);
-        updateSrsStmt.run(today, 'vocabulary', id);
       }
       for (const id of kanjiIds) {
         insertStmt.run('kanji', id);
         insertSrsStmt.run('kanji', id, today);
-        updateSrsStmt.run(today, 'kanji', id);
       }
     })();
     return NextResponse.json({ ok: true, starter_pack: true, vocabulary: vocabIds.length, kanji: kanjiIds.length });
@@ -80,9 +74,9 @@ export async function POST(request) {
     for (const id of ids) {
       if (selected) {
         insertStmt.run(content_type, id);
-        // Ensure srs_card exists and is due today
+        // Ensure an srs_card exists (due today for genuinely new cards).
+        // Never touch existing cards: re-marking must keep its schedule.
         insertSrsStmt.run(content_type, id, today);
-        updateSrsStmt.run(today, content_type, id);
       } else {
         deleteStmt.run(content_type, id);
         // Remove from SRS as well if user deselects

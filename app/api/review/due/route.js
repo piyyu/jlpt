@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import getDb from '@/lib/db';
+import { todayLocal } from '@/lib/date';
 
 const MASTERED_INTERVAL = 21;
 const LEECH_THRESHOLD = 8;
@@ -25,7 +26,7 @@ function getDailyGoals(db) {
 
 export function GET(request) {
   const db = getDb();
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayLocal();
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type'); // 'vocabulary' | 'kanji' | 'grammar' | null = vocab+kanji mixed
   const mode = searchParams.get('mode') || 'recognition'; // recognition | production | listening | mixed
@@ -70,13 +71,13 @@ export function GET(request) {
   // Daily limits per type (already-reviewed-today counts toward the goal)
   const dailyGoals = getDailyGoals(db);
   const kanjiReviewedToday = db.prepare(`
-    SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at) = date('now') AND section = 'review:kanji'
+    SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at,'localtime') = date('now','localtime') AND section = 'review:kanji'
   `).get()?.total || 0;
   const vocabReviewedToday = db.prepare(`
-    SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at) = date('now') AND section = 'review:vocabulary'
+    SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at,'localtime') = date('now','localtime') AND section = 'review:vocabulary'
   `).get()?.total || 0;
   const grammarReviewedToday = db.prepare(`
-    SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at) = date('now') AND section = 'review:grammar'
+    SELECT sum(cards_reviewed) as total FROM study_sessions WHERE date(created_at,'localtime') = date('now','localtime') AND section = 'review:grammar'
   `).get()?.total || 0;
 
   const limits = {
@@ -93,7 +94,7 @@ export function GET(request) {
     let where = whereStrBase + ` AND s.content_type = '${ctype}'`;
     return `
       SELECT s.*,
-        CAST(julianday(date('now')) - julianday(s.next_review_date) AS INTEGER) AS overdue_days,
+        CAST(julianday(date('now','localtime')) - julianday(s.next_review_date) AS INTEGER) AS overdue_days,
         COALESCE(w.wrong_count, 0) AS weak_count,
         CASE WHEN COALESCE(w.wrong_count, 0) >= ${LEECH_THRESHOLD} THEN 1 ELSE 0 END AS is_leech,
         CASE s.content_type
@@ -214,8 +215,11 @@ export function GET(request) {
     const qk = buildQuery('kanji', limits.kanji);
     if (qv) cards.push(...db.prepare(qv).all(...queryParams));
     if (qk) cards.push(...db.prepare(qk).all(...queryParams));
-    // Shuffle the mixed results for interleaving
-    cards.sort(() => Math.random() - 0.5);
+    // Shuffle the mixed results for interleaving (Fisher-Yates)
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
   }
 
   // Distractor pools for all modes (recognition + production + listening)

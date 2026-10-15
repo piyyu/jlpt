@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import getDb from '@/lib/db';
+import { toRomaji } from '@/lib/toRomaji';
+import { todayLocal } from '@/lib/date';
 
 export function GET(request) {
   const db = getDb();
@@ -11,7 +13,8 @@ export function GET(request) {
   let query = `
     SELECT v.*,
       CASE WHEN us.content_id IS NOT NULL THEN 1 ELSE 0 END AS is_selected,
-      s.next_review_date
+      s.next_review_date,
+      s.repetitions AS repetitions
     FROM vocabulary v
     LEFT JOIN user_selections us
       ON us.content_type = 'vocabulary' AND us.content_id = v.id
@@ -38,4 +41,51 @@ export function GET(request) {
 
   const rows = db.prepare(query).all(...params);
   return NextResponse.json(rows);
+}
+
+export async function POST(request) {
+  const db = getDb();
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
+
+  const japanese = (body.japanese || '').trim();
+  const reading = (body.reading || '').trim();
+  const english = (body.english || '').trim();
+  if (!japanese || !reading || !english) {
+    return NextResponse.json({ error: 'japanese, reading, and english are required' }, { status: 400 });
+  }
+  const category = (body.category || '').trim() || 'Other';
+  const example_jp = (body.example_jp || '').trim() || null;
+  const example_en = (body.example_en || '').trim() || null;
+
+  // Never create a second row for an existing japanese + reading pair.
+  const existing = db.prepare(
+    'SELECT id FROM vocabulary WHERE japanese = ? AND reading = ?'
+  ).get(japanese, reading);
+  if (existing) {
+    return NextResponse.json({ error: 'That word already exists', id: existing.id }, { status: 409 });
+  }
+
+  const { lastInsertRowid: id } = db.prepare(`
+    INSERT INTO vocabulary
+      (japanese, reading, english, type, category, importance, example_jp, example_en, sort_order, romaji)
+    VALUES (?, ?, ?, 'word', ?, 100, ?, ?, 1000, ?)
+  `).run(japanese, reading, english, category, example_jp, example_en, toRomaji(reading) || null);
+
+  // Mark for review unless the caller opts out, so the word is
+  // immediately studyable (matches the bulk "Mark all" behaviour).
+  let selected = false;
+  if (body.selected !== false) {
+    db.prepare(`INSERT OR IGNORE INTO user_selections (content_type, content_id) VALUES ('vocabulary', ?)`)
+      .run(id);
+    db.prepare(`INSERT OR IGNORE INTO srs_cards (content_type, content_id, next_review_date) VALUES ('vocabulary', ?, ?)`)
+      .run(id, todayLocal());
+    selected = true;
+  }
+
+  return NextResponse.json({ ok: true, id, selected }, { status: 201 });
 }

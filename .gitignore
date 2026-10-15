@@ -28,6 +28,14 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# study database (real progress lives here; rebuild from data/*.csv, see README)
+jlpt.db
+jlpt.db-shm
+jlpt.db-wal
+
+# database backups (see "Database & Backups" in README)
+backups/
+
 # vercel
 .vercel
 
