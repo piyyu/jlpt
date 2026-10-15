@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import Bar from '@/components/Bar';
+import { toRomaji } from '@/lib/toRomaji';
 
 const GOJUON = [
   { char: 'ア', romaji: 'a' },  { char: 'イ', romaji: 'i' },  { char: 'ウ', romaji: 'u' },  { char: 'エ', romaji: 'e' },  { char: 'オ', romaji: 'o' },
@@ -8,8 +10,8 @@ const GOJUON = [
   { char: 'サ', romaji: 'sa' }, { char: 'シ', romaji: 'shi'},  { char: 'ス', romaji: 'su' }, { char: 'セ', romaji: 'se' }, { char: 'ソ', romaji: 'so' },
   { char: 'タ', romaji: 'ta' }, { char: 'チ', romaji: 'chi'}, { char: 'ツ', romaji: 'tsu'},  { char: 'テ', romaji: 'te' }, { char: 'ト', romaji: 'to' },
   { char: 'ナ', romaji: 'na' }, { char: 'ニ', romaji: 'ni' }, { char: 'ヌ', romaji: 'nu' }, { char: 'ネ', romaji: 'ne' }, { char: 'ノ', romaji: 'no' },
-  { char: 'ハ', romaji: 'ha' }, { char: 'ヒ', romaji: 'hi' }, { char: 'フ', romaji: 'fu' }, { char: 'へ', romaji: 'he' }, { char: 'ホ', romaji: 'ho' },
-  { char: 'マ', romaji: 'ma' }, { char: 'ミ', romaji: 'mi' }, { char: 'ム', romaji: 'mu' }, { char: 'め', romaji: 'me' }, { char: 'モ', romaji: 'mo' },
+  { char: 'ハ', romaji: 'ha' }, { char: 'ヒ', romaji: 'hi' }, { char: 'フ', romaji: 'fu' }, { char: 'ヘ', romaji: 'he' }, { char: 'ホ', romaji: 'ho' },
+  { char: 'マ', romaji: 'ma' }, { char: 'ミ', romaji: 'mi' }, { char: 'ム', romaji: 'mu' }, { char: 'メ', romaji: 'me' }, { char: 'モ', romaji: 'mo' },
   { char: 'ヤ', romaji: 'ya' }, { char: 'ユ', romaji: 'yu' }, { char: 'ヨ', romaji: 'yo' },
   { char: 'ラ', romaji: 'ra' }, { char: 'リ', romaji: 'ri' }, { char: 'ル', romaji: 'ru' }, { char: 'レ', romaji: 're' }, { char: 'ロ', romaji: 'ro' },
   { char: 'ワ', romaji: 'wa' }, { char: 'ヲ', romaji: 'wo' }, { char: 'ン', romaji: 'n' },
@@ -37,7 +39,7 @@ const YOON = [
   { char: 'ピャ', romaji: 'pya' }, { char: 'ピュ', romaji: 'pyu' }, { char: 'ピョ', romaji: 'pyo' },
 ];
 
-const ALL_KATAKANA = [...GOJUON, ...DAKUTEN, ...YOON];
+const ALL = [...GOJUON, ...DAKUTEN, ...YOON];
 
 function shuffle(arr) {
   const a = [...arr];
@@ -53,47 +55,63 @@ function getOptions(correct, all) {
   return shuffle([correct, ...others]);
 }
 
-function optionStyle(opt, selected, current) {
-  if (!selected) return {};
-  const isCorrect = opt.romaji === current.romaji;
-  const isSelected = opt.romaji === selected.romaji;
-  if (isCorrect) return { background: 'rgba(68,221,170,0.15)', border: '1px solid #44ddaa', color: '#44ddaa' };
-  if (isSelected) return { background: 'rgba(255,60,80,0.1)', border: '1px solid rgba(255,60,80,0.6)', color: '#ff3c50' };
-  return { opacity: 0.4 };
-}
-
 export default function KatakanaPage() {
   const [mode, setMode] = useState('reference');
   const [drillQueue, setDrillQueue] = useState([]);
   const [drillIndex, setDrillIndex] = useState(0);
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [drillCount, setDrillCount] = useState(25);
+  const [drillFormat, setDrillFormat] = useState('mcq'); // 'mcq' | 'type'
+  const [typed, setTyped] = useState('');
+  const [checked, setChecked] = useState(false);
+  const [typedOk, setTypedOk] = useState(false);
+  const inputRef = useRef(null);
+
+  const COUNTS = [10, 25, 50, 'all'];
+
+  const chip = (active) => ({
+    padding: '0.35rem 0.8rem',
+    fontSize: '0.82rem',
+    ...(active ? { borderColor: 'var(--accent)', color: 'var(--heading)' } : {}),
+  });
+
+  const drillActive = mode !== 'reference';
 
   function startDrill() {
-    setDrillQueue(shuffle(ALL_KATAKANA));
+    const pool = shuffle(ALL);
+    setDrillQueue(drillCount === 'all' ? pool : pool.slice(0, drillCount));
     setDrillIndex(0);
     setSelected(null);
+    setTyped('');
+    setChecked(false);
+    setTypedOk(false);
     setScore({ correct: 0, total: 0 });
     setMode('drill');
   }
 
   const current = drillQueue[drillIndex] ?? null;
   const options = useMemo(
-    () => (current ? getOptions(current, ALL_KATAKANA) : []),
+    () => (current ? getOptions(current, ALL) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [current?.char],
   );
-
   const answered = selected !== null;
 
   useEffect(() => {
     function onKey(e) {
+      if (drillFormat !== 'mcq') {
+        if (e.key === 'Enter' && checked && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') handleNext();
+        return;
+      }
       if (mode !== 'drill' || answered || options.length === 0) return;
       const idx = parseInt(e.key, 10) - 1;
       if (idx >= 0 && idx <= 3 && options[idx]) handleAnswer(options[idx]);
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [mode, answered, options]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, answered, options, drillFormat, checked]);
 
   function handleAnswer(opt) {
     if (answered) return;
@@ -102,110 +120,183 @@ export default function KatakanaPage() {
     setScore((s) => ({ correct: s.correct + (isCorrect ? 1 : 0), total: s.total + 1 }));
     setTimeout(() => {
       const nextIndex = drillIndex + 1;
-      if (nextIndex >= drillQueue.length) setMode('result');
-      else { setDrillIndex(nextIndex); setSelected(null); }
+      if (nextIndex >= drillQueue.length) {
+        setMode('result');
+      } else {
+        setDrillIndex(nextIndex);
+        setSelected(null);
+      }
     }, 900);
   }
 
-  const renderCard = (k) => (
-    <div
-      key={k.char}
-      className="rounded-xl p-4 flex flex-col items-center gap-1 transition-all group"
-      style={{ 
-        background: 'var(--bg-surface)', 
-        border: '1px solid var(--border)',
-        cursor: 'default' 
-      }}
-      onMouseEnter={(e) => { 
-        e.currentTarget.style.borderColor = 'rgba(255,0,128,0.4)';
-        e.currentTarget.style.background = 'rgba(255,0,128,0.04)';
-      }}
-      onMouseLeave={(e) => { 
-        e.currentTarget.style.borderColor = 'var(--border)';
-        e.currentTarget.style.background = 'var(--bg-surface)';
-      }}
-    >
-      <span className="font-japanese text-3xl transition-transform group-hover:scale-110" style={{ color: 'var(--text-1)' }}>{k.char}</span>
-      <span className="text-xs font-mono" style={{ color: 'var(--pink)', opacity: 0.8 }}>{k.romaji}</span>
+  function handleCheckTyping() {
+    if (checked || !current) return;
+    // Accept romaji or kana answers; ignore empty submits.
+    const norm = toRomaji(typed.trim().toLowerCase());
+    if (!norm) return;
+    const ok = norm === current.romaji;
+    setTypedOk(ok);
+    setChecked(true);
+    setScore((s) => ({ correct: s.correct + (ok ? 1 : 0), total: s.total + 1 }));
+  }
+
+  function handleNext() {
+    const nextIndex = drillIndex + 1;
+    if (nextIndex >= drillQueue.length) {
+      setMode('result');
+    } else {
+      setDrillIndex(nextIndex);
+      setSelected(null);
+      setTyped('');
+      setChecked(false);
+      setTypedOk(false);
+    }
+  }
+
+  useEffect(() => {
+    if (mode === 'drill' && drillFormat === 'type' && !checked) inputRef.current?.focus();
+  }, [mode, drillIndex, drillFormat, checked]);
+
+  const chart = (list, cols) => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: '1px', background: 'var(--border)', border: '2px solid var(--border)', borderRadius: 10, overflow: 'hidden', marginBottom: '1.5rem' }}>
+      {list.map((h) => (
+        <div key={h.char} className="kana-cell">
+          <span className="font-japanese" style={{ fontSize: '1.5rem', fontWeight: 700 }}>{h.char}</span>
+          <br />
+          <span className="muted" style={{ fontSize: '0.72rem', fontWeight: 700 }}>{h.romaji}</span>
+        </div>
+      ))}
     </div>
   );
 
   return (
     <div>
-      <div className="mb-6 flex items-start justify-between">
-        <div>
-          <p className="font-japanese text-xs tracking-widest mb-1" style={{ color: 'var(--pink)' }}>カタカナ</p>
-          <h1 className="text-3xl font-bold" style={{ color: 'var(--text-1)' }}>Katakana</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--text-2)' }}>Reference chart and drill mode</p>
-        </div>
-        <div className="flex gap-2 mt-1">
-          <button onClick={() => setMode('reference')} className={mode === 'reference' ? 'btn-primary' : 'btn-secondary'}>Reference</button>
-          <button onClick={startDrill} className={mode === 'drill' || mode === 'result' ? 'btn-primary' : 'btn-secondary'}>Drill</button>
-        </div>
+      <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem' }}>Katakana</h1>
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }} role="tablist" aria-label="View">
+        <button role="tab" aria-selected={mode === 'reference'} className="btn" onClick={() => setMode('reference')} style={chip(mode === 'reference')}>
+          Reference
+        </button>
+        <button role="tab" aria-selected={drillActive} className="btn" onClick={() => setMode('setup')} style={chip(drillActive)}>
+          Drill
+        </button>
       </div>
 
       {mode === 'reference' && (
-        <div className="space-y-10">
-          <section>
-            <h2 className="text-sm font-semibold mb-4 opacity-50 uppercase tracking-widest">Basic — 五十音</h2>
-            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-3">
-              {GOJUON.map(renderCard)}
-            </div>
-          </section>
+        <div>
+          <h2 className="section-head">Basic</h2>
+          {chart(GOJUON, 5)}
+          <h2 className="section-head">Voiced</h2>
+          {chart(DAKUTEN, 5)}
+          <h2 className="section-head">Contracted</h2>
+          {chart(YOON, 3)}
+        </div>
+      )}
 
-          <section>
-            <h2 className="text-sm font-semibold mb-4 opacity-50 uppercase tracking-widest">Voiced — 濁音 / 半濁音</h2>
-            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-3">
-              {DAKUTEN.map(renderCard)}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-sm font-semibold mb-4 opacity-50 uppercase tracking-widest">Contracted — 拗音</h2>
-            <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-9 gap-3">
-              {YOON.map(renderCard)}
-            </div>
-          </section>
+      {mode === 'setup' && (
+        <div>
+          <p className="muted" style={{ fontSize: '0.85rem' }}>Questions:</p>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+            {COUNTS.map((c) => (
+              <button
+                key={String(c)}
+                className="btn"
+                aria-pressed={drillCount === c}
+                onClick={() => setDrillCount(c)}
+                style={chip(drillCount === c)}
+              >
+                {c === 'all' ? `All (${ALL.length})` : c}
+              </button>
+            ))}
+          </div>
+          <p className="muted" style={{ fontSize: '0.85rem' }}>Format:</p>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+            {[{ id: 'mcq', label: 'Multiple choice' }, { id: 'type', label: 'Type the answer' }].map((f) => (
+              <button
+                key={f.id}
+                className="btn"
+                aria-pressed={drillFormat === f.id}
+                onClick={() => setDrillFormat(f.id)}
+                style={chip(drillFormat === f.id)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <p>
+            <button className="btn btn-solid" onClick={startDrill}>Start →</button>
+          </p>
         </div>
       )}
 
       {mode === 'drill' && current && (
-        <div className="max-w-sm mx-auto">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-0.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
-              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(drillIndex / drillQueue.length) * 100}%`, background: 'var(--pink)' }} />
+        <div>
+          <p className="muted" style={{ fontSize: '0.85rem', margin: '0 0 0.4rem' }}>{drillIndex + 1}/{drillQueue.length} · {score.correct}✓</p>
+          <div style={{ marginBottom: '1rem' }}>
+            <Bar value={drillIndex} max={drillQueue.length} />
+          </div>
+          <p className="font-japanese" style={{ fontSize: '4.5rem', lineHeight: 1.25, fontWeight: 600, margin: '0 0 1rem' }}>{current.char}</p>
+          {!answered && drillFormat === 'mcq' && (
+            <p className="muted" style={{ fontSize: '0.8rem' }}>Tap an answer, or press 1–4.</p>
+          )}
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            {drillFormat === 'mcq' ? (
+              options.map((opt, i) => {
+                let marker = `${i + 1}. `;
+                let style = {};
+                let cls = 'opt';
+                if (answered) {
+                  if (opt.romaji === current.romaji) { marker = `✓ ${i + 1}. `; cls = 'opt is-correct'; }
+                  else if (opt.romaji === selected.romaji) { marker = `✗ ${i + 1}. `; cls = 'opt is-wrong'; }
+                  else style = { opacity: 0.35 };
+                }
+                return (
+                  <button key={opt.romaji} onClick={() => handleAnswer(opt)} disabled={answered} className={cls} style={style}>
+                    {marker}{opt.romaji}
+                  </button>
+                );
+              })
+            ) : (
+              <form onSubmit={(e) => { e.preventDefault(); checked ? handleNext() : handleCheckTyping(); }}>
+                <p style={{ display: 'flex', gap: '0.5rem' }}>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={typed}
+                    onChange={(e) => setTyped(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && e.nativeEvent.isComposing) e.preventDefault(); }}
+                    disabled={checked}
+                    placeholder="Type the romaji…"
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
+                    style={{ flex: 1 }}
+                  />
+                  <button className="btn btn-solid" type="submit" disabled={!checked && !typed.trim()}>{checked ? 'Next →' : 'Check'}</button>
+                </p>
+              </form>
+            )}
+          </div>
+          {drillFormat === 'type' && checked && (
+            <div className={`feedback ${typedOk ? 'good' : 'bad'}`} style={{ marginTop: '1rem' }} aria-live="polite">
+              <p style={{ margin: 0 }}>
+                {typedOk
+                  ? <span className="is-correct">✓ Correct.</span>
+                  : <span><span className="is-wrong">✗ Wrong.</span> Answer: <strong className="font-japanese">{current.romaji}</strong></span>}
+              </p>
             </div>
-            <span className="text-xs font-mono shrink-0" style={{ color: 'var(--text-3)' }}>{drillIndex + 1}/{drillQueue.length}</span>
-            <span className="text-xs font-mono shrink-0" style={{ color: '#44ddaa' }}>{score.correct}✓</span>
-          </div>
-          <div className="rounded-xl p-10 text-center mb-6" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
-            <span className="font-japanese font-medium" style={{ fontSize: '96px', lineHeight: 1, color: 'var(--text-1)' }}>{current.char}</span>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {options.map((opt) => (
-              <button
-                key={opt.romaji}
-                onClick={() => handleAnswer(opt)}
-                disabled={answered}
-                className="py-4 rounded-xl text-base font-mono font-semibold transition-all"
-                style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-1)', ...optionStyle(opt, selected, current) }}
-              >
-                {opt.romaji}
-              </button>
-            ))}
-          </div>
+          )}
         </div>
       )}
 
       {mode === 'result' && (
-        <div className="max-w-sm mx-auto rounded-xl p-10 text-center" style={{ background: 'var(--bg-surface)', border: '1px solid rgba(255,0,128,0.2)' }}>
-          <p className="font-japanese text-5xl font-bold mb-2" style={{ color: 'var(--pink)' }}>{Math.round((score.correct / score.total) * 100)}点</p>
-          <p className="text-lg font-semibold mb-1" style={{ color: 'var(--text-1)' }}>{score.correct} / {score.total}</p>
-          <p className="text-sm mb-8" style={{ color: 'var(--text-2)' }}>{score.correct === score.total ? '完璧！Perfect score!' : 'Keep practising!'}</p>
-          <div className="flex flex-col gap-2">
-            <button onClick={startDrill} className="btn-primary w-full">もう一度 — Try Again</button>
-            <button onClick={() => setMode('reference')} className="btn-secondary w-full">Back to Reference</button>
-          </div>
+        <div>
+          <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem' }}>{Math.round((score.correct / score.total) * 100)}点</h1>
+          <p>{score.correct} / {score.total}. {score.correct === score.total ? 'Perfect!' : 'Keep practising!'}</p>
+          <p>
+            <button className="btn" onClick={startDrill}>Again</button>{' '}
+            <button className="btn" onClick={() => setMode('setup')}>Change setup</button>{' '}
+            <button className="btn" onClick={() => setMode('reference')}>Reference</button>
+          </p>
         </div>
       )}
     </div>
