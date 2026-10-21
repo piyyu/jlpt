@@ -8,8 +8,8 @@
 〜さん,〜さん,san,Mr. Ms. (title of respect addded to a name),N5,Now,MnN I L1
 〜ちゃん,〜ちゃん,chan,(suffix often added to a child's name),N4,Later (N4),MnN I L1
 〜君,〜くん,kun,(suffix often added to a boy's name),N4,Later (N4),MnN I L1
-〜人,〜じん,jin,"(suffix meaning ""a national of"") teacher, instructor (not used when referring to one's own",N5,Now,MnN I L1
-先生,せんせい,sensei, job),N5,Now,MnN I L1
+〜人,〜じん,jin,"(suffix meaning ""a national of"")",N5,Now,MnN I L1
+先生,せんせい,sensei,"teacher, instructor (not used when referring to one's own job)",N5,Now,MnN I L1
 教師,きょうし,kyoushi,"teacher, instructor",Not on list,Low priority,MnN I L1
 学生,がくせい,gakusei,student,N5,Now,MnN I L1
 会社員,かいしゃいん,kaishain,company employee,Not on list,Low priority,MnN I L1
@@ -86,8 +86,8 @@
 違います,ちがいます,chigaimasu,"No it isn't, You are wrong",N5,Now,MnN I L2
 そうですか,そうですか,soudesuka,"I see, Is that so?",N5 (est.),Now,MnN I L2
 あのう,あのう,anou,well (used to show hesitation),Not on list,Low priority,MnN I L2
-ほんの気持ちです,ほんのきもちです,honnokimochidesu,"It's nothing, It's a token of my gratitude Please, Here you are (when offering someone",Not on list,Low priority,MnN I L2
-どうぞ,どうぞ,douzo, something),N5,Now,MnN I L2
+ほんの気持ちです,ほんのきもちです,honnokimochidesu,"It's nothing, It's a token of my gratitude",Not on list,Low priority,MnN I L2
+どうぞ,どうぞ,douzo,"Please, Here you are (when offering someone something)",N5,Now,MnN I L2
 どうも,どうも,doumo,"Well, thanks",N5,Now,MnN I L2
 ありがとう,ありがとう,arigatou,Thank you,N5 (est.),Now,MnN I L2
 どうもありがとうございます,どうもありがとうございます,doumoarigatougozaimasu,Thank you very much,N5 (est.),Now,MnN I L2
@@ -345,12 +345,12 @@
 もう,もう,mou,already,N5,Now,MnN I L7
 まだ,まだ,mada,not yet,N5,Now,MnN I L7
 これから,これから,korekara,"from now on, soon",N4,Later (N4),MnN I L7
-〜すてきですね,〜すてきですね,sutekidesune,"What a nice ~! Excuse me, Anybody home?, May I come in? (an",Not on list,Low priority,MnN I L7
-ごめんください,ごめんください,gomenkudasai, expression used by a visitor),Not on list,Low priority,MnN I L7
+〜すてきですね,〜すてきですね,sutekidesune,What a nice ~!,Not on list,Low priority,MnN I L7
+ごめんください,ごめんください,gomenkudasai,"Excuse me, Anybody home?, May I come in? (an expression used by a visitor)",Not on list,Low priority,MnN I L7
 いらっしゃい,いらっしゃい,irasshai,How nice of you to come (lit. Welcome),Not on list,Low priority,MnN I L7
 どうぞお上がりください,どうぞおあがりください,douzooagarikudasai,Do come in,Not on list,Low priority,MnN I L7
-失礼します,しつれいします,shitsureishimasu,"Thank you, May I? (lit. I'm afraid I'll be disturbing you) Won't you have ~?, Would you like to have ~? (used",N4,Later (N4),MnN I L7
-〜はいかがですか,〜はいかがですか,haikagadesuka, when offering something),Not on list,Low priority,MnN I L7
+失礼します,しつれいします,shitsureishimasu,"Thank you, May I? (lit. I'm afraid I'll be disturbing you)",N4,Later (N4),MnN I L7
+〜はいかがですか,〜はいかがですか,haikagadesuka,"Won't you have ~?, Would you like to have ~? (used when offering something)",Not on list,Low priority,MnN I L7
 いただきます,いただきます,itadakimasu,"Thank you, I accept (said before starting to eat or drink)",N4,Later (N4),MnN I L7
 旅行,りょこう,ryokou,"trip, tour",N5,Now,MnN I L7
 旅行をします,りょこうをします,ryokouwoshimasu,make a trip,N5,Now,MnN I L7
@@ -468,10 +468,10 @@
 すみません,すみません,sumimasen,I am sorry,N5 (est.),Now,MnN I L9
 もしもし,もしもし,moshimoshi,hello (used on phone),N5,Now,MnN I L9
 ああ,ああ,aa,oh,N5,Now,MnN I L9
-いっしょうにいかがですか,いっしょうにいかがですか,isshouniikagadesuka,Won't you join me (us)? ~ is a bit difficult (a euphemism used when declining an,Not on list,Low priority,MnN I L9
-〜はちょっと,〜はちょっと,hachotto, invitation),Not on list,Low priority,MnN I L9
-だめですか,だめですか,damedesuka,So you cannot (come)? Please ask me again some other time (used when,Not on list,Low priority,MnN I L9
-また今度お願いします,またこんどおねがいします,matakondoonegaishimasu,"refusing an invitation indirectly, considering someone's feelings",N5,Now,MnN I L9
+いっしょうにいかがですか,いっしょうにいかがですか,isshouniikagadesuka,Won't you join me (us)?,Not on list,Low priority,MnN I L9
+〜はちょっと,〜はちょっと,hachotto,~ is a bit difficult (a euphemism used when declining an invitation),Not on list,Low priority,MnN I L9
+だめですか,だめですか,damedesuka,So you cannot (come)?,Not on list,Low priority,MnN I L9
+また今度お願いします,またこんどおねがいします,matakondoonegaishimasu,"Please ask me again some other time (used when refusing an invitation indirectly, considering someone's feelings)",N5,Now,MnN I L9
 います,います,imasu,"exist, be (referring to animate things)",N5,Now,MnN I L10
 あります,あります,arimasu,"exist, be (referring to inanimate things)",N5,Now,MnN I L10
 いろいろ,いろいろ,iroiro,various,N5,Now,MnN I L10
@@ -575,8 +575,8 @@
 どのくらい,どのくらい,donokurai,how long,Not on list,Low priority,MnN I L11
 全部で,ぜんぶで,zenbude,in total,Not on list,Low priority,MnN I L11
 みんな,みんな,minna,"all, everything",N5,Now,MnN I L11
-〜だけ,〜だけ,dake,"only ~ Welcome, May I help you? (a greeting to a customer or a",N5,Now,MnN I L11
-いらっしゃいませ,いらっしゃいませ,irasshaimase," guest entering a shop, etc.)",Not on list,Low priority,MnN I L11
+〜だけ,〜だけ,dake,only ~,N5,Now,MnN I L11
+いらっしゃいませ,いらっしゃいませ,irasshaimase,"Welcome, May I help you? (a greeting to a customer or a guest entering a shop, etc.)",Not on list,Low priority,MnN I L11
 いい天気ですね,いいてんきですね,iitenkidesune,"Nice weather, isn't it?",Not on list,Low priority,MnN I L11
 お出かけですか,おでかけですか,odekakedesuka,Are you going out?,Not on list,Low priority,MnN I L11
 ちょっと〜まで,ちょっと〜まで,chottomade,I'm just going to ~,Not on list,Low priority,MnN I L11
@@ -677,8 +677,8 @@
 おなかがすきました,おなかがすきました,onakagasukimashita,(I'm) hungry,Not on list,Low priority,MnN I L13
 おなかがいっぱいです,おなかがいっぱいです,onakagaippaidesu,(I'm) full,Not on list,Low priority,MnN I L13
 のどがかわきました,のどがかわきました,nodogakawakimashita,(I'm) thirsty,Not on list,Low priority,MnN I L13
-そうですね,そうですね,soudesune,I agree with you Let's do that (used when agreeing to someone's,N5 (est.),Now,MnN I L13
-そうしましょう,そうしましょう,soushimashou, suggestion),Not on list,Low priority,MnN I L13
+そうですね,そうですね,soudesune,I agree with you,N5 (est.),Now,MnN I L13
+そうしましょう,そうしましょう,soushimashou,Let's do that (used when agreeing to someone's suggestion),Not on list,Low priority,MnN I L13
 ご注文は,ごちゅうもんは,gochuumonha,May I take your order?,Not on list,Low priority,MnN I L13
 定食,ていしょく,teishoku,set meal,Not on list,Low priority,MnN I L13
 牛どん,ぎゅうどん,gyuudon,bowl of rice topped with beef,Not on list,Low priority,MnN I L13
@@ -907,8 +907,8 @@
 一度,いちど,ichido,once,N4,Later (N4),MnN I L19
 一度も,いちども,ichidomo,"not once, never (used with negatives)",Not on list,Low priority,MnN I L19
 だんだん,だんだん,dandan,gradually,N5,Now,MnN I L19
-もうすぐ,もうすぐ,mousugu,soon Thank you (used when expressing gratitude for help,N4,Later (N4),MnN I L19
-おかげさまで,おかげさまで,okagesamade, received),Not on list,Low priority,MnN I L19
+もうすぐ,もうすぐ,mousugu,soon,N4,Later (N4),MnN I L19
+おかげさまで,おかげさまで,okagesamade,Thank you (used when expressing gratitude for help received),Not on list,Low priority,MnN I L19
 乾杯,かんぱい,kanpai,"Bottoms up!, Cheers!",Not on list,Low priority,MnN I L19
 実は,じつは,jitsuha,"actually, to tell the truth",Not on list,Low priority,MnN I L19
 ダイエット,ダイエット,daietto,diet,Not on list,Low priority,MnN I L19
@@ -917,8 +917,8 @@
 しかし,しかし,shikashi,"but, however",N5,Now,MnN I L19
 無理,むり,muri,"excessive, impossible",N4,Later (N4),MnN I L19
 体にいい,からだにいい,karadaniii,good for one's health,Not on list,Low priority,MnN I L19
-ケーキ,ケーキ,keeki,cake (Katsushika Hokusai) famous Edo period wood block,N4,Later (N4),MnN I L19
-葛飾北斎,かつしかほくさい,katsushikahokusai, artist and painter (1760-1849),Not on list,Low priority,MnN I L19
+ケーキ,ケーキ,keeki,cake,N4,Later (N4),MnN I L19
+葛飾北斎,かつしかほくさい,katsushikahokusai,(Katsushika Hokusai) famous Edo period wood block artist and painter (1760-1849),Not on list,Skip,MnN I L19
 要ります,いります,irimasu,"need, require",N5,Now,MnN I L20
 ビザが要ります,ビザがいります,bizagairimasu,"need, require a visa",N5,Now,MnN I L20
 調べます,しらべます,shirabemasu,"check, investigate",N4,Later (N4),MnN I L20
@@ -938,9 +938,9 @@
 初め,はじめ,hajime,the beginning,N5,Now,MnN I L20
 終わり,おわり,owari,the end,N4,Later (N4),MnN I L20
 こっち,こっち,kocchi,"this way, this place (an informal equivalent of kochira)",N5,Now,MnN I L20
-そっち,そっち,socchi,"this way, that place (an informal equivalent of sochira) this way, that place over there (an informal equivalent of",N5,Now,MnN I L20
-あっち,あっち,acchi," achira) which one (between two things), which way, where (an",N5,Now,MnN I L20
-どっち,どっち,docchi, informal equivalent of dochira),N5,Now,MnN I L20
+そっち,そっち,socchi,"this way, that place (an informal equivalent of sochira)",N5,Now,MnN I L20
+あっち,あっち,acchi,"this way, that place over there (an informal equivalent of achira)",N5,Now,MnN I L20
+どっち,どっち,docchi,"which one (between two things), which way, where (an informal equivalent of dochira)",N5,Now,MnN I L20
 あの間,あのあいだ,anoaida,the other day,Not on list,Low priority,MnN I L20
 みんなで,みんなで,minnade,all together,Not on list,Low priority,MnN I L20
 〜けど,〜けど,kedo,but (an infomal equivalent of ga),Not on list,Low priority,MnN I L20
@@ -984,8 +984,8 @@
 ほんとうに,ほんとうに,hontouni,really,N5 (est.),Now,MnN I L21
 そんなに,そんなに,sonnani,not so much (used with negatives),N4,Later (N4),MnN I L21
 〜について,〜について,nitsuite,"about ~, concerning ~",Not on list,Low priority,MnN I L21
-しかたがありません,しかたがありません,shikatagaarimasen,There is no other choice. It can't be helped It's been a long time (since I last saw you). Long time no,Not on list,Low priority,MnN I L21
-しばらくですね,しばらくですね,shibarakudesune, see,Not on list,Low priority,MnN I L21
+しかたがありません,しかたがありません,shikatagaarimasen,There is no other choice. It can't be helped,Not on list,Low priority,MnN I L21
+しばらくですね,しばらくですね,shibarakudesune,It's been a long time (since I last saw you). Long time no see,Not on list,Low priority,MnN I L21
 〜でも飲みませんか,〜でものみませんか,demonomimasenka,How about drinking ~ or something?,Not on list,Low priority,MnN I L21
 見ないと,みないと,minaito,I've got to watch it,Not on list,Low priority,MnN I L21
 もちろん,もちろん,mochiron,of course,N4,Later (N4),MnN I L21
@@ -1004,8 +1004,8 @@
 セーター,セーター,seetaa,sweater,N5,Now,MnN I L22
 帽子,ぼうし,boushi,"hat, cap",N5,Now,MnN I L22
 眼鏡,めがね,megane,glasses,N5,Now,MnN I L22
-よく,よく,yoku,"often Congratulations (used on birthdays, at weddings, New",N5,Now,MnN I L22
-おめでとうございます,おめでとうございます,omedetougozaimasu," Year's Day, etc.)",Not on list,Low priority,MnN I L22
+よく,よく,yoku,often,N5,Now,MnN I L22
+おめでとうございます,おめでとうございます,omedetougozaimasu,"Congratulations (used on birthdays, at weddings, New Year's Day, etc.)",Not on list,Low priority,MnN I L22
 こちら,こちら,kochira,this (polite equivalent of kore),N5,Now,MnN I L22
 家賃,やちん,yachin,house rent,Not on list,Low priority,MnN I L22
 うーん,うーん,uun,Let me see,Not on list,Low priority,MnN I L22

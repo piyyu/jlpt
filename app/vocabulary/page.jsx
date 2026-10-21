@@ -9,8 +9,19 @@ import { todayLocal } from '@/lib/date';
 
 const LESSON_NUMBERS = Array.from({ length: 25 }, (_, i) => i + 1);
 const ADDED = 'added';
-const LEVELS = ['N5', 'N5 (est.)', 'N4', 'Not on list'];
-const STUDIES = ['Now', 'Later (N4)', 'Low priority', 'Skip'];
+
+// One row of mutually exclusive chips replaces the old Level + Study chips.
+// "core" and "n4" pick a study priority, "all" shows every row. Words added
+// by hand have no study value at all and are always visible.
+const SCOPES = [
+  { key: 'core', label: 'Core (N5)', study: 'Now' },
+  { key: 'n4', label: 'N4', study: 'Later (N4)' },
+  { key: 'all', label: 'Everything', study: null },
+];
+const DEFAULT_SCOPE = 'core';
+
+const LESSONS_STORAGE_KEY = 'jlpt.vocab.lessons';
+const SCOPE_STORAGE_KEY = 'jlpt.vocab.scope';
 
 function dueInfo(word, todayStr) {
   const due = word.next_review_date && word.next_review_date <= todayStr;
@@ -76,8 +87,38 @@ function lessonLabel(key) {
   return key === ADDED ? 'Added words' : `Lesson ${key}`;
 }
 
-// Multi-select dropdown: an empty selection means "no filter".
-function MultiSelect({ label, options, selected, onToggle, onClear, allLabel }) {
+// Lesson numbers first (in order), the added-words bucket last.
+function compareLessonKeys(a, b) {
+  if (a === b) return 0;
+  if (a === ADDED) return 1;
+  if (b === ADDED) return -1;
+  return Number(a) - Number(b);
+}
+
+function serializeLessons(set) {
+  return [...set].sort(compareLessonKeys).join(',');
+}
+
+function parseLessons(raw) {
+  if (!raw) return null;
+  const keys = raw
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s === ADDED || /^[0-9]{1,2}$/.test(s))
+    .filter((s) => s === ADDED || (Number(s) >= 1 && Number(s) <= 25));
+  return new Set(keys);
+}
+
+// "Lessons: all" / "Lessons: 1, 2, 3" / "Lessons: 4 selected"
+function formatLessonSelection(selected) {
+  if (selected.size === 0) return 'all';
+  const keys = [...selected].sort(compareLessonKeys);
+  if (keys.length <= 3) return keys.map((k) => (k === ADDED ? 'Added' : k)).join(', ');
+  return `${selected.size} selected`;
+}
+
+// Multi-select dropdown: an empty selection means "no filter" (all lessons).
+function MultiSelect({ label, options, selected, onToggle, onClear, allLabel, formatSelected }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -98,7 +139,7 @@ function MultiSelect({ label, options, selected, onToggle, onClear, allLabel }) 
         onClick={() => setOpen((v) => !v)}
         style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem', whiteSpace: 'nowrap' }}
       >
-        {selected.size === 0 ? label : `${label} (${selected.size})`}
+        {label}: {formatSelected ? formatSelected(selected) : (selected.size === 0 ? allLabel : `${selected.size} selected`)}
         <span aria-hidden="true"> ▾</span>
       </button>
       {open && (
@@ -126,7 +167,9 @@ function MultiSelect({ label, options, selected, onToggle, onClear, allLabel }) 
               <label key={opt.key} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.18rem 0', cursor: 'pointer', fontSize: '0.85rem' }}>
                 <input type="checkbox" checked={active} onChange={() => onToggle(opt.key)} />
                 <span style={{ flex: 1 }}>{opt.label}</span>
-                {opt.count !== undefined && <span className="muted" style={{ fontSize: '0.78rem' }}>{opt.count}</span>}
+                {opt.count !== undefined && (
+                  <span className="muted" style={{ fontSize: '0.78rem', opacity: opt.count === 0 ? 0.4 : 1 }}>{opt.count}</span>
+                )}
               </label>
             );
           })}
@@ -136,25 +179,27 @@ function MultiSelect({ label, options, selected, onToggle, onClear, allLabel }) 
   );
 }
 
-// Chip group: an empty selection means "no filter".
-function ChipGroup({ label, options, selected, onToggle }) {
+// One row of mutually exclusive chips: exactly one scope is active.
+function ScopeChips({ options, counts, value, onSelect }) {
   return (
-    <div role="group" aria-label={label} style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', flexWrap: 'wrap' }}>
-      <span className="muted" style={{ fontSize: '0.8rem' }}>{label}</span>
+    <div role="group" aria-label="Word scope" style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', flexWrap: 'wrap' }}>
       {options.map((opt) => {
-        const active = selected.has(opt);
+        const active = value === opt.key;
         return (
           <button
-            key={opt}
+            key={opt.key}
             type="button"
             className="btn"
             aria-pressed={active}
-            onClick={() => onToggle(opt)}
+            onClick={() => onSelect(opt.key)}
             style={active
               ? { borderColor: 'var(--accent)', padding: '0.35rem 0.8rem', fontSize: '0.82rem' }
               : { padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
           >
-            {opt}
+            {opt.label}
+            {counts[opt.key] !== undefined && (
+              <span className="muted" style={{ fontSize: '0.78rem', marginLeft: '0.35rem' }}>{counts[opt.key]}</span>
+            )}
           </button>
         );
       })}
@@ -165,9 +210,8 @@ function ChipGroup({ label, options, selected, onToggle }) {
 export default function VocabularyPage() {
   const [vocab, setVocab] = useState([]);
   const [search, setSearch] = useState('');
+  const [scope, setScope] = useState(DEFAULT_SCOPE);
   const [lessons, setLessons] = useState(new Set());
-  const [levels, setLevels] = useState(new Set());
-  const [studies, setStudies] = useState(new Set(['Now']));
   const [expanded, setExpanded] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedOnly, setSelectedOnly] = useState(false);
@@ -177,6 +221,7 @@ export default function VocabularyPage() {
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState('');
   const [addOk, setAddOk] = useState('');
+  const [hydrated, setHydrated] = useState(false);
   const [form, setForm] = useState({
     japanese: '', reading: '', meaning: '', example_jp: '', example_en: '', toReview: true,
   });
@@ -201,6 +246,43 @@ export default function VocabularyPage() {
         setSelCount(ids.length);
       });
   }, []);
+
+  // Restore the filters. The URL wins (so a filtered view can be shared or
+  // reached with the back button), otherwise the last choice is reused from
+  // localStorage.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = parseLessons(params.get('lessons'));
+    const stored = parseLessons(window.localStorage.getItem(LESSONS_STORAGE_KEY));
+    setLessons(fromUrl || stored || new Set());
+    const urlScope = params.get('scope');
+    const storedScope = window.localStorage.getItem(SCOPE_STORAGE_KEY);
+    const nextScope = SCOPES.some((s) => s.key === urlScope)
+      ? urlScope
+      : (SCOPES.some((s) => s.key === storedScope) ? storedScope : DEFAULT_SCOPE);
+    setScope(nextScope);
+    setHydrated(true);
+  }, []);
+
+  // Keep the filters in the URL and in localStorage so they survive ticking
+  // words, opening an example, and navigating away and back.
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      window.localStorage.setItem(LESSONS_STORAGE_KEY, serializeLessons(lessons));
+      window.localStorage.setItem(SCOPE_STORAGE_KEY, scope);
+    } catch {
+      // private mode / storage disabled: the URL still carries the filters
+    }
+    const params = new URLSearchParams(window.location.search);
+    if (lessons.size > 0) params.set('lessons', serializeLessons(lessons));
+    else params.delete('lessons');
+    if (scope !== DEFAULT_SCOPE) params.set('scope', scope);
+    else params.delete('scope');
+    const qs = params.toString();
+    // Keep the router's own history state intact, only swap the query string.
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`);
+  }, [hydrated, lessons, scope]);
 
   function confirmUnmark(words) {
     const withProgress = words.filter((w) => selections.has(w.id) && (w.repetitions || 0) > 0);
@@ -278,6 +360,12 @@ export default function VocabularyPage() {
     setShowAdd((v) => !v);
   }
 
+  function clearFilters() {
+    setScope('all');
+    setLessons(new Set());
+    setSearch('');
+  }
+
   async function submitAdd(e) {
     e.preventDefault();
     setAdding(true);
@@ -311,27 +399,58 @@ export default function VocabularyPage() {
     loadVocab();
   }
 
-  // Filters only change what is shown; review scheduling is untouched.
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return vocab.filter((w) => {
-      if (q) {
-        const haystack = `${w.japanese} ${w.reading} ${w.romaji || ''} ${w.meaning}`.toLowerCase();
-        if (!haystack.includes(q)) return false;
-      }
-      if (lessons.size > 0 && !lessons.has(lessonKey(w))) return false;
-      if (levels.size > 0 && !levels.has(w.level || 'Not on list')) return false;
-      // Words added by hand have no study priority — they always stay visible.
-      if (studies.size > 0 && w.study && !studies.has(w.study)) return false;
-      return true;
-    });
-  }, [vocab, search, lessons, levels, studies]);
+  // Scope chip: pick one study priority, or everything. Words added by hand
+  // have no study value and stay visible in every scope.
+  const scoped = useMemo(() => {
+    const active = SCOPES.find((s) => s.key === scope) || SCOPES[0];
+    if (!active.study) return vocab;
+    return vocab.filter((w) => !w.study || w.study === active.study);
+  }, [vocab, scope]);
 
+  const searched = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return scoped;
+    return scoped.filter((w) => {
+      const haystack = `${w.japanese} ${w.reading} ${w.romaji || ''} ${w.meaning}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [scoped, search]);
+
+  // The lesson filter narrows the list: only the ticked lessons are shown
+  // (the added-words bucket only when it is ticked too).
+  const filtered = useMemo(() => {
+    if (lessons.size === 0) return searched;
+    return searched.filter((w) => lessons.has(lessonKey(w)));
+  }, [searched, lessons]);
+
+  // Dropdown counts follow the current scope and search, so the number next
+  // to a lesson is the number of words that lesson would contribute.
   const lessonCounts = useMemo(() => {
+    const counts = new Map();
+    for (const w of searched) {
+      const key = lessonKey(w);
+      counts.set(key, (counts.get(key) || 0) + 1);
+    }
+    return counts;
+  }, [searched]);
+
+  // Lesson totals ignore the scope so a section can show "22 of 46".
+  const lessonTotals = useMemo(() => {
     const counts = new Map();
     for (const w of vocab) {
       const key = lessonKey(w);
       counts.set(key, (counts.get(key) || 0) + 1);
+    }
+    return counts;
+  }, [vocab]);
+
+  const scopeCounts = useMemo(() => {
+    const counts = {};
+    for (const s of SCOPES) {
+      const study = s.study;
+      counts[s.key] = study
+        ? vocab.filter((w) => !w.study || w.study === study).length
+        : vocab.length;
     }
     return counts;
   }, [vocab]);
@@ -363,6 +482,7 @@ export default function VocabularyPage() {
 
   const displayed = selectedOnly ? filtered.filter((w) => selections.has(w.id)) : filtered;
   const allFilteredSelected = filtered.length > 0 && filtered.every((w) => selections.has(w.id));
+  const filterActive = scope !== 'all' || lessons.size > 0 || search.trim() !== '';
 
   function renderTable(words) {
     return (
@@ -390,7 +510,7 @@ export default function VocabularyPage() {
     <div>
       <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem' }}>Vocabulary</h1>
       <p style={{ marginTop: 0 }}>
-        {vocab.length} words · {filtered.length} shown{selCount > 0 && ` · ${selCount} selected for review`}.
+        {vocab.length.toLocaleString()} words{selCount > 0 && ` · ${selCount} selected for review`}.
         <br />
         <span className="muted" style={{ fontSize: '0.85rem' }}>
           Tick words to add them to review, or tap a word for its example.
@@ -411,22 +531,30 @@ export default function VocabularyPage() {
           selected={lessons}
           onToggle={(key) => toggleInSet(setLessons, key)}
           onClear={() => setLessons(new Set())}
-          allLabel="All lessons"
+          allLabel="all lessons"
+          formatSelected={formatLessonSelection}
         />
       </div>
       <div className="toolbar" style={{ marginBottom: '0.75rem' }}>
-        <ChipGroup
-          label="Level"
-          options={LEVELS}
-          selected={levels}
-          onToggle={(opt) => toggleInSet(setLevels, opt)}
+        <ScopeChips
+          options={SCOPES}
+          counts={scopeCounts}
+          value={scope}
+          onSelect={setScope}
         />
-        <ChipGroup
-          label="Study"
-          options={STUDIES}
-          selected={studies}
-          onToggle={(opt) => toggleInSet(setStudies, opt)}
-        />
+        <span className="muted" style={{ fontSize: '0.82rem', marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+          {filtered.length.toLocaleString()} of {vocab.length.toLocaleString()} shown
+        </span>
+        {filterActive && (
+          <button
+            type="button"
+            className="btn"
+            onClick={clearFilters}
+            style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem', whiteSpace: 'nowrap' }}
+          >
+            Show all
+          </button>
+        )}
       </div>
       <div className="toolbar-actions">
         <button
@@ -443,7 +571,7 @@ export default function VocabularyPage() {
           className="btn"
           onClick={() => toggleGroup(filtered, !allFilteredSelected)}
           disabled={filtered.length === 0}
-          title={allFilteredSelected ? 'Remove every word in the current filter from review' : 'Add every word in the current filter to review'}
+          title={allFilteredSelected ? 'Remove every word in the current filter from review' : 'Mark every word in the current filter (this filter only, nothing hidden)'}
           style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
         >
           {allFilteredSelected ? `✓ Unmark all (${filtered.length})` : `＋ Mark all (${filtered.length})`}
@@ -521,11 +649,12 @@ export default function VocabularyPage() {
           const groupWords = selectedOnly ? group.words.filter((w) => selections.has(w.id)) : group.words;
           if (groupWords.length === 0) return null;
           const allSel = groupWords.length > 0 && groupWords.every((w) => selections.has(w.id));
+          const total = lessonTotals.get(group.key) || 0;
           return (
             <section key={group.key} style={{ marginBottom: '2.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '1rem', marginBottom: '0.5rem' }}>
                 <h2 className="section-head" style={{ margin: 0 }}>
-                  {group.name} ({groupWords.length})
+                  {group.name} · {groupWords.length}{groupWords.length < total ? ` of ${total}` : ''}
                 </h2>
                 <Link
                   href="#"
