@@ -366,6 +366,12 @@ export default function VocabularyPage() {
     setSearch('');
   }
 
+  // Clicking a chapter heading narrows the list to that chapter (clicking it
+  // again clears the lesson filter).
+  function toggleLessonOnly(key) {
+    setLessons((prev) => (prev.size === 1 && prev.has(key) ? new Set() : new Set([key])));
+  }
+
   async function submitAdd(e) {
     e.preventDefault();
     setAdding(true);
@@ -654,7 +660,17 @@ export default function VocabularyPage() {
             <section key={group.key} style={{ marginBottom: '2.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '1rem', marginBottom: '0.5rem' }}>
                 <h2 className="section-head" style={{ margin: 0 }}>
-                  {group.name} · {groupWords.length}{groupWords.length < total ? ` of ${total}` : ''}
+                  <button
+                    type="button"
+                    onClick={() => toggleLessonOnly(group.key)}
+                    title={`Show only ${group.name}`}
+                    style={{
+                      background: 'none', border: 'none', padding: 0, margin: 0,
+                      font: 'inherit', color: 'inherit', cursor: 'pointer', textAlign: 'left',
+                    }}
+                  >
+                    {group.name} · {groupWords.length}{groupWords.length < total ? ` of ${total}` : ''}
+                  </button>
                 </h2>
                 <Link
                   href="#"
