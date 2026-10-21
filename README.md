@@ -64,15 +64,7 @@ npm run import:vocab -- --reset      # wipe the old list + vocabulary progress f
 
 The import is idempotent: run it as often as you like, the word count stays the same. The CSV holds 1273 rows; two of them are exact duplicates of another row (both appear in two different lessons), so 1271 words land in the database.
 
-## Lesson-wise Export
-
-The same list is split into one file per lesson under `data/lessons/` (`lesson-01.csv` … `lesson-25.csv`, plus `added.csv`), so it can be browsed lesson by lesson without opening the master CSV.
-
-```bash
-npm run export:lessons     # regenerate data/lessons/*.csv from the master CSV
-```
-
-These files mirror the master CSV row for row (1273 rows in total, duplicates included) — the database is where the two duplicate rows collapse into one word.
+`data/kotoba_import.csv` is the single source of truth for the word list — it is the only copy kept in the repo, and the `source` column carries the lesson for each word, so the list can be grouped by lesson straight from that column.
 
 ## What Is Public and What Is Private
 

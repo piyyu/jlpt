@@ -29,15 +29,19 @@ yarn-error.log*
 .env*.local
 
 # study database (real progress lives here; rebuild from data/*.csv, see README).
-# The wildcard covers every copy of it, including jlpt.db.backup-* snapshots.
+# The wildcards cover every copy of it, including jlpt.db.backup-* snapshots.
 *.db
-*.db-shm
 *.db-wal
+*.db-shm
 *.db-journal
+*.db.backup*
 *.backup-*
 
 # database backups (see "Database & Backups" in README)
 backups/
+
+# one-off local scripts, not part of the app
+scratch/
 
 # vercel
 .vercel
@@ -45,5 +49,3 @@ backups/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-jlpt.db-shm
-jlpt.db-wal
