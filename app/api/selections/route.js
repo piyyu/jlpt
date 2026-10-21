@@ -96,9 +96,15 @@ export async function DELETE(request) {
   const db = getDb();
   const { content_type } = await request.json();
   if (content_type) {
-    db.prepare(`DELETE FROM user_selections WHERE content_type = ?`).run(content_type);
+    // Clear the deck properly: the marks and their SM-2 cards go together,
+    // otherwise the cards linger as orphans outside the review deck.
+    db.transaction(() => {
+      db.prepare('DELETE FROM user_selections WHERE content_type = ?').run(content_type);
+      db.prepare('DELETE FROM srs_cards WHERE content_type = ?').run(content_type);
+    })();
   } else {
-    db.prepare(`DELETE FROM user_selections`).run();
+    db.prepare('DELETE FROM user_selections').run();
+    db.prepare('DELETE FROM srs_cards').run();
   }
   return NextResponse.json({ ok: true });
 }

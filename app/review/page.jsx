@@ -362,6 +362,14 @@ const CATEGORIES = [
   { type: 'grammar', label: 'Grammar' },
 ];
 
+// Where to trim each review deck. Vocabulary opens straight into the
+// "Selected" view, which lists exactly the ticked words.
+const DECK_LINKS = {
+  vocabulary: '/vocabulary?selected=1',
+  kanji: '/kanji',
+  grammar: '/grammar',
+};
+
 function ReviewContent() {
   const searchParams = useSearchParams();
   const [counts, setCounts] = useState({});
@@ -370,6 +378,7 @@ function ReviewContent() {
   const [pools, setPools] = useState({});
   const [dailyGoals, setDailyGoals] = useState({ vocabulary: 50, kanji: 20, grammar: 10 });
   const [selectionCount, setSelectionCount] = useState(0);
+  const [deckCounts, setDeckCounts] = useState({});
   const [weakCount, setWeakCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
@@ -399,6 +408,7 @@ function ReviewContent() {
         setPools(d.pools || {});
         setDailyGoals(d.dailyGoals || d.dailyGoal || { vocabulary: 50, kanji: 20, grammar: 10 });
         setSelectionCount(d.selectionCount || 0);
+        setDeckCounts(d.deckCounts || {});
         setWeakCount(Array.isArray(weak) ? weak.length : 0);
         setLoading(false);
       })
@@ -463,24 +473,34 @@ function ReviewContent() {
               const due = counts[type] || 0;
               const limit = limits[type] ?? 0;
               const goal = dailyGoals[type] ?? 0;
+              const deck = deckCounts[type] || 0;
               const done = Math.max(0, goal - limit);
               const ready = due > 0 && limit > 0;
               return (
-                <button
-                  key={type}
-                  disabled={!ready}
-                  onClick={() => setActiveCategory({ type, label })}
-                  className="opt"
-                  style={!ready ? { opacity: 0.45 } : {}}
-                >
-                  <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem' }}>
-                    <strong>{label}</strong>
-                    <span style={{ fontSize: '1.5rem', fontWeight: 800, color: due > 0 ? 'var(--accent)' : 'var(--muted)', lineHeight: 1.2 }}>
-                      {due} <span className="muted" style={{ fontSize: '0.8rem', fontWeight: 400 }}>due</span>
+                <div key={type}>
+                  <button
+                    disabled={!ready}
+                    onClick={() => setActiveCategory({ type, label })}
+                    className="opt"
+                    style={{ ...(!ready ? { opacity: 0.45 } : {}), width: '100%', textAlign: 'left' }}
+                  >
+                    <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '1rem' }}>
+                      <strong>{label}</strong>
+                      <span style={{ fontSize: '1.5rem', fontWeight: 800, color: due > 0 ? 'var(--accent)' : 'var(--muted)', lineHeight: 1.2 }}>
+                        {due} <span className="muted" style={{ fontSize: '0.8rem', fontWeight: 400 }}>due</span>
+                      </span>
                     </span>
-                  </span>
-                  <span className="muted" style={{ fontSize: '0.8rem' }}>{done}/{goal} done today{!ready && due === 0 ? ' · clear ✓' : ''}{!ready && due > 0 ? ' · cap reached' : ''}</span>
-                </button>
+                    <span className="muted" style={{ fontSize: '0.8rem' }}>{done}/{goal} done today{!ready && due === 0 ? ' · clear ✓' : ''}{!ready && due > 0 ? ' · cap reached' : ''}</span>
+                  </button>
+                  {deck > 0 && (
+                    <p className="muted" style={{ fontSize: '0.78rem', margin: '0.25rem 0 0' }}>
+                      {deck} in your review deck ·{' '}
+                      <Link href={DECK_LINKS[type]}>
+                        {type === 'vocabulary' ? 'manage the deck' : 'manage'}
+                      </Link>
+                    </p>
+                  )}
+                </div>
               );
             })}
           </div>

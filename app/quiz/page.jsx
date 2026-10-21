@@ -60,7 +60,9 @@ function QuizContent() {
       setError(
         isMastery
           ? `No mastered words yet (need interval ≥21 days, 3+ reps). Mastered: ${data.masteredCounts?.vocabulary ?? masteredCounts.vocabulary} vocab / ${data.masteredCounts?.kanji ?? masteredCounts.kanji} kanji.`
-          : 'No questions available for this filter.'
+          : (selectedOnly
+            ? 'Your review deck is empty — tick the words you want to study first.'
+            : 'No questions available for this filter.')
       );
       setLoading(false);
       return;

@@ -39,7 +39,6 @@ function getVocabQuestions(db, count, selectedOnly = false, masteredOnly = false
       .all()
       .map((r) => r.content_id);
     pool = all.filter((item) => ids.includes(item.id));
-    if (pool.length === 0) pool = all;
   }
 
   return shuffle(pool).slice(0, count).map((item) => {
@@ -75,7 +74,6 @@ function getKanjiQuestions(db, count, selectedOnly = false, masteredOnly = false
       .all()
       .map((r) => r.content_id);
     pool = all.filter((item) => ids.includes(item.id));
-    if (pool.length === 0) pool = all;
   }
 
   function readingLabel(k) {
@@ -114,7 +112,6 @@ function getGrammarQuestions(db, count, selectedOnly = false) {
       .all()
       .map((r) => r.content_id);
     pool = all.filter((item) => ids.includes(item.id));
-    if (pool.length === 0) pool = all;
   }
 
   return shuffle(pool).slice(0, count).map((item) => {

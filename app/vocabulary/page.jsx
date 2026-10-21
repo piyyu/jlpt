@@ -272,6 +272,9 @@ export default function VocabularyPage() {
       ? urlScope
       : (SCOPES.some((s) => s.key === storedScope) ? storedScope : DEFAULT_SCOPE);
     setScope(nextScope);
+    // ?selected=1 opens straight into the review-deck view (used by the
+    // Review page's "manage deck" link).
+    if (params.get('selected') === '1') setSelectedOnly(true);
     setHydrated(true);
   }, []);
 
@@ -360,7 +363,18 @@ export default function VocabularyPage() {
 
   async function toggleGroup(words, selectAll) {
     if (!words || words.length === 0) return;
-    if (!selectAll && !confirmUnmark(words)) return;
+    if (selectAll) {
+      // Bulk marking quietly fills the review deck, so ask first when the
+      // batch is big enough to matter.
+      if (words.length > 10) {
+        const ok = window.confirm(
+          `Add all ${words.length} of these words to your review deck?\n\nYou can undo it with "Unmark all" or by unticking them one by one.`
+        );
+        if (!ok) return;
+      }
+    } else if (!confirmUnmark(words)) {
+      return;
+    }
     const ids = words.map((w) => w.id);
     const next = new Set(selections);
     for (const id of ids) {
@@ -400,6 +414,28 @@ export default function VocabularyPage() {
     setScope('all');
     setLessons(new Set());
     setSearch('');
+  }
+
+  // Empty the whole review deck in one go — the escape hatch when a bulk
+  // mark added more than you wanted.
+  async function clearDeck() {
+    if (selections.size === 0) return;
+    const noun = selections.size === 1 ? '1 word' : `${selections.size} words`;
+    const ok = window.confirm(
+      `Remove ${noun} from your review deck?\n\nTheir review history is deleted as well.`
+    );
+    if (!ok) return;
+    await fetch('/api/selections', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content_type: 'vocabulary' }),
+    });
+    setSelections(new Set());
+    setSelCount(0);
+    setVocab((prev) => prev.map((w) => ({ ...w, next_review_date: null, repetitions: 0 })));
+    setAddOk(`Cleared ${noun} from the review deck.`);
+    setAddError('');
+    loadVocab();
   }
 
   // Clicking a chapter heading narrows the list to that chapter (clicking it
@@ -579,6 +615,21 @@ export default function VocabularyPage() {
   const allFilteredSelected = filtered.length > 0 && filtered.every((w) => selections.has(w.id));
   const filterActive = scope !== 'all' || lessons.size > 0 || search.trim() !== '';
 
+  // Words that are in the review deck but hidden by the current filter, so
+  // the deck can be trimmed without losing sight of a word.
+  const hiddenInDeck = useMemo(() => {
+    if (!selectedOnly) return 0;
+    const inDeck = vocab.filter((w) => selections.has(w.id)).length;
+    const shown = filtered.filter((w) => selections.has(w.id)).length;
+    return Math.max(0, inDeck - shown);
+  }, [selectedOnly, vocab, selections, filtered]);
+
+  function showWholeDeck() {
+    setScope('all');
+    setLessons(new Set());
+    setSearch('');
+  }
+
   function renderTable(words) {
     return (
       <table>
@@ -674,6 +725,15 @@ export default function VocabularyPage() {
         >
           {allFilteredSelected ? `✓ Unmark all (${filtered.length})` : `＋ Mark all (${filtered.length})`}
         </button>
+        <button
+          className="btn"
+          onClick={clearDeck}
+          disabled={selCount === 0}
+          title="Remove every ticked word from the review deck"
+          style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+        >
+          Clear deck ({selCount})
+        </button>
         <Link
           className="btn"
           href={`/quiz?type=vocabulary${selCount > 0 ? '&selected_only=true' : ''}`}
@@ -693,6 +753,20 @@ export default function VocabularyPage() {
           {showAdd ? '✓ Add word' : '＋ Add word'}
         </button>
       </div>
+
+      {hiddenInDeck > 0 && (
+        <p className="muted" style={{ fontSize: '0.82rem', margin: '0 0 0.75rem' }}>
+          {hiddenInDeck} more {hiddenInDeck === 1 ? 'word is' : 'words are'} in your review deck but hidden by the current filter.{' '}
+          <button
+            type="button"
+            className="btn"
+            onClick={showWholeDeck}
+            style={{ padding: '0.25rem 0.6rem', fontSize: '0.78rem' }}
+          >
+            Show the whole deck
+          </button>
+        </p>
+      )}
 
       {showAdd && (
         <section className="settings-card" aria-label="Add a word" style={{ marginBottom: '1.5rem' }}>

@@ -68,6 +68,12 @@ export function GET(request) {
     GROUP BY content_type
   `).all(...queryParams).map((r) => [r.content_type, r.due]));
 
+  // Deck size per type: how many items the user has ticked for review. The
+  // "due" count is a subset of it, so the review page can show both.
+  const deckCounts = Object.fromEntries(db.prepare(`
+    SELECT content_type, COUNT(*) as n FROM user_selections GROUP BY content_type
+  `).all().map((r) => [r.content_type, r.n]));
+
   // Daily limits per type (already-reviewed-today counts toward the goal)
   const dailyGoals = getDailyGoals(db);
   const kanjiReviewedToday = db.prepare(`
@@ -260,6 +266,7 @@ export function GET(request) {
     },
     selectionActive: selectionCount > 0,
     selectionCount,
+    deckCounts,
     masteredInterval: MASTERED_INTERVAL,
     leechThreshold: LEECH_THRESHOLD,
   });
