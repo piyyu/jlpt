@@ -28,10 +28,13 @@ yarn-error.log*
 # local env files
 .env*.local
 
-# study database (real progress lives here; rebuild from data/*.csv, see README)
-jlpt.db
-jlpt.db-shm
-jlpt.db-wal
+# study database (real progress lives here; rebuild from data/*.csv, see README).
+# The wildcard covers every copy of it, including jlpt.db.backup-* snapshots.
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.backup-*
 
 # database backups (see "Database & Backups" in README)
 backups/

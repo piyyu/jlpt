@@ -43,7 +43,7 @@ function getVocabQuestions(db, count, selectedOnly = false, masteredOnly = false
   }
 
   return shuffle(pool).slice(0, count).map((item) => {
-    const prompt = item.english;
+    const prompt = item.meaning;
     const answer = item.reading;
     
     const distractors = shuffle(all.filter((d) => d.id !== item.id))

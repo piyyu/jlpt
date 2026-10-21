@@ -115,7 +115,7 @@ export default function QuizCard({
             <span className="muted">Answer: </span>
             <span className="font-japanese"><strong>{correctAnswer}</strong></span>
             {content_type === 'vocabulary' && details.reading && (
-              <span className="muted"> · {details.reading}{showRomaji ? ` (${toRomaji(details.reading)})` : ''} — {details.english}</span>
+              <span className="muted"> · {details.reading}{showRomaji ? ` (${toRomaji(details.reading)})` : ''} — {details.meaning}</span>
             )}
             {content_type === 'kanji' && (
               <span className="muted"> · {details.meaning}</span>

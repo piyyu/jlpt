@@ -25,7 +25,7 @@ export function GET(request) {
   const params = [];
 
   if (search) {
-    query += ' AND (v.japanese LIKE ? OR v.reading LIKE ? OR v.english LIKE ? OR v.romaji LIKE ?)';
+    query += ' AND (v.japanese LIKE ? OR v.reading LIKE ? OR v.meaning LIKE ? OR v.romaji LIKE ?)';
     const like = `%${search}%`;
     params.push(like, like, like, like);
   }
@@ -54,9 +54,9 @@ export async function POST(request) {
 
   const japanese = (body.japanese || '').trim();
   const reading = (body.reading || '').trim();
-  const english = (body.english || '').trim();
-  if (!japanese || !reading || !english) {
-    return NextResponse.json({ error: 'japanese, reading, and english are required' }, { status: 400 });
+  const meaning = (body.meaning || body.english || '').trim();
+  if (!japanese || !reading || !meaning) {
+    return NextResponse.json({ error: 'japanese, reading, and meaning are required' }, { status: 400 });
   }
   const category = (body.category || '').trim() || 'Other';
   const example_jp = (body.example_jp || '').trim() || null;
@@ -70,11 +70,12 @@ export async function POST(request) {
     return NextResponse.json({ error: 'That word already exists', id: existing.id }, { status: 409 });
   }
 
+  // level / study / lesson stay empty: user-added words have no lesson.
   const { lastInsertRowid: id } = db.prepare(`
     INSERT INTO vocabulary
-      (japanese, reading, english, type, category, importance, example_jp, example_en, sort_order, romaji)
-    VALUES (?, ?, ?, 'word', ?, 100, ?, ?, 1000, ?)
-  `).run(japanese, reading, english, category, example_jp, example_en, toRomaji(reading) || null);
+      (japanese, reading, romaji, meaning, level, study, lesson, type, category, importance, example_jp, example_en, sort_order)
+    VALUES (?, ?, ?, ?, NULL, NULL, NULL, 'word', ?, 100, ?, ?, 999999)
+  `).run(japanese, reading, toRomaji(reading) || null, meaning, category, example_jp, example_en);
 
   // Mark for review unless the caller opts out, so the word is
   // immediately studyable (matches the bulk "Mark all" behaviour).

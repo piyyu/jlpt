@@ -18,7 +18,7 @@ export async function GET(request, { params }) {
         WHEN 'grammar' THEN g.pattern
       END AS prompt,
       CASE qa.content_type
-        WHEN 'vocabulary' THEN v.english
+        WHEN 'vocabulary' THEN v.meaning
         WHEN 'kanji' THEN k.meaning
         WHEN 'grammar' THEN g.meaning
       END AS correct_answer

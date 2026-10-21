@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "import:vocab": "node scripts/import-vocab.mjs",
+    "export:lessons": "node scripts/split-lessons.mjs"
   },
   "dependencies": {
     "better-sqlite3": "^12.9.0",

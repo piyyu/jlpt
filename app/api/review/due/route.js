@@ -103,7 +103,7 @@ export function GET(request) {
           WHEN 'grammar' THEN g.pattern
         END AS front,
         CASE s.content_type
-          WHEN 'vocabulary' THEN v.english
+          WHEN 'vocabulary' THEN v.meaning
           WHEN 'kanji' THEN k.meaning
           WHEN 'grammar' THEN g.meaning
         END AS back,
@@ -120,7 +120,7 @@ export function GET(request) {
           WHEN 'grammar' THEN g.pattern
         END AS prod_prompt,
         CASE s.content_type
-          WHEN 'vocabulary' THEN v.english
+          WHEN 'vocabulary' THEN v.meaning
           WHEN 'kanji' THEN k.meaning
           WHEN 'grammar' THEN g.meaning
         END AS prod_answer,
@@ -231,7 +231,7 @@ export function GET(request) {
   const kanjiPoolBase = `FROM kanji k ${selJoin('k', 'kanji')}`;
 
   const vocabReading = db.prepare(`SELECT v.reading AS answer ${vocabPoolBase} ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer).filter(Boolean);
-  const vocabEnglish = db.prepare(`SELECT v.english AS answer ${vocabPoolBase} ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer).filter(Boolean);
+  const vocabEnglish = db.prepare(`SELECT v.meaning AS answer ${vocabPoolBase} ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer).filter(Boolean);
   const kanjiReading = db.prepare(`SELECT TRIM(COALESCE(k.kun_yomi, '') || CASE WHEN k.kun_yomi IS NOT NULL AND k.kun_yomi != '' AND k.on_yomi IS NOT NULL AND k.on_yomi != '' THEN ' / ' ELSE '' END || COALESCE(k.on_yomi, '')) AS answer ${kanjiPoolBase} ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer).filter(Boolean);
   const kanjiMeaning = db.prepare(`SELECT k.meaning AS answer ${kanjiPoolBase} ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer).filter(Boolean);
   const grammarPattern = db.prepare(`SELECT g.pattern AS answer FROM grammar_points g ORDER BY RANDOM() LIMIT 40`).all().map((r) => r.answer).filter(Boolean);

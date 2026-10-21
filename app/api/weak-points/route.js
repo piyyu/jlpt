@@ -12,7 +12,7 @@ export function GET() {
         WHEN 'grammar' THEN g.pattern
       END AS prompt,
       CASE w.content_type
-        WHEN 'vocabulary' THEN v.english
+        WHEN 'vocabulary' THEN v.meaning
         WHEN 'kanji' THEN k.meaning
         WHEN 'grammar' THEN g.meaning
       END AS answer,

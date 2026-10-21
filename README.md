@@ -7,7 +7,7 @@ A modern, minimalist Japanese language learning application designed for JLPT N5
 - **Optimized SRS**: Powered by the SM-2 algorithm (similar to Anki). Cards are scheduled at optimal intervals based on your performance to maximize long-term retention.
 - **Collapsible Sidebar**: A clean, responsive navigation system that stays out of your way during study sessions.
 - **Marked-list workflow**: Tick words, kanji, or grammar points to add them to your review deck. While any selections exist, review sessions drill only selected cards. Re-marking a card keeps its existing schedule; un-marking removes it from review and deletes its SRS history (the app asks for confirmation when the card already has review progress).
-- **Vocabulary**: 1016 words, each with readings, meanings, and example sentences. You can also add your own words from the vocabulary page — new words are marked for review automatically.
+- **Vocabulary**: 1271 words from the Minna no Nihongo N5 list (lessons 1–25 plus an added-words set), each with reading, romaji, meaning, level and study priority. Filter the list by lesson, level or study priority, and mark a whole lesson at once.
 - **Kanji**: 116 kanji with readings, meanings, example words, and animated stroke order.
 - **Grammar**: 41 N5 patterns with example sentences, extra drill examples, and links to textbook explanations — fully wired into SRS review and quizzes.
 - **Hiragana & Katakana**: Interactive kana charts with audio and typing drills.
@@ -45,13 +45,38 @@ JLPT_DB_PATH=/tmp/jlpt-test.db node scripts/check-local-date.mjs
 
 ## Database & Backups
 
-`jlpt.db` holds your real study progress (selections, SRS cards, review history) and is **not** tracked by git. The schema is created automatically on first run, and upgrades are additive migrations only (`ALTER TABLE … ADD COLUMN`, `CREATE INDEX IF NOT EXISTS`) — progress is never wiped.
+`jlpt.db` holds your real study progress (selections, SRS cards, review history) and is **not** tracked by git. The schema is created automatically on first run, and upgrades are additive migrations (`ALTER TABLE … ADD COLUMN`, `CREATE INDEX IF NOT EXISTS`) — progress is never wiped. The one exception is the vocabulary table, which is rebuilt once when its shape changes (the `english` column became `meaning` and `level`/`study`/`lesson` were added); the rebuild carries the old rows over.
 
 - **Back up** (while the app runs, don't just copy the file — SQLite WAL mode means a raw copy can be inconsistent):
   ```bash
   sqlite3 jlpt.db ".backup 'backups/jlpt-2026-10-15.db'"
   ```
-- **Rebuild**: content tables reseed from `data/*.csv` (1016 vocabulary, 116 kanji, 41 grammar patterns + 410 grammar examples). Grammar can be re-imported safely at any time — `node scripts/seed-grammar.mjs` upserts `data/grammar.csv` by pattern and rebuilds examples, preserving selections and SRS progress. There is currently no seed script for vocabulary/kanji in the repo (the old wipe-and-reload script was removed), so treat backups as the only way back.
+- **Rebuild**: grammar reseeds from `data/grammar.csv` (41 grammar patterns + 410 grammar examples) — `node scripts/seed-grammar.mjs` upserts by pattern and rebuilds examples, preserving selections and SRS progress. Vocabulary reseeds from `data/kotoba_import.csv` — `npm run import:vocab` reads the CSV and inserts every row, skipping exact duplicates (same japanese + reading + meaning) and refreshing the level/study/lesson metadata of rows that are already there, so it is safe to run repeatedly. Add `-- --reset` to wipe the current word list and all vocabulary progress (marks, SM-2 cards, weak points, review log) before importing. Kanji has no seed script — treat backups as the only way back.
+
+## Vocabulary Import
+
+`data/kotoba_import.csv` holds the word list (`japanese, reading, romaji, meaning, level, study, source`). `source` is either `MnN I L<n>` (Minna no Nihongo lesson 1–25) or `Added (community N5 list)`; the lesson number is parsed into the `vocabulary.lesson` column, and added words get `lesson = NULL`.
+
+```bash
+npm run import:vocab                 # insert missing rows, refresh metadata
+npm run import:vocab -- --reset      # wipe the old list + vocabulary progress first
+```
+
+The import is idempotent: run it as often as you like, the word count stays the same. The CSV holds 1273 rows; two of them are exact duplicates of another row (both appear in two different lessons), so 1271 words land in the database.
+
+## Lesson-wise Export
+
+The same list is split into one file per lesson under `data/lessons/` (`lesson-01.csv` … `lesson-25.csv`, plus `added.csv`), so it can be browsed lesson by lesson without opening the master CSV.
+
+```bash
+npm run export:lessons     # regenerate data/lessons/*.csv from the master CSV
+```
+
+These files mirror the master CSV row for row (1273 rows in total, duplicates included) — the database is where the two duplicate rows collapse into one word.
+
+## What Is Public and What Is Private
+
+Everything under `data/` is content and is tracked by git: the vocabulary list (`kotoba_import.csv` + the per-lesson split), the kanji list (`kanji.csv`), grammar patterns and examples. Your **study progress is not** — it lives only in `jlpt.db` (marks, SM-2 cards, weak points, review log, quiz history), which is gitignored along with every copy of it (`*.db`, `*.db-wal`, `*.db-shm`, `*.backup-*`, `backups/`). Pushing this repo publishes the word lists and the code, never your progress.
 
 ## SRS Ratings Guide
 

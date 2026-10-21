@@ -1,18 +1,16 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef, Fragment } from 'react';
 import Link from 'next/link';
 import AudioButton from '@/components/AudioButton';
 import { toRomaji } from '@/lib/toRomaji';
 import { useSettings } from '@/lib/useSettings';
 import { todayLocal } from '@/lib/date';
 
-const CATEGORIES = [
-  'Numbers & Counters', 'Time & Dates', 'People & Family', 'Body Parts',
-  'Clothing', 'Food & Drink', 'School & Work', 'Places & Directions',
-  'Nature & Animals', 'Greetings & Expressions', 'Colors', 'Things & Objects',
-  'Adjectives', 'Verbs', 'Leisure & Sports', 'Other',
-];
+const LESSON_NUMBERS = Array.from({ length: 25 }, (_, i) => i + 1);
+const ADDED = 'added';
+const LEVELS = ['N5', 'N5 (est.)', 'N4', 'Not on list'];
+const STUDIES = ['Now', 'Later (N4)', 'Low priority', 'Skip'];
 
 function dueInfo(word, todayStr) {
   const due = word.next_review_date && word.next_review_date <= todayStr;
@@ -40,9 +38,9 @@ function WordRow({ word, isSel, isExp, todayStr, showRomaji, showEnglish, onTogg
             <Link href="#" onClick={(e) => { e.preventDefault(); onExpand(word.id); }} style={{ textDecoration: 'none' }}>
               <span className="jp-display" style={{ fontSize: '1.35rem' }}>{word.japanese}</span>
             </Link>
-            <div className="muted" style={{ fontSize: '0.85rem', marginTop: '0.15rem' }}>{word.reading}{showRomaji ? ` · ${toRomaji(word.reading)}` : ''}</div>
+            <div className="muted" style={{ fontSize: '0.85rem', marginTop: '0.15rem' }}>{word.reading}{showRomaji ? ` · ${word.romaji || toRomaji(word.reading)}` : ''}</div>
           </div>
-          <div style={{ fontSize: '1.02rem', marginTop: '0.35rem' }}>{word.english}</div>
+          <div style={{ fontSize: '1.02rem', marginTop: '0.35rem' }}>{word.meaning}</div>
         </td>
         <td style={{ textAlign: 'right', whiteSpace: 'nowrap', width: '4rem' }}>
           {due ? (
@@ -70,10 +68,106 @@ function WordRow({ word, isSel, isExp, todayStr, showRomaji, showEnglish, onTogg
   );
 }
 
+function lessonKey(word) {
+  return word.lesson == null ? ADDED : String(word.lesson);
+}
+
+function lessonLabel(key) {
+  return key === ADDED ? 'Added words' : `Lesson ${key}`;
+}
+
+// Multi-select dropdown: an empty selection means "no filter".
+function MultiSelect({ label, options, selected, onToggle, onClear, allLabel }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDocClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, [open]);
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <button
+        className="btn"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem', whiteSpace: 'nowrap' }}
+      >
+        {selected.size === 0 ? label : `${label} (${selected.size})`}
+        <span aria-hidden="true"> ▾</span>
+      </button>
+      {open && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, marginTop: '0.4rem', zIndex: 40,
+          background: 'var(--panel)', border: '2px solid var(--border)', borderRadius: 12,
+          padding: '0.6rem', minWidth: '15rem', maxHeight: '22rem', overflowY: 'auto',
+          boxShadow: '0 8px 20px rgba(0,0,0,0.28)',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.4rem' }}>
+            <span className="muted" style={{ fontSize: '0.78rem' }}>
+              {selected.size === 0 ? allLabel : `${selected.size} selected`}
+            </span>
+            <button
+              type="button"
+              onClick={onClear}
+              style={{ background: 'none', border: 'none', color: 'var(--blue)', cursor: 'pointer', fontSize: '0.78rem', padding: 0 }}
+            >
+              clear
+            </button>
+          </div>
+          {options.map((opt) => {
+            const active = selected.has(opt.key);
+            return (
+              <label key={opt.key} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.18rem 0', cursor: 'pointer', fontSize: '0.85rem' }}>
+                <input type="checkbox" checked={active} onChange={() => onToggle(opt.key)} />
+                <span style={{ flex: 1 }}>{opt.label}</span>
+                {opt.count !== undefined && <span className="muted" style={{ fontSize: '0.78rem' }}>{opt.count}</span>}
+              </label>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Chip group: an empty selection means "no filter".
+function ChipGroup({ label, options, selected, onToggle }) {
+  return (
+    <div role="group" aria-label={label} style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', flexWrap: 'wrap' }}>
+      <span className="muted" style={{ fontSize: '0.8rem' }}>{label}</span>
+      {options.map((opt) => {
+        const active = selected.has(opt);
+        return (
+          <button
+            key={opt}
+            type="button"
+            className="btn"
+            aria-pressed={active}
+            onClick={() => onToggle(opt)}
+            style={active
+              ? { borderColor: 'var(--accent)', padding: '0.35rem 0.8rem', fontSize: '0.82rem' }
+              : { padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+          >
+            {opt}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function VocabularyPage() {
   const [vocab, setVocab] = useState([]);
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
+  const [lessons, setLessons] = useState(new Set());
+  const [levels, setLevels] = useState(new Set());
+  const [studies, setStudies] = useState(new Set(['Now']));
   const [expanded, setExpanded] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedOnly, setSelectedOnly] = useState(false);
@@ -84,22 +178,18 @@ export default function VocabularyPage() {
   const [addError, setAddError] = useState('');
   const [addOk, setAddOk] = useState('');
   const [form, setForm] = useState({
-    japanese: '', reading: '', english: '', category: '',
-    example_jp: '', example_en: '', toReview: true,
+    japanese: '', reading: '', meaning: '', example_jp: '', example_en: '', toReview: true,
   });
   const { showEnglish, showRomaji } = useSettings();
 
   const todayStr = todayLocal();
 
   const loadVocab = useCallback(() => {
-    const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (category) params.set('category', category);
     setLoading(true);
-    fetch(`/api/vocab?${params}`)
+    fetch('/api/vocab')
       .then((r) => r.json())
       .then((d) => { setVocab(d); setLoading(false); });
-  }, [search, category]);
+  }, []);
 
   useEffect(() => { loadVocab(); }, [loadVocab]);
 
@@ -131,11 +221,23 @@ export default function VocabularyPage() {
     if (isSelected) next.delete(id); else next.add(id);
     setSelections(next);
     setSelCount(next.size);
+    syncIntervals([id], !isSelected);
     await fetch('/api/selections', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content_type: 'vocabulary', content_id: id, selected: !isSelected }),
     });
+  }
+
+  // Marking creates an SM-2 card due today, unmarking removes it. Mirror that
+  // locally so the interval label on the right stays correct.
+  function syncIntervals(ids, marked) {
+    const idSet = new Set(ids);
+    setVocab((prev) => prev.map((w) => {
+      if (!idSet.has(w.id)) return w;
+      if (marked) return { ...w, next_review_date: w.next_review_date || todayStr };
+      return { ...w, next_review_date: null, repetitions: 0 };
+    }));
   }
 
   async function toggleGroup(words, selectAll) {
@@ -149,10 +251,20 @@ export default function VocabularyPage() {
     }
     setSelections(next);
     setSelCount(next.size);
+    syncIntervals(ids, selectAll);
     await fetch('/api/selections', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content_type: 'vocabulary', content_ids: ids, selected: selectAll }),
+    });
+  }
+
+  function toggleInSet(setter, value) {
+    setter((prev) => {
+      const next = new Set(prev);
+      if (next.has(value)) next.delete(value);
+      else next.add(value);
+      return next;
     });
   }
 
@@ -177,8 +289,7 @@ export default function VocabularyPage() {
       body: JSON.stringify({
         japanese: form.japanese,
         reading: form.reading,
-        english: form.english,
-        category: form.category,
+        meaning: form.meaning,
         example_jp: form.example_jp, example_en: form.example_en,
         selected: form.toReview,
       }),
@@ -194,26 +305,64 @@ export default function VocabularyPage() {
       setSelCount((n) => n + 1);
     }
     setForm({
-      japanese: '', reading: '', english: '', category: '',
-      example_jp: '', example_en: '', toReview: true,
+      japanese: '', reading: '', meaning: '', example_jp: '', example_en: '', toReview: true,
     });
     setAddOk('Added ✓ — use search above to find it.');
     loadVocab();
   }
 
-  const groupedVocab = useMemo(() => {
-    const groups = {};
-    const filtered = selectedOnly ? vocab.filter((w) => selections.has(w.id)) : vocab;
-    for (const w of filtered) {
-      const cat = w.category || 'Other';
-      if (!groups[cat]) groups[cat] = [];
-      groups[cat].push(w);
+  // Filters only change what is shown; review scheduling is untouched.
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return vocab.filter((w) => {
+      if (q) {
+        const haystack = `${w.japanese} ${w.reading} ${w.romaji || ''} ${w.meaning}`.toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      if (lessons.size > 0 && !lessons.has(lessonKey(w))) return false;
+      if (levels.size > 0 && !levels.has(w.level || 'Not on list')) return false;
+      // Words added by hand have no study priority — they always stay visible.
+      if (studies.size > 0 && w.study && !studies.has(w.study)) return false;
+      return true;
+    });
+  }, [vocab, search, lessons, levels, studies]);
+
+  const lessonCounts = useMemo(() => {
+    const counts = new Map();
+    for (const w of vocab) {
+      const key = lessonKey(w);
+      counts.set(key, (counts.get(key) || 0) + 1);
     }
-    const found = Object.keys(groups);
-    const ordered = [...CATEGORIES, 'Uncategorized'].filter((c) => found.includes(c));
-    const extra = found.filter((c) => !ordered.includes(c));
-    return [...ordered, ...extra].map((c) => ({ name: c, words: groups[c] }));
-  }, [vocab, selectedOnly, selections]);
+    return counts;
+  }, [vocab]);
+
+  const lessonOptions = useMemo(() => {
+    const opts = LESSON_NUMBERS.map((n) => ({
+      key: String(n),
+      label: `Lesson ${n}`,
+      count: lessonCounts.get(String(n)) || 0,
+    }));
+    opts.push({ key: ADDED, label: 'Added words', count: lessonCounts.get(ADDED) || 0 });
+    return opts;
+  }, [lessonCounts]);
+
+  const groupedVocab = useMemo(() => {
+    const groups = new Map();
+    for (const w of filtered) {
+      const key = lessonKey(w);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(w);
+    }
+    const order = [...LESSON_NUMBERS.map(String), ADDED];
+    return order.filter((key) => groups.has(key)).map((key) => ({
+      key,
+      name: lessonLabel(key),
+      words: groups.get(key),
+    }));
+  }, [filtered]);
+
+  const displayed = selectedOnly ? filtered.filter((w) => selections.has(w.id)) : filtered;
+  const allFilteredSelected = filtered.length > 0 && filtered.every((w) => selections.has(w.id));
 
   function renderTable(words) {
     return (
@@ -241,7 +390,7 @@ export default function VocabularyPage() {
     <div>
       <h1 style={{ fontSize: '2rem', margin: '0 0 0.5rem' }}>Vocabulary</h1>
       <p style={{ marginTop: 0 }}>
-        {vocab.length} N5 words{selCount > 0 && ` · ${selCount} selected for review`}.
+        {vocab.length} words · {filtered.length} shown{selCount > 0 && ` · ${selCount} selected for review`}.
         <br />
         <span className="muted" style={{ fontSize: '0.85rem' }}>
           Tick words to add them to review, or tap a word for its example.
@@ -256,10 +405,28 @@ export default function VocabularyPage() {
           onChange={(e) => setSearch(e.target.value)}
           style={{ flex: 1, minWidth: 0 }}
         />
-        <select value={category} onChange={(e) => setCategory(e.target.value)} aria-label="Filter by category" style={{ maxWidth: '11rem' }}>
-          <option value="">All categories</option>
-          {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
+        <MultiSelect
+          label="Lessons"
+          options={lessonOptions}
+          selected={lessons}
+          onToggle={(key) => toggleInSet(setLessons, key)}
+          onClear={() => setLessons(new Set())}
+          allLabel="All lessons"
+        />
+      </div>
+      <div className="toolbar" style={{ marginBottom: '0.75rem' }}>
+        <ChipGroup
+          label="Level"
+          options={LEVELS}
+          selected={levels}
+          onToggle={(opt) => toggleInSet(setLevels, opt)}
+        />
+        <ChipGroup
+          label="Study"
+          options={STUDIES}
+          selected={studies}
+          onToggle={(opt) => toggleInSet(setStudies, opt)}
+        />
       </div>
       <div className="toolbar-actions">
         <button
@@ -271,6 +438,15 @@ export default function VocabularyPage() {
             : { padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
         >
           {selectedOnly ? `✓ Selected (${selCount})` : `Selected (${selCount})`}
+        </button>
+        <button
+          className="btn"
+          onClick={() => toggleGroup(filtered, !allFilteredSelected)}
+          disabled={filtered.length === 0}
+          title={allFilteredSelected ? 'Remove every word in the current filter from review' : 'Add every word in the current filter to review'}
+          style={{ padding: '0.35rem 0.8rem', fontSize: '0.82rem' }}
+        >
+          {allFilteredSelected ? `✓ Unmark all (${filtered.length})` : `＋ Mark all (${filtered.length})`}
         </button>
         <Link
           className="btn"
@@ -307,15 +483,8 @@ export default function VocabularyPage() {
               </label>
             </div>
             <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem' }}>
-              English *
-              <input value={form.english} onChange={(e) => setF('english', e.target.value)} required placeholder="food" />
-            </label>
-            <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem' }}>
-              Category
-              <select value={form.category} onChange={(e) => setF('category', e.target.value)}>
-                <option value="">Other (default)</option>
-                {CATEGORIES.filter((c) => c !== 'Other').map((c) => <option key={c} value={c}>{c}</option>)}
-              </select>
+              Meaning *
+              <input value={form.meaning} onChange={(e) => setF('meaning', e.target.value)} required placeholder="food" />
             </label>
             <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem' }}>
               Example — Japanese (optional)
@@ -345,26 +514,28 @@ export default function VocabularyPage() {
 
       {loading ? (
         <p className="muted">Loading…</p>
-      ) : vocab.length === 0 ? (
+      ) : displayed.length === 0 ? (
         <p className="muted">No results.</p>
       ) : (
         groupedVocab.map((group) => {
-          const allSel = group.words.length > 0 && group.words.every((w) => selections.has(w.id));
+          const groupWords = selectedOnly ? group.words.filter((w) => selections.has(w.id)) : group.words;
+          if (groupWords.length === 0) return null;
+          const allSel = groupWords.length > 0 && groupWords.every((w) => selections.has(w.id));
           return (
-            <section key={group.name} style={{ marginBottom: '2.5rem' }}>
+            <section key={group.key} style={{ marginBottom: '2.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '1rem', marginBottom: '0.5rem' }}>
                 <h2 className="section-head" style={{ margin: 0 }}>
-                  {group.name} ({group.words.length})
+                  {group.name} ({groupWords.length})
                 </h2>
                 <Link
                   href="#"
-                  onClick={(e) => { e.preventDefault(); toggleGroup(group.words, !allSel); }}
+                  onClick={(e) => { e.preventDefault(); toggleGroup(groupWords, !allSel); }}
                   style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}
                 >
                   {allSel ? 'deselect group' : 'select group'}
                 </Link>
               </div>
-              {renderTable(group.words)}
+              {renderTable(groupWords)}
             </section>
           );
         })
