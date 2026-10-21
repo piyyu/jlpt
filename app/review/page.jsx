@@ -8,6 +8,7 @@ import Bar from '@/components/Bar';
 import GrammarExamples from '@/components/GrammarExamples';
 import { useSettings } from '@/lib/useSettings';
 import { toRomaji, toRomajiParts } from '@/lib/toRomaji';
+import { todayLocal } from '@/lib/date';
 
 function fisherYates(arr) {
   const a = [...arr];
@@ -370,6 +371,16 @@ const DECK_LINKS = {
   grammar: '/grammar',
 };
 
+// "2026-10-22" -> "tomorrow" or "22 Oct"
+function nextDueLabel(dateStr) {
+  const today = new Date(`${todayLocal()}T00:00:00`);
+  const d = new Date(`${dateStr}T00:00:00`);
+  const days = Math.round((d - today) / 86400000);
+  if (days === 1) return 'tomorrow';
+  if (days === 2) return 'in 2 days';
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
 function ReviewContent() {
   const searchParams = useSearchParams();
   const [counts, setCounts] = useState({});
@@ -379,6 +390,8 @@ function ReviewContent() {
   const [dailyGoals, setDailyGoals] = useState({ vocabulary: 50, kanji: 20, grammar: 10 });
   const [selectionCount, setSelectionCount] = useState(0);
   const [deckCounts, setDeckCounts] = useState({});
+  const [reviewedTodayCounts, setReviewedTodayCounts] = useState({});
+  const [nextDue, setNextDue] = useState({});
   const [weakCount, setWeakCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
@@ -409,6 +422,8 @@ function ReviewContent() {
         setDailyGoals(d.dailyGoals || d.dailyGoal || { vocabulary: 50, kanji: 20, grammar: 10 });
         setSelectionCount(d.selectionCount || 0);
         setDeckCounts(d.deckCounts || {});
+        setReviewedTodayCounts(d.reviewedTodayCounts || {});
+        setNextDue(d.nextDue || {});
         setWeakCount(Array.isArray(weak) ? weak.length : 0);
         setLoading(false);
       })
@@ -474,6 +489,8 @@ function ReviewContent() {
               const limit = limits[type] ?? 0;
               const goal = dailyGoals[type] ?? 0;
               const deck = deckCounts[type] || 0;
+              const reviewedToday = reviewedTodayCounts[type] || 0;
+              const nextDueDate = nextDue[type]?.date || null;
               const done = Math.max(0, goal - limit);
               const ready = due > 0 && limit > 0;
               return (
@@ -494,7 +511,10 @@ function ReviewContent() {
                   </button>
                   {deck > 0 && (
                     <p className="muted" style={{ fontSize: '0.78rem', margin: '0.25rem 0 0' }}>
-                      {deck} in your review deck ·{' '}
+                      {deck} in your review deck
+                      {reviewedToday > 0 && ` · ${reviewedToday} reviewed today`}
+                      {nextDueDate && ` · next due ${nextDueLabel(nextDueDate)}`}
+                      {' · '}
                       <Link href={DECK_LINKS[type]}>
                         {type === 'vocabulary' ? 'manage the deck' : 'manage'}
                       </Link>

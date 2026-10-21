@@ -74,6 +74,30 @@ export function GET(request) {
     SELECT content_type, COUNT(*) as n FROM user_selections GROUP BY content_type
   `).all().map((r) => [r.content_type, r.n]));
 
+  // Cards already answered today are not due again yet — that is the usual
+  // reason "due" is smaller than the deck. Report both so the review page
+  // can explain the difference.
+  const reviewedTodayCounts = Object.fromEntries(db.prepare(`
+    SELECT content_type, COUNT(*) as n
+    FROM srs_cards
+    WHERE date(last_reviewed_at) = date(?)
+    GROUP BY content_type
+  `).all(today).map((r) => [r.content_type, r.n]));
+
+  // When does the rest of the deck come back?
+  const upcomingRows = db.prepare(`
+    SELECT content_type, next_review_date, COUNT(*) as n
+    FROM srs_cards
+    WHERE next_review_date > ?
+    GROUP BY content_type, next_review_date
+    ORDER BY next_review_date ASC
+  `).all(today);
+  const nextDue = {};
+  for (const r of upcomingRows) {
+    if (!nextDue[r.content_type]) nextDue[r.content_type] = { date: r.next_review_date, n: 0 };
+    if (r.next_review_date === nextDue[r.content_type].date) nextDue[r.content_type].n += r.n;
+  }
+
   // Daily limits per type (already-reviewed-today counts toward the goal)
   const dailyGoals = getDailyGoals(db);
   const kanjiReviewedToday = db.prepare(`
@@ -267,6 +291,8 @@ export function GET(request) {
     selectionActive: selectionCount > 0,
     selectionCount,
     deckCounts,
+    reviewedTodayCounts,
+    nextDue,
     masteredInterval: MASTERED_INTERVAL,
     leechThreshold: LEECH_THRESHOLD,
   });
