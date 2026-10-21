@@ -34,11 +34,11 @@ function dueInfo(word, todayStr) {
   return { due, dueLabel };
 }
 
-function WordRow({ word, isSel, isExp, todayStr, showRomaji, showEnglish, onToggle, onExpand }) {
+function WordRow({ word, isSel, isExp, todayStr, showRomaji, showEnglish, onToggle, onExpand, isNew, canRemove, onRemove }) {
   const { due, dueLabel } = dueInfo(word, todayStr);
   return (
     <Fragment>
-      <tr>
+      <tr data-word-id={word.id} className={isNew ? 'row-new' : undefined}>
         <td style={{ whiteSpace: 'nowrap', width: '2.8rem', padding: '0.85rem 0', verticalAlign: 'top' }}>
           <button className="tick" aria-pressed={isSel} onClick={() => onToggle(word.id)} title={isSel ? 'Remove from review' : 'Add to review'}>
             {isSel ? '✓' : '+'}
@@ -49,6 +49,16 @@ function WordRow({ word, isSel, isExp, todayStr, showRomaji, showEnglish, onTogg
             <Link href="#" onClick={(e) => { e.preventDefault(); onExpand(word.id); }} style={{ textDecoration: 'none' }}>
               <span className="jp-display" style={{ fontSize: '1.35rem' }}>{word.japanese}</span>
             </Link>
+            {canRemove && (
+              <button
+                className="remove-word"
+                onClick={() => onRemove(word)}
+                title="Remove this word from the list"
+                aria-label={`Remove ${word.japanese}`}
+              >
+                ✕
+              </button>
+            )}
             <div className="muted" style={{ fontSize: '0.85rem', marginTop: '0.15rem' }}>{word.reading}{showRomaji ? ` · ${word.romaji || toRomaji(word.reading)}` : ''}</div>
           </div>
           <div style={{ fontSize: '1.02rem', marginTop: '0.35rem' }}>{word.meaning}</div>
@@ -221,6 +231,7 @@ export default function VocabularyPage() {
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState('');
   const [addOk, setAddOk] = useState('');
+  const [justAdded, setJustAdded] = useState(null);
   const [hydrated, setHydrated] = useState(false);
   const [form, setForm] = useState({
     japanese: '', reading: '', meaning: '', example_jp: '', example_en: '', toReview: true,
@@ -283,6 +294,31 @@ export default function VocabularyPage() {
     // Keep the router's own history state intact, only swap the query string.
     window.history.replaceState(window.history.state, '', `${window.location.pathname}${qs ? `?${qs}` : ''}`);
   }, [hydrated, lessons, scope]);
+
+  // Scroll the word that was just added into view and keep it highlighted for
+  // a few seconds, so it never feels like the add did nothing.
+  useEffect(() => {
+    if (!justAdded) return undefined;
+    let cancelled = false;
+    const scroll = () => {
+      if (cancelled) return;
+      const el = document.querySelector(`tr[data-word-id="${justAdded}"]`);
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+    scroll();
+    // The list may still be loading, and a re-render can move the row, so
+    // try again a couple of times.
+    const t1 = setTimeout(scroll, 350);
+    const t2 = setTimeout(scroll, 900);
+    const t3 = setTimeout(() => setJustAdded(null), 5000);
+    return () => {
+      cancelled = true;
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [justAdded, vocab]);
 
   function confirmUnmark(words) {
     const withProgress = words.filter((w) => selections.has(w.id) && (w.repetitions || 0) > 0);
@@ -374,6 +410,14 @@ export default function VocabularyPage() {
 
   async function submitAdd(e) {
     e.preventDefault();
+    const japanese = form.japanese.trim();
+    const reading = form.reading.trim();
+    const meaning = form.meaning.trim();
+    if (!japanese || !reading || !meaning) {
+      setAddError('Japanese, reading and meaning are all required.');
+      setAddOk('');
+      return;
+    }
     setAdding(true);
     setAddError('');
     setAddOk('');
@@ -381,17 +425,19 @@ export default function VocabularyPage() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        japanese: form.japanese,
-        reading: form.reading,
-        meaning: form.meaning,
-        example_jp: form.example_jp, example_en: form.example_en,
+        japanese,
+        reading,
+        meaning,
+        example_jp: form.example_jp.trim(), example_en: form.example_en.trim(),
         selected: form.toReview,
       }),
     });
     const d = await res.json().catch(() => ({}));
     setAdding(false);
     if (!res.ok) {
-      setAddError(d.error || 'Could not add word.');
+      setAddError(res.status === 409
+        ? 'That word is already in the list (same Japanese + reading).'
+        : (d.error || 'Could not add word.'));
       return;
     }
     if (d.selected) {
@@ -401,7 +447,50 @@ export default function VocabularyPage() {
     setForm({
       japanese: '', reading: '', meaning: '', example_jp: '', example_en: '', toReview: true,
     });
-    setAddOk('Added ✓ — use search above to find it.');
+    setJustAdded(d.id);
+
+    // A word added by hand lives in the "Added words" bucket. If the current
+    // filters would hide it, widen them so the new word is actually visible.
+    const haystack = `${japanese} ${reading} ${meaning}`.toLowerCase();
+    const q = search.trim().toLowerCase();
+    const hiddenBySearch = q && !haystack.includes(q);
+    const hiddenByLesson = lessons.size > 0 && !lessons.has(ADDED);
+    if (hiddenBySearch) setSearch('');
+    if (hiddenByLesson) setLessons((prev) => new Set(prev).add(ADDED));
+    const notes = [];
+    if (hiddenBySearch) notes.push('cleared the search');
+    if (hiddenByLesson) notes.push('added “Added words” to the lesson filter');
+    setAddOk(
+      notes.length
+        ? `Added ✓ — ${notes.join(' and ')} so you can see it.`
+        : 'Added ✓ — it is at the bottom of Added words.'
+    );
+    loadVocab();
+  }
+
+  // Only words added by hand can be removed (imported words have a level and
+  // a study priority, so the API refuses to delete them).
+  async function removeWord(word) {
+    if (!window.confirm(`Remove ${word.japanese} (${word.reading}) from the list?`)) return;
+    const res = await fetch('/api/vocab', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: word.id }),
+    });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setAddError(d.error || 'Could not remove that word.');
+      return;
+    }
+    setAddError('');
+    setAddOk(`Removed ${word.japanese}.`);
+    setSelections((prev) => {
+      const next = new Set(prev);
+      next.delete(word.id);
+      setSelCount(next.size);
+      return next;
+    });
+    setJustAdded((cur) => (cur === word.id ? null : cur));
     loadVocab();
   }
 
@@ -505,6 +594,9 @@ export default function VocabularyPage() {
               showEnglish={showEnglish}
               onToggle={toggleSelection}
               onExpand={(id) => setExpanded(expanded === id ? null : id)}
+              isNew={justAdded === word.id}
+              canRemove={!word.level && !word.study}
+              onRemove={removeWord}
             />
           ))}
         </tbody>
@@ -609,24 +701,24 @@ export default function VocabularyPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
               <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem', minWidth: 0 }}>
                 Japanese *
-                <input value={form.japanese} onChange={(e) => setF('japanese', e.target.value)} required placeholder="たべもの" style={{ minWidth: 0 }} />
+                <input type="text" value={form.japanese} onChange={(e) => setF('japanese', e.target.value)} required placeholder="たべもの" style={{ minWidth: 0 }} />
               </label>
               <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem', minWidth: 0 }}>
                 Reading *
-                <input value={form.reading} onChange={(e) => setF('reading', e.target.value)} required placeholder="たべもの" style={{ minWidth: 0 }} />
+                <input type="text" value={form.reading} onChange={(e) => setF('reading', e.target.value)} required placeholder="たべもの" style={{ minWidth: 0 }} />
               </label>
             </div>
             <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem' }}>
               Meaning *
-              <input value={form.meaning} onChange={(e) => setF('meaning', e.target.value)} required placeholder="food" />
+              <input type="text" value={form.meaning} onChange={(e) => setF('meaning', e.target.value)} required placeholder="food" />
             </label>
             <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem' }}>
               Example — Japanese (optional)
-              <input value={form.example_jp} onChange={(e) => setF('example_jp', e.target.value)} />
+              <input type="text" value={form.example_jp} onChange={(e) => setF('example_jp', e.target.value)} />
             </label>
             <label style={{ display: 'grid', gap: '0.25rem', fontSize: '0.85rem' }}>
               Example — English (optional)
-              <input value={form.example_en} onChange={(e) => setF('example_en', e.target.value)} />
+              <input type="text" value={form.example_en} onChange={(e) => setF('example_en', e.target.value)} />
             </label>
             <label className="muted" style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', fontSize: '0.85rem' }}>
               <input type="checkbox" checked={form.toReview} onChange={(e) => setF('toReview', e.target.checked)} />

@@ -90,3 +90,43 @@ export async function POST(request) {
 
   return NextResponse.json({ ok: true, id, selected }, { status: 201 });
 }
+
+// Remove a word that was added by hand. Words from the imported list carry a
+// level and a study priority, so they are protected: the CSV is the source of
+// truth for them and re-importing would just bring them back.
+export async function DELETE(request) {
+  const db = getDb();
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
+
+  const id = Number(body.id);
+  if (!Number.isInteger(id)) {
+    return NextResponse.json({ error: 'id is required' }, { status: 400 });
+  }
+
+  const word = db.prepare(
+    'SELECT id, japanese, reading, level, study FROM vocabulary WHERE id = ?'
+  ).get(id);
+  if (!word) {
+    return NextResponse.json({ error: 'That word no longer exists' }, { status: 404 });
+  }
+  if (word.level || word.study) {
+    return NextResponse.json(
+      { error: 'Imported words cannot be removed here' },
+      { status: 409 }
+    );
+  }
+
+  db.transaction(() => {
+    db.prepare("DELETE FROM user_selections WHERE content_type = 'vocabulary' AND content_id = ?").run(id);
+    db.prepare("DELETE FROM srs_cards WHERE content_type = 'vocabulary' AND content_id = ?").run(id);
+    db.prepare("DELETE FROM weak_items WHERE content_type = 'vocabulary' AND content_id = ?").run(id);
+    db.prepare('DELETE FROM vocabulary WHERE id = ?').run(id);
+  })();
+
+  return NextResponse.json({ ok: true, id });
+}

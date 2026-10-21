@@ -198,6 +198,11 @@
     background: #faf8f1;
   }
 
+  /* A word that was just added stays highlighted for a few seconds. */
+  tbody tr.row-new td {
+    background: var(--blue-soft);
+  }
+
   input[type="text"],
   input[type="number"],
   select,
@@ -451,6 +456,32 @@
     background: var(--orange);
     box-shadow: 0 2px 0 var(--orange-dark);
     color: #fff;
+  }
+
+  /* Remove button on words that were added by hand. */
+  .remove-word {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-left: 0.45rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    vertical-align: middle;
+    transition: all 0.1s ease;
+  }
+
+  .remove-word:hover {
+    border-color: var(--red-dark);
+    color: var(--red-dark);
   }
 
   /* ── Tags & badges ── */
